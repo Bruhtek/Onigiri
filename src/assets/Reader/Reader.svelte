@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { parseContent } from "../../lib/parseContent";
 	import PageCounter from "./PageCounter.svelte";
-	import ReaderControl from "../Releases/ReaderControl.svelte";
+	import ReaderControl from "./ReaderControl.svelte";
+	import { readerSettings } from "../../lib/stores/settingsStore";
 
 	export let raw: string = "";
 
-	$: console.log(raw);
+
 
 	$: content = parseContent(raw);
 
@@ -17,20 +18,44 @@
 	}
 
 	let documentWidth = document.body.clientWidth;
-	$: pageWidth = documentWidth - 60;
+	$: pageWidth = documentWidth - 2 * $readerSettings.marginHorizontal;
 	$: pageHeight = contentDiv ? contentDiv.clientHeight : 0;
-	$: cssVars = `--page-width: ${pageWidth}px; --page-height: ${pageHeight}px;`;
+	$: cssVars = `
+	--page-width: ${pageWidth}px;
+	--page-height: ${pageHeight}px;
+	--margin-horizontal: ${$readerSettings.marginHorizontal}px;
+	--margin-vertical: ${$readerSettings.marginVertical}px;
+	--text-align: ${$readerSettings.justify ? "justify" : "left"};
+	--font-size: ${$readerSettings.fontSize}px;
+	`;
 
 
-	function nextPage() {
-		const content = document.getElementById("content");
-		content.scrollLeft += pageWidth;
-	}
 
 	/// at which point on the X axis clicking goes to the next page
 	const pageRegionSplitX = 0.5;
 	// after 0.3 the click manages pages, before it manages controls
 	const pageRegionSplitY = 0.3;
+
+	export const scrollLeft = () => {
+		contentDiv.scrollLeft -= pageWidth;
+		snapScroll();
+	};
+	export const scrollRight = () => {
+		contentDiv.scrollLeft += pageWidth;
+		snapScroll();
+	};
+
+	const snapScroll = () => {
+		const scrollLeft = contentDiv.scrollLeft;
+
+		const nearestPage = Math.round(scrollLeft / pageWidth);
+		const nearestPageLeft = nearestPage * pageWidth;
+
+		contentDiv.scrollTo({
+			left: nearestPageLeft,
+			behavior: "instant",
+		});
+	}
 
 	const onpageclick = el => {
 		el.addEventListener("click", (event) => {
@@ -52,20 +77,50 @@
 			}
 		});
 	};
+	const scroll = el => {
+		let scrollStart = 0;
+		let scrollEnd = 0;
+		let scrollDirection = 0;
+		const minScroll = 20;
 
-	export const scrollLeft = () => {
-		contentDiv.scrollLeft -= pageWidth;
-	};
-	export const scrollRight = () => {
-		contentDiv.scrollLeft += pageWidth;
-	};
+		el.addEventListener("scroll", (e) => {
+			e.preventDefault();
+		});
+		el.addEventListener("scrollend", (e) => {
+			e.preventDefault();
+		});
+
+		el.addEventListener("touchstart", (e) => {
+			scrollStart = e.touches[0].clientX;
+		});
+		el.addEventListener("touchmove", (e) => {
+			scrollEnd = e.touches[0].clientX;
+			scrollDirection = scrollEnd - scrollStart;
+			e.preventDefault();
+		});
+		el.addEventListener("touchend", (e) => {
+			if (Math.abs(scrollDirection) < minScroll) {
+				return;
+			}
+			if (scrollDirection < 0) {
+				scrollRight();
+			} else {
+				scrollLeft();
+			}
+			e.preventDefault();
+			scrollStart = 0;
+			scrollEnd = 0;
+			scrollDirection = 0;
+		});
+	}
+
 
 	$: pageCount = contentDiv ? Math.ceil(contentDiv.scrollWidth / pageWidth) : -1;
 	$: currentPage = contentDiv ? Math.ceil(contentDiv.scrollLeft / pageWidth) + 1 : -1;
 
 </script>
 
-<div class="container" style="{cssVars}" use:onpageclick>
+<div class="container" style="{cssVars}" use:onpageclick use:scroll>
 	{#if showControls}
 		<ReaderControl />
 	{/if}
@@ -89,13 +144,15 @@
 	:global(#content p) {
 		text-indent: 1em;
 		padding-bottom: 0.5em;
+		font-size: var(--font-size);
+		text-align: var(--text-align);
 	}
 
 
 	.container {
 		height: 100%;
-		width: calc(var(--page-width) + 60px);
-		padding: 30px;
+		width: calc(var(--page-width) + (2 * var(--margin-horizontal)));
+		padding: var(--margin-vertical) var(--margin-horizontal);
 		border: 1px solid #ccc;
 		position: relative;
 	}

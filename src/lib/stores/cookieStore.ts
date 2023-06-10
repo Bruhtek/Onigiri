@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 // @ts-ignore
 import { deleteCookie, getCookie, setCookie } from "../cookie";
 
@@ -8,20 +8,33 @@ export const cookieWritable = <T>(cookieName, initialValue: T) => {
 		initialValue = JSON.parse(currentCookie);
 	}
 
-	const { set, update, subscribe } = writable<T>(initialValue);
+	const store = writable<T>(initialValue);
+
 	const setWithCookie = (value: T) => {
-		setCookie(cookieName, JSON.stringify(value), 5, false);
-		set(value);
+		setCookie(cookieName, JSON.stringify(value), 365, false);
+		store.set(value);
 	};
 	const deleteValue = () => {
 		deleteCookie(cookieName);
-		set(initialValue);
+		store.set(initialValue);
 	};
+
+	const saveToCookie = () => {
+		const val = get(store);
+		setCookie(cookieName, JSON.stringify(val), 365, false);
+	}
+	const updateWithCookie = (fn: (value: T) => T) => {
+		const val = get(store);
+		const updatedVal = fn(val);
+		setCookie(cookieName, JSON.stringify(updatedVal), 365, false);
+		store.set(updatedVal);
+	}
 
 	return {
 		set: setWithCookie,
-		update,
-		subscribe,
+		update: updateWithCookie,
+		subscribe: store.subscribe,
 		delete: deleteValue,
+		saveToCookie
 	};
 };

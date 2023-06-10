@@ -85,6 +85,7 @@
 		text-align: center;
 		border: 2px solid black;
 		border-top: none;
+		width: 100%;
 	}
 
 </style>
