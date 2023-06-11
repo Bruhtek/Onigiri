@@ -7,6 +7,7 @@ export type VolumePart = {
 	launchDate: Date;
 	coverURL: string;
 	thumbnailURL: string;
+	progress: number;
 };
 
 export const jsonToVolumePart = (json: any): VolumePart => {
@@ -23,6 +24,7 @@ export const jsonToVolumePart = (json: any): VolumePart => {
 		thumbnailURL: json.cover
 			? json.cover.thumbnailUrl
 			: "https://placehold.co/200x300",
+		progress: json.progress,
 	};
 };
 

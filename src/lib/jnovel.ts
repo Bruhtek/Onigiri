@@ -1,6 +1,7 @@
 import { get } from "svelte/store";
 import { token as tokenStore } from "./stores/accountStore";
 import type { VolumePart } from "./types/VolumePart";
+import { jsonToVolumePart } from "./types/VolumePart";
 
 // const jnovelURL = "https://labs.j-novel.club";
 const jnovelURL = "https://cors.bruhtek.com/https://labs.j-novel.club";
@@ -21,6 +22,7 @@ export const jfetch = (url: string, options?: RequestInit) => {
 		headers: {
 			Authorization: `Bearer ${token}`,
 			"Content-Type": "application/json",
+			...options?.headers,
 		},
 	});
 };
@@ -36,7 +38,7 @@ export const jembed = (url: string) => {
 	});
 };
 
-export const getPartData = async (id: string): Promise<String> => {
+export const getPartContent = async (id: string): Promise<String> => {
 	console.log(id);
 	const res = await jembed(`/${id}/data.xhtml`);
 	if (res.ok) {

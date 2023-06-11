@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Maximize2Icon, Minimize2Icon, ArrowLeftIcon } from "svelte-feather-icons";
+	import { Maximize2Icon, Minimize2Icon, ArrowLeftIcon, ArrowRightIcon } from "svelte-feather-icons";
 	import { onMount } from "svelte";
 	import { Link, useLocation, useNavigate } from "svelte-navigator";
 	import NavLink from "./NavLink.svelte";
@@ -21,6 +21,9 @@
 	const goback = () => {
 		navigation(-1);
 	};
+	const goforward = () => {
+		navigation(1);
+	};
 
 	onMount(() => {
 		window.document.addEventListener("fullscreenchange", () => {
@@ -30,18 +33,14 @@
 </script>
 
 <div class="navbar">
-	<div class="navbar-icon fullscreen" on:click={toggleFullscreen}>
-		{#if maximized}
-			<Minimize2Icon size="2x" />
-		{:else}
-			<Maximize2Icon size="2x" />
-		{/if}
-	</div>
 	<NavLink currentUrl={current} to="/">Releases</NavLink>
 	<NavLink currentUrl={current} to="/series">Series</NavLink>
 	<NavLink currentUrl={current} to="/profile">Profile</NavLink>
 	<div class="navbar-icon back" on:click={goback}>
 		<ArrowLeftIcon size="2x" />
+	</div>
+	<div class="navbar-icon forward" on:click={goforward}>
+		<ArrowRightIcon size="2x" />
 	</div>
 </div>
 
@@ -71,13 +70,18 @@
 		justify-content: space-evenly;
 	}
 
-	.fullscreen {
+	/*.fullscreen {*/
+	/*	position: absolute;*/
+	/*	top: 0;*/
+	/*	left: 0;*/
+	/*}*/
+
+	.back {
 		position: absolute;
 		top: 0;
 		left: 0;
 	}
-
-	.back {
+	.forward {
 		position: absolute;
 		top: 0;
 		right: 0;

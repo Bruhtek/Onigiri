@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useParams } from "svelte-navigator";
-	import { getPartData } from "../../lib/jnovel";
+	import { getPartContent } from "../../lib/jnovel";
 	import Reader from "./Reader.svelte";
 
 	const params = useParams();
@@ -12,7 +12,7 @@
 
 	const fetchData = async () => {
 		inProgress = true;
-		rawData = await getPartData($params.id);
+		rawData = await getPartContent($params.id);
 		inProgress = false;
 	};
 	$: if (!rawData && $params.id && !inProgress) {

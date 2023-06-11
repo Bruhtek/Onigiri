@@ -3,6 +3,7 @@
 	import { getMoreReleases, releases } from "../../lib/stores/releasesStore";
 	import ReleaseItem from "./ReleaseItem.svelte";
 	import PageControl from "./PageControl.svelte";
+	import { handleSwipe } from "../Helpers/SwipeHandler";
 
 	$: columnCount = $viewSettings.columns;
 
@@ -45,6 +46,7 @@
 	};
 	const prevPage = () => {
 		currentPage--;
+		if(currentPage < 0) currentPage = 0;
 		console.log(currentPage);
 	};
 
@@ -60,6 +62,7 @@
 	bind:this={releasesContainer}
 	class="releases-container"
 	style={cssVars}
+	use:handleSwipe on:swipeLeft={prevPage} on:swipeRight={nextPage}
 >
 	{#each Array.from({ length: rowCount }) as _, i}
 		<div class="release-row">

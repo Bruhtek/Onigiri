@@ -3,6 +3,11 @@
 	import PageCounter from "./PageCounter.svelte";
 	import ReaderControl from "./ReaderControl.svelte";
 	import { readerSettings } from "../../lib/stores/settingsStore";
+	import { setPartProgress } from "../../lib/stores/releasesStore";
+	import { useParams } from "svelte-navigator";
+	import { handleSwipe } from "../Helpers/SwipeHandler";
+
+	const params = useParams();
 
 	export let raw: string = "";
 
@@ -39,11 +44,21 @@
 	export const scrollLeft = () => {
 		contentDiv.scrollLeft -= pageWidth;
 		snapScroll();
+		updatePartProgress();
 	};
 	export const scrollRight = () => {
 		contentDiv.scrollLeft += pageWidth;
 		snapScroll();
+		updatePartProgress();
 	};
+
+	const updatePartProgress = () => {
+		const scrollLeft = contentDiv.scrollLeft + pageWidth;
+		const scrollWidth = contentDiv.scrollWidth;
+		const partProgress = scrollLeft / scrollWidth;
+
+		setPartProgress($params.id, partProgress)
+	}
 
 	const snapScroll = () => {
 		const scrollLeft = contentDiv.scrollLeft;
@@ -77,50 +92,20 @@
 			}
 		});
 	};
-	const scroll = el => {
-		let scrollStart = 0;
-		let scrollEnd = 0;
-		let scrollDirection = 0;
-		const minScroll = 20;
-
-		el.addEventListener("scroll", (e) => {
-			e.preventDefault();
-		});
-		el.addEventListener("scrollend", (e) => {
-			e.preventDefault();
-		});
-
-		el.addEventListener("touchstart", (e) => {
-			scrollStart = e.touches[0].clientX;
-		});
-		el.addEventListener("touchmove", (e) => {
-			scrollEnd = e.touches[0].clientX;
-			scrollDirection = scrollEnd - scrollStart;
-			e.preventDefault();
-		});
-		el.addEventListener("touchend", (e) => {
-			if (Math.abs(scrollDirection) < minScroll) {
-				return;
-			}
-			if (scrollDirection < 0) {
-				scrollRight();
-			} else {
-				scrollLeft();
-			}
-			e.preventDefault();
-			scrollStart = 0;
-			scrollEnd = 0;
-			scrollDirection = 0;
-		});
-	}
-
 
 	$: pageCount = contentDiv ? Math.ceil(contentDiv.scrollWidth / pageWidth) : -1;
 	$: currentPage = contentDiv ? Math.ceil(contentDiv.scrollLeft / pageWidth) + 1 : -1;
 
 </script>
 
-<div class="container" style="{cssVars}" use:onpageclick use:scroll>
+<div
+	class="container"
+	style="{cssVars}"
+	use:onpageclick
+	use:handleSwipe
+	on:swipeLeft={scrollLeft}
+	on:swipeRight={scrollRight}
+>
 	{#if showControls}
 		<ReaderControl />
 	{/if}

@@ -6,10 +6,12 @@
 
 	const maxTitleLength = 30;
 
-
+	$: cssVars = `
+	--part-progress: ${release.progress * 100}%;
+	`
 </script>
 
-<a href="/reader/{release.id}" use:link>
+<a href="/reader/{release.id}" style={cssVars} use:link>
 	<div class="release">
 		<img
 			alt="Cover"
@@ -84,8 +86,19 @@
 		border-bottom-right-radius: 15px;
 		text-align: center;
 		border: 2px solid black;
-		border-top: none;
+		/*border-top: none;*/
 		width: 100%;
+	}
+
+	p.title::before {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: var(--part-progress);
+		height: 100%;
+		backdrop-filter: invert(1);
+		z-index: 5;
 	}
 
 </style>

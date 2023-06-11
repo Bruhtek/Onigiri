@@ -19,9 +19,6 @@
 		fetchUserData();
 	}
 
-	// onMount(() => {
-	// 	if ($token) fetchUserData();
-	// });
 </script>
 
 {#if $token}
