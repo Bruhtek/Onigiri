@@ -37,8 +37,9 @@
 
 	$: {
 		// plus 2 -> one for the current page, one for the next page
-		if ($releasesPage * (itemsPerPage + 2) >= $releases.length) {
-			getMoreReleases($releasesPage * (itemsPerPage + 2) - $releases.length);
+		if (($releasesPage + 2) * itemsPerPage >= $releases.length) {
+			let remaining = $releases.length - ($releasesPage + 2) * itemsPerPage;
+			getMoreReleases(Math.max(remaining, itemsPerPage));
 		}
 	}
 
