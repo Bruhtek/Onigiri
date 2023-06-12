@@ -71,6 +71,10 @@
 	};
 
 	const updatePartProgress = () => {
+		if(contentDiv.scrollLeft === 0) {
+			setPartProgress($params.id, 0);
+			return;
+		}
 		const scrollLeft = contentDiv.scrollLeft + pageWidth;
 		const scrollWidth = contentDiv.scrollWidth;
 		const partProgress = scrollLeft / scrollWidth;
