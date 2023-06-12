@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { viewSettings } from "../../lib/stores/settingsStore";
-	import { getMoreReleases, releases } from "../../lib/stores/releasesStore";
+	import { getMoreReleases, releases, releasesPage } from "../../lib/stores/releasesStore";
 	import ReleaseItem from "./ReleaseItem.svelte";
-	import PageControl from "./PageControl.svelte";
+	import ReleasesSettings from "./ReleasesSettings.svelte";
 	import { handleSwipe } from "../Helpers/SwipeHandler";
 
-	$: columnCount = $viewSettings.columns;
+	$: minColumnWidth = $viewSettings.columnSize;
 
 	const columnAspectRatio = 2 / 3;
-	const gap = 20;
+	$: gap = $viewSettings.columnGap;
 
 	let releasesContainer: HTMLDivElement = null;
 
@@ -17,11 +17,14 @@
 
 	let itemsPerPage: number = 0;
 	let rowCount = 0;
+	let columnCount = 0;
 	let itemHeight: number = 0;
 
 	$: if (releasesContainer && $releases.length) {
 		availableWidth = releasesContainer.clientWidth;
 		availableHeight = releasesContainer.clientHeight;
+
+		columnCount = Math.floor(availableWidth / (minColumnWidth + gap));
 
 		const columnWidth = (availableWidth - (columnCount - 1) * gap) / columnCount;
 		itemHeight = columnWidth / columnAspectRatio;
@@ -31,23 +34,19 @@
 		console.log(availableWidth, availableHeight, columnWidth, itemHeight, rowCount, itemsPerPage);
 	}
 
-	let currentPage = 0;
 
 	$: {
 		// plus 2 -> one for the current page, one for the next page
-		if (currentPage * (itemsPerPage + 2) >= $releases.length) {
-			getMoreReleases();
+		if ($releasesPage * (itemsPerPage + 2) >= $releases.length) {
+			getMoreReleases($releasesPage * (itemsPerPage + 2) - $releases.length);
 		}
 	}
 
 	const nextPage = () => {
-		currentPage++;
-		console.log(currentPage);
+		releasesPage.update((p) => p + 1);
 	};
 	const prevPage = () => {
-		currentPage--;
-		if(currentPage < 0) currentPage = 0;
-		console.log(currentPage);
+		releasesPage.update((p) => Math.max(p - 1, 0));
 	};
 
 	$: cssVars = [
@@ -67,21 +66,22 @@
 	{#each Array.from({ length: rowCount }) as _, i}
 		<div class="release-row">
 			{#each Array.from({ length: columnCount }) as _, j}
-				{#if $releases[currentPage * itemsPerPage + i * columnCount + j]}
+				{#if $releases[$releasesPage * itemsPerPage + i * columnCount + j]}
 					<ReleaseItem
-						release={$releases[currentPage * itemsPerPage + i * columnCount + j]}
+						release={$releases[$releasesPage * itemsPerPage + i * columnCount + j]}
 					/>
 				{/if}
 			{/each}
 		</div>
 	{/each}
-	<PageControl {nextPage} page={currentPage} {prevPage} />
 </div>
+<ReleasesSettings {nextPage} page={$releasesPage} {prevPage} />
+
 
 <style>
 	.releases-container {
 		width: 100%;
-		height: 100%;
+		height: calc(95% + 20px);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

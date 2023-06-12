@@ -35,7 +35,7 @@
 <div class="navbar">
 	<NavLink currentUrl={current} to="/">Releases</NavLink>
 	<NavLink currentUrl={current} to="/series">Series</NavLink>
-	<NavLink currentUrl={current} to="/profile">Profile</NavLink>
+	<NavLink currentUrl={current} to="/settings">Settings</NavLink>
 	<div class="navbar-icon back" on:click={goback}>
 		<ArrowLeftIcon size="2x" />
 	</div>

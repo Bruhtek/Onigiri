@@ -3,7 +3,7 @@
 	import PageCounter from "./PageCounter.svelte";
 	import ReaderControl from "./ReaderControl.svelte";
 	import { readerSettings } from "../../lib/stores/settingsStore";
-	import { setPartProgress } from "../../lib/stores/releasesStore";
+	import { getPartById, setPartProgress } from "../../lib/stores/releasesStore";
 	import { useParams } from "svelte-navigator";
 	import { handleSwipe } from "../Helpers/SwipeHandler";
 
@@ -18,8 +18,26 @@
 	let contentDiv: HTMLDivElement;
 	let showControls = false;
 
+	let progressAlreadySet = false;
+
 	$: if (contentDiv) {
 		contentDiv.innerHTML = content;
+
+		if(!progressAlreadySet) {
+			// wait for the DOM to update, this seems like a hacky fix, but it's the only thing I can think of
+			setTimeout(() => {
+				goToPartProgress();
+			}, 100)
+		}
+	}
+
+	const goToPartProgress = () => {
+		const currentPart = getPartById($params.id);
+		if(currentPart && currentPart) {
+			contentDiv.scrollLeft = currentPart.progress * contentDiv.scrollWidth;
+			snapScroll(true);
+		}
+		progressAlreadySet = true;
 	}
 
 	let documentWidth = document.body.clientWidth;
@@ -60,10 +78,11 @@
 		setPartProgress($params.id, partProgress)
 	}
 
-	const snapScroll = () => {
+	const snapScroll = (floor: boolean = false) => {
 		const scrollLeft = contentDiv.scrollLeft;
 
-		const nearestPage = Math.round(scrollLeft / pageWidth);
+		let nearestPage = Math.round(scrollLeft / pageWidth);
+		if(floor) nearestPage = Math.floor(scrollLeft / pageWidth);
 		const nearestPageLeft = nearestPage * pageWidth;
 
 		contentDiv.scrollTo({
@@ -124,6 +143,7 @@
 		width: var(--page-width);
 		height: var(--page-height);
 		max-height: var(--page-height);
+		display: inline-block;
 	}
 
 	:global(#content p) {

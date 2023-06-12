@@ -7,7 +7,7 @@
 	import Reader from "./Reader/Reader.svelte";
 	import ReaderView from "./Reader/ReaderView.svelte";
 	import Series from "./Series/Series.svelte";
-	import AccountInfo from "./Account/AccountInfo.svelte";
+	import Settings from "./Settings/Settings.svelte";
 </script>
 
 <Router>
@@ -17,7 +17,7 @@
 			<Navbar />
 			<div class="route-content">
 				<Route component={Series} path="series/*" />
-				<Route component={AccountInfo} path="account/*" />
+				<Route component={Settings} path="settings/*" />
 				<Route component={Releases} path="*" />
 			</div>
 		</div>
