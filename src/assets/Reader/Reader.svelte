@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { parseContent } from "../../lib/parseContent";
-	import PageCounter from "./PageCounter.svelte";
+	import BottomNavbar from "./BottomNavbar.svelte";
 	import ReaderControl from "./ReaderControl.svelte";
 	import { readerSettings } from "../../lib/stores/settingsStore";
 	import { getPartById, setPartProgress } from "../../lib/stores/releasesStore";
@@ -52,7 +52,7 @@
 	--font-size: ${$readerSettings.fontSize}px;
 	`;
 
-
+	$: if(pageWidth && pageHeight) snapScroll()
 
 	/// at which point on the X axis clicking goes to the next page
 	const pageRegionSplitX = 0.5;
@@ -129,7 +129,7 @@
 		<ReaderControl />
 	{/if}
 	<div bind:this={contentDiv} id="content"></div>
-	<PageCounter {currentPage} totalPages={pageCount} />
+	<BottomNavbar {currentPage} totalPages={pageCount} />
 </div>
 
 
@@ -148,9 +148,15 @@
 
 	:global(#content p) {
 		text-indent: 1em;
-		padding-bottom: 0.5em;
 		font-size: var(--font-size);
 		text-align: var(--text-align);
+	}
+	:global(#content p + p) {
+		padding-top: 0.5em;
+	}
+
+	:global(#content h1) {
+		padding-bottom: 0.5em;
 	}
 
 
@@ -166,7 +172,7 @@
 		box-sizing: content-box;
 		padding: 0;
 		margin: 0;
-		height: 100%;
+		height: calc(100% - 1.5rem);
 		overflow: auto;
 		column-fill: auto;
 		column-gap: 0;
