@@ -2,6 +2,7 @@
 
 	import { SettingsIcon } from "svelte-feather-icons";
 	import Numerical from "./Settings/Numerical.svelte";
+	import Checkbox from "./Settings/Checkbox.svelte";
 
 	export let toggleSettings = () => {};
 </script>
@@ -16,6 +17,9 @@
 	<Numerical settingName="columnGap" step="1" min="0" max="40">
 		Gap
 	</Numerical>
+	<Checkbox settingName="highCoverQuality">
+		High Quality Cover
+	</Checkbox>
 </div>
 
 <style>
@@ -35,12 +39,13 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		height: 15%;
+		height: 25%;
 		width: 100%;
 		padding: 0.3rem;
 		font-size: 1.2rem;
 		color: #000;
 		background-color: #fff;
 		border: 3px solid #000;
+		flex-wrap: wrap;
 	}
 </style>

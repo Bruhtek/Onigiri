@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { VolumePart } from "../../lib/types/VolumePart.js";
 	import { link } from "svelte-navigator";
+	import { viewSettings } from "../../lib/stores/settingsStore";
 
 	export let release: VolumePart;
-
-	const maxTitleLength = 30;
 
 	$: cssVars = `
 	--part-progress: ${release.progress * 100}%;
@@ -16,7 +15,7 @@
 		<img
 			alt="Cover"
 			class="cover"
-			src="{release.coverURL}"
+			src="{$viewSettings.highCoverQuality ? release.coverURL : release.thumbnailURL}"
 		/>
 		<p class="title">
 			{release.title}
