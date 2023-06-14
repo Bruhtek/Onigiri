@@ -2,6 +2,7 @@ import { get } from "svelte/store";
 import { token as tokenStore } from "./stores/accountStore";
 import type { VolumePart } from "./types/VolumePart";
 import { jsonToVolumePart } from "./types/VolumePart";
+import notificationStore from "./stores/notificationStore";
 
 // const jnovelURL = "https://labs.j-novel.club";
 const jnovelURL = "https://cors.bruhtek.com/https://labs.j-novel.club";
@@ -46,5 +47,14 @@ export const getPartContent = async (id: string): Promise<String> => {
 		return data;
 	}
 
-	return "Error fetching part. Try again later.";
+	notificationStore.set({
+		type: "error",
+		message:
+			"Error fetching part data. Error code: " +
+			res.status +
+			" " +
+			res.statusText,
+	});
+
+	return "Error fetching part. Try again later. If the problem persists, please contact the developer.<br><br>Remember, manga parts are not supported!!";
 };

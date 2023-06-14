@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon, SettingsIcon, StarIcon } from "svelte-feather-icons";
-	import { onlyFollowedReleases, releases, releasesPage } from "../../lib/stores/releasesStore";
+	import { getMoreReleases, onlyFollowedReleases, releases, releasesPage } from "../../lib/stores/releasesStore";
 	import SettingsModal from "./SettingsModal.svelte";
+	import { get } from "svelte/store";
 
 	export let page: number = 0;
 	export let nextPage: () => void;
@@ -11,6 +12,7 @@
 	}
 
 	const toggleOnlyFollowed = () => {
+		if(get(releases).length === 0) return;
 		releasesPage.set(0)
 		releases.set([])
 		onlyFollowedReleases.set(!$onlyFollowedReleases)

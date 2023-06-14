@@ -1,4 +1,4 @@
-import { cookieWritable } from "./cookieStore";
+import { cookieWritable } from "../types/CookieStoreType";
 
 type ViewSettings = {
 	showCover: boolean;
