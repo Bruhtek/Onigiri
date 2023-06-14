@@ -11,7 +11,7 @@
 
 	export let raw: string = "";
 
-
+	const columnGap = 40;
 
 	$: content = parseContent(raw);
 
@@ -50,6 +50,7 @@
 	--margin-vertical: ${$readerSettings.marginVertical}px;
 	--text-align: ${$readerSettings.justify ? "justify" : "left"};
 	--font-size: ${$readerSettings.fontSize}px;
+	--column-gap: ${columnGap}px;
 	`;
 
 	$: if(pageWidth && pageHeight) snapScroll()
@@ -60,12 +61,12 @@
 	const pageRegionSplitY = 0.3;
 
 	export const scrollLeft = () => {
-		contentDiv.scrollLeft -= pageWidth;
+		contentDiv.scrollLeft -= pageWidth + columnGap;
 		snapScroll();
 		updatePartProgress();
 	};
 	export const scrollRight = () => {
-		contentDiv.scrollLeft += pageWidth;
+		contentDiv.scrollLeft += pageWidth + columnGap;
 		snapScroll();
 		updatePartProgress();
 	};
@@ -85,14 +86,11 @@
 	const snapScroll = (floor: boolean = false) => {
 		const scrollLeft = contentDiv.scrollLeft;
 
-		let nearestPage = Math.round(scrollLeft / pageWidth);
-		if(floor) nearestPage = Math.floor(scrollLeft / pageWidth);
-		const nearestPageLeft = nearestPage * pageWidth;
+		let nearestPage = Math.round(scrollLeft / (pageWidth + columnGap));
+		if(floor) nearestPage = Math.floor(scrollLeft / (pageWidth + columnGap));
+		const nearestPageLeft = nearestPage * (pageWidth + columnGap);
 
-		contentDiv.scrollTo({
-			left: nearestPageLeft,
-			behavior: "instant",
-		});
+		contentDiv.scrollLeft = nearestPageLeft;
 	}
 
 	const onpageclick = el => {
@@ -116,8 +114,8 @@
 		});
 	};
 
-	$: pageCount = contentDiv ? Math.ceil(contentDiv.scrollWidth / pageWidth) : -1;
-	$: currentPage = contentDiv ? Math.ceil(contentDiv.scrollLeft / pageWidth) + 1 : -1;
+	$: pageCount = contentDiv ? Math.ceil(contentDiv.scrollWidth / (pageWidth + columnGap)) : -1;
+	$: currentPage = contentDiv ? Math.ceil(contentDiv.scrollLeft / (pageWidth + columnGap)) + 1 : -1;
 
 </script>
 
@@ -182,6 +180,7 @@
 		column-gap: 0;
 		width: var(--page-width);
 		column-width: var(--page-width);
+		column-gap: var(--column-gap);
 
 		overflow-y: hidden;
 
