@@ -5,6 +5,7 @@ export type VolumePart = {
 	partNumber: number;
 	volumeNumber?: number;
 	launchDate: Date;
+	expirationDate?: Date;
 	coverURL: string;
 	thumbnailURL: string;
 	progress: number;
@@ -18,6 +19,7 @@ export const jsonToVolumePart = (json: any): VolumePart => {
 		volumeNumber: tryParseVolume(json.title) || 0,
 		partNumber: tryParsePart(json.title) || 0,
 		launchDate: new Date(json.launch),
+		expirationDate: json.expiration ? new Date(json.expiration) : undefined,
 		coverURL: json.cover
 			? json.cover.coverUrl
 			: "https://placehold.co/200x300",
