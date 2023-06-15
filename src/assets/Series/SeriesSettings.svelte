@@ -1,7 +1,13 @@
 <script lang="ts">
-	import { ArrowLeftIcon, ArrowRightIcon, SettingsIcon, StarIcon } from "svelte-feather-icons";
-	import { onlyFollowedReleases, releases, releasesPage } from "../../lib/stores/releasesStore";
+	import { ArrowLeftIcon, ArrowRightIcon, CalendarIcon, SettingsIcon, StarIcon } from "svelte-feather-icons";
 	import SettingsModal from "../ViewSettings/SettingsModal.svelte";
+	import {
+		lastSeriesPage,
+		onlyCatchupSeries,
+		onlyFollowedSeries,
+		series,
+		seriesPage
+	} from "../../lib/stores/seriesStore";
 	import { get } from "svelte/store";
 
 	export let page: number = 0;
@@ -12,10 +18,18 @@
 	}
 
 	const toggleOnlyFollowed = () => {
-		if(get(releases).length === 0) return;
-		releasesPage.set(0)
-		releases.set([])
-		onlyFollowedReleases.set(!$onlyFollowedReleases)
+		if(get(series).length === 0) return;
+		seriesPage.set(0)
+		series.set([])
+		lastSeriesPage.set(false)
+		onlyFollowedSeries.set(!$onlyFollowedSeries)
+	}
+	const toggleOnlyCatchups = () => {
+		if(get(series).length === 0) return;
+		seriesPage.set(0)
+		series.set([])
+		lastSeriesPage.set(false)
+		onlyCatchupSeries.set(!$onlyCatchupSeries)
 	}
 
 	let settintsOpen = false;
@@ -32,8 +46,13 @@
 			<SettingsIcon />
 		</div>
 		<p>Page {page + 1}</p>
-		<div class="icon-button" on:click={toggleOnlyFollowed}>
-			<StarIcon class={$onlyFollowedReleases ? "filled" : ""} />
+		<div class="group">
+			<div class="icon-button" on:click={toggleOnlyFollowed}>
+				<StarIcon class={$onlyFollowedSeries ? "filled" : ""} />
+			</div>
+			<div class="icon-button" on:click={toggleOnlyCatchups}>
+				<CalendarIcon class={$onlyCatchupSeries ? "filled" : ""} />
+			</div>
 		</div>
 		<div class="icon-button" on:click={nextPage}>
 			<ArrowRightIcon />
@@ -63,5 +82,10 @@
 		color: #000;
 		background-color: #fff;
 		border: 3px solid #000;
+	}
+
+	.group {
+		display: flex;
+		gap: 1rem;
 	}
 </style>

@@ -1,27 +1,21 @@
 <script lang="ts">
-	import type { VolumePart } from "../../lib/types/VolumePart.js";
 	import { link } from "svelte-navigator";
 	import { viewSettings } from "../../lib/stores/settingsStore";
+	import type { Series } from "../../lib/types/Series";
 
-	export let release: VolumePart;
+	export let serie: Series;
 
-	$: cssVars = `
-	--part-progress: ${release.progress * 100}%;
-	`
 </script>
 
-<a href="/reader/{release.id}" style={cssVars} use:link>
-	<div class="release">
+<a href="/series/{serie.id}" use:link>
+	<div class="serie">
 		<img
 			alt="Cover"
 			class="cover"
-			src="{$viewSettings.highCoverQuality ? release.coverURL : release.thumbnailURL}"
+			src="{$viewSettings.highCoverQuality ? serie.coverURL : serie.thumbnailURL}"
 		/>
 		<p class="title">
-			{release.title}
-		</p>
-		<p class="volume">
-			V.{release.volumeNumber} P.{release.partNumber}
+			{serie.title}
 		</p>
 	</div>
 </a>
@@ -36,20 +30,7 @@
 		border-radius: unset;
 	}
 
-	.release p.volume {
-		position: absolute;
-		top: 0.2rem;
-		left: 0.2rem;
-		z-index: 10;
-		background-color: #fff;
-		border-radius: 15px;
-		padding-top: 3px;
-		padding-left: 2px;
-		padding-right: 2px;
-		border: 2px solid black;
-	}
-
-	.release {
+	.serie {
 		height: 100%;
 		width: var(--item-width);
 		background-color: #aaa;
@@ -58,7 +39,7 @@
 		border-radius: 15px;
 	}
 
-	.release img {
+	.serie img {
 		height: 100%;
 		width: 100%;
 		object-fit: cover;
@@ -71,7 +52,7 @@
 
 	}
 
-	.release p.title {
+	.serie p.title {
 		position: absolute;
 		bottom: 0;
 		z-index: 10;
@@ -88,16 +69,4 @@
 		/*border-top: none;*/
 		width: 100%;
 	}
-
-	p.title::before {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: var(--part-progress);
-		height: 100%;
-		backdrop-filter: invert(1);
-		z-index: 5;
-	}
-
 </style>

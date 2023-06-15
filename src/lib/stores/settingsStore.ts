@@ -1,7 +1,8 @@
-import { cookieWritable } from "./cookieStore";
+import { cookieWritable } from "../types/CookieStoreType";
 
 type ViewSettings = {
 	showCover: boolean;
+	highCoverQuality: boolean;
 	// minimal column width in pixels (used for calculating the column count)
 	columnSize: number;
 	columnGap: number;
@@ -17,6 +18,7 @@ type ReaderSettings = {
 
 export const viewSettings = cookieWritable<ViewSettings>("viewSettings", {
 	showCover: true,
+	highCoverQuality: false,
 	columnSize: 120,
 	columnGap: 10,
 });

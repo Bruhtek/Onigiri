@@ -2,7 +2,8 @@ import { get, writable } from "svelte/store";
 import type { VolumePart } from "../types/VolumePart";
 import { jfetch } from "../jnovel";
 import { jsonToVolumePart } from "../types/VolumePart";
-import { cookieWritable } from "./cookieStore";
+import { cookieWritable } from "../types/CookieStoreType";
+import notificationStore from "./notificationStore";
 
 export const releases = writable<VolumePart[]>([]);
 export const releasesPage = writable<number>(0);
@@ -27,7 +28,26 @@ export const getMoreReleases = async (count: number = 40) => {
 		);
 
 		releases.update((old) => [...old, ...newReleases]);
+		return;
 	}
+
+	if (res.status === 429) {
+		notificationStore.set({
+			type: "error",
+			message:
+				"You are being rate limited. Please wait a few seconds and try again.",
+		});
+		return;
+	}
+
+	notificationStore.set({
+		type: "error",
+		message:
+			"Failed to fetch releases. Error code: " +
+			res.status +
+			" " +
+			res.statusText,
+	});
 };
 
 export const getPartById = (id: string): VolumePart | null => {

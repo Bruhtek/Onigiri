@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { viewSettings } from "../../../lib/stores/settingsStore";
-	import { PlusIcon, MinusIcon } from "svelte-feather-icons";
+	import { viewSettings } from "../../lib/stores/settingsStore";
+	import { MinusIcon, PlusIcon } from "svelte-feather-icons";
 
 	export let settingName: string;
 

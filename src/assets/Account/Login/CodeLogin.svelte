@@ -4,6 +4,7 @@
 	import { jfetch } from "../../../lib/jnovel";
 	import { onMount } from "svelte";
 	import { useNavigate } from "svelte-navigator";
+	import notificationStore from "../../../lib/stores/notificationStore";
 
 	const navigate = useNavigate();
 
@@ -22,6 +23,11 @@
 			const data = await res.json();
 			otp = data.otp;
 			proof = data.proof;
+		} else {
+			notificationStore.set({
+				type: "error",
+				message: "Error generating code. Try again in a few seconds."
+			})
 		}
 		inProgress = false;
 	};
