@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { viewSettings } from "../../lib/stores/settingsStore";
 
-	export let className: string = "";
-
 	$: minColumnWidth = $viewSettings.columnSize;
 
 	const columnAspectRatio = 2 / 3;
@@ -58,7 +56,7 @@
 	}
 </script>
 
-<div class={className} style={cssVars} use:resizeObserver bind:this={container}>
+<div class="grid-display" style={cssVars} use:resizeObserver bind:this={container}>
 	<slot
 		itemsPerPage={itemsPerPage}
 		rowCount={rowCount}
@@ -67,8 +65,14 @@
 </div>
 
 <style>
-	.container {
-		width: 100%;
-		height: 100%;
+	.grid-display {
+		width: calc(100% - var(--gap) * 2);
+		height: calc(95% - var(--gap) * 2);
+		margin-left: var(--gap);
+		margin-top: var(--gap);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: relative;
 	}
 </style>

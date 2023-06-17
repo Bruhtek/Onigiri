@@ -1,31 +1,46 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon } from "svelte-feather-icons";
-	import { useLocation, useNavigate } from "svelte-navigator";
-	import NavLink from "./NavLink.svelte";
+	import { Link, useLocation, useNavigate } from "svelte-navigator";
 
 	const location = useLocation();
 	const navigation = useNavigate();
 	$: current = $location.pathname;
 
+	export let items: Map<string, string> = new Map();
+	export let backUrl: string | null = "";
+	export let forwardUrl: string | null = "";
+
 	const goBack = () => {
-		navigation(-1);
+		if(backUrl === "") {
+			navigation(-1);
+		} else {
+			navigation(backUrl);
+		}
 	};
 	const goForward = () => {
-		navigation(1);
+		if(forwardUrl === "") {
+			navigation(1);
+		} else {
+			navigation(forwardUrl);
+		}
 	};
 
 </script>
 
 <div class="navbar">
-	<NavLink currentUrl={current} to="/" replace={false}>Releases</NavLink>
-	<NavLink currentUrl={current} to="/series" replace={false}>Series</NavLink>
-	<NavLink currentUrl={current} to="/settings" replace={false}>Settings</NavLink>
-	<div class="navbar-icon back" on:click={goBack}>
-		<ArrowLeftIcon size="2x" />
-	</div>
-	<div class="navbar-icon forward" on:click={goForward}>
-		<ArrowRightIcon size="2x" />
-	</div>
+	{#each Object.keys(items) as key}
+		<Link class="link" to={key} replace={false}>{items[key]}</Link>
+	{/each}
+	{#if backUrl !== null}
+		<div class="navbar-icon back" on:click={goBack}>
+			<ArrowLeftIcon size="2x" />
+		</div>
+	{/if}
+	{#if forwardUrl !== null}
+		<div class="navbar-icon forward" on:click={goForward}>
+			<ArrowRightIcon size="2x" />
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -39,7 +54,7 @@
 		background-color: unset;
 	}
 
-	.navbar :global(.link.current-link) {
+	.navbar :global(.link[aria-current="page"]) {
 		border-bottom: 3px solid black;
 	}
 

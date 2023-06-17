@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SerieItem from "./SerieItem.svelte";
-	import { handleSwipe } from "../Helpers/SwipeHandler";
-	import { getMoreSeries, series, seriesPage } from "../../lib/stores/seriesStore";
+	import { handleSwipe } from "../../Helpers/SwipeHandler";
+	import { getMoreSeries, series, seriesPage } from "../../../lib/stores/seriesStore";
 
 	export let itemsPerPage = 0;
 	export let rowCount = 0;

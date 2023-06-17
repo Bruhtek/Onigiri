@@ -17,20 +17,7 @@
 	let:itemsPerPage={itemsPerPage}
 	let:rowCount={rowCount}
 	let:columnCount={columnCount}
-	className="releases-container"
 >
 	<ReleasesContainer {itemsPerPage} {rowCount} {columnCount} {prevPage} {nextPage} />
 </GridDisplay>
 <ReleasesSettings {nextPage} page={$releasesPage} {prevPage} />
-
-
-<style>
-	:global(.releases-container) {
-		width: 100%;
-		height: calc(95% + 20px);
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		position: relative;
-	}
-</style>

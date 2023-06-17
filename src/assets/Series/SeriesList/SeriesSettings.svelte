@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon, CalendarIcon, SettingsIcon, StarIcon } from "svelte-feather-icons";
-	import SettingsModal from "../ViewSettings/SettingsModal.svelte";
+	import SettingsModal from "../../ViewSettings/SettingsModal.svelte";
 	import {
 		lastSeriesPage,
 		onlyCatchupSeries,
 		onlyFollowedSeries,
 		series,
 		seriesPage
-	} from "../../lib/stores/seriesStore";
+	} from "../../../lib/stores/seriesStore";
 	import { get } from "svelte/store";
 
 	export let page: number = 0;

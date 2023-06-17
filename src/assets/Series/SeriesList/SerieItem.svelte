@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { link } from "svelte-navigator";
-	import { viewSettings } from "../../lib/stores/settingsStore";
-	import type { Series } from "../../lib/types/Series";
+	import { viewSettings } from "../../../lib/stores/settingsStore";
+	import type { Series } from "../../../lib/types/Series";
 
 	export let serie: Series;
 

@@ -6,13 +6,23 @@
 	import ReaderView from "./Reader/ReaderView.svelte";
 	import Series from "./Series/Series.svelte";
 	import Settings from "./Settings/Settings.svelte";
+	import SeriesInfo from "./Series/SeriesInfo/SeriesInfo.svelte";
+
+	const navItems = {
+		"/": "Releases",
+		"/series": "Series",
+		"/settings": "Settings"
+	}
 </script>
 
 <Router>
 	<Route component={ReaderView} path="/reader/:id" />
+	<Route path="series/:seriesId/*" let:params>
+		<SeriesInfo seriesId={params.seriesId} />
+	</Route>
 	<Route path="*">
 		<div class="container">
-			<Navbar />
+			<Navbar items={navItems} />
 			<div class="route-content">
 				<Route path="series/*">
 					<Series />
@@ -37,6 +47,6 @@
 	.route-content {
 		height: calc(100% - 50px);
 		width: 100%;
-		padding: 20px;
+		/*padding: 20px;*/
 	}
 </style>
