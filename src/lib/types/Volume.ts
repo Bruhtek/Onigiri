@@ -17,6 +17,7 @@ export type Volume = {
 	coverURL: string;
 	thumbnailURL: string;
 	owned: boolean;
+	totalParts?: number;
 };
 
 export const jsonToVolume = (json: any): Volume => {
@@ -45,5 +46,6 @@ export const jsonToVolume = (json: any): Volume => {
 			: [],
 		forumTopicId: json.forumTopicId,
 		owned: json.owned,
+		totalParts: json.totalParts ?? undefined,
 	};
 };

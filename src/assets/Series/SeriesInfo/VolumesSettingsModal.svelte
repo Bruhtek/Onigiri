@@ -1,8 +1,9 @@
 <script lang="ts">
 
 	import { SettingsIcon } from "svelte-feather-icons";
-	import Numerical from "./Numerical.svelte";
-	import Checkbox from "./Checkbox.svelte";
+	import Numerical from "../../ViewSettings/Numerical.svelte";
+	import Checkbox from "../../ViewSettings/Checkbox.svelte";
+
 
 	export let toggleSettings = () => {};
 </script>
@@ -11,8 +12,8 @@
 	<div class="icon-button settings-toggle" on:click={toggleSettings}>
 		<SettingsIcon />
 	</div>
-	<Numerical settingName="columnSize" step="10" min="80" max="300">
-		Min. Column Size
+	<Numerical settingName="rowHeight" step="10" min="150" max="300">
+		Min. Row Height
 	</Numerical>
 	<Numerical settingName="gap" step="1" min="0" max="40">
 		Gap

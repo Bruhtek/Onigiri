@@ -10,7 +10,7 @@
 	`
 </script>
 
-<a href="/reader/{release.id}" style={cssVars} use:link>
+<a href="/reader/{release.id}/{release.progress}" style={cssVars} use:link>
 	<div class="release">
 		<img
 			alt="Cover"

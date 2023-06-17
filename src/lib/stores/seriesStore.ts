@@ -8,10 +8,13 @@ import { jsonToVolume } from "../types/Volume";
 
 export const series = writable<Series[]>([]);
 export const seriesPage = writable<number>(0);
+export const volumesPage = writable<number>(0);
 export const onlyFollowedSeries = writable<boolean>(false);
 export const onlyCatchupSeries = writable<boolean>(false);
 
 export const lastSeriesPage = writable<boolean>(false);
+
+export const seriesAggregate = writable<SeriesAggregate | null>(null);
 
 export const getMoreSeries = async (count: number = 40) => {
 	if (get(lastSeriesPage)) {

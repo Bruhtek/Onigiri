@@ -16,7 +16,14 @@
 </script>
 
 <Router>
-	<Route component={ReaderView} path="/reader/:id" />
+	<Route path="/reader/*">
+		<Route path=":id" let:params>
+			<ReaderView partId={params.id} />
+		</Route>
+		<Route path=":id/:progress" let:params>
+			<ReaderView partId={params.id} progress={params.progress} />
+		</Route>
+	</Route>
 	<Route path="series/:seriesId/*" let:params>
 		<SeriesInfo seriesId={params.seriesId} />
 	</Route>

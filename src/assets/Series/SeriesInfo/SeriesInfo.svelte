@@ -1,22 +1,27 @@
 <script lang="ts">
-	import { getSeriesAggregateById } from "../../../lib/stores/seriesStore";
-	import type { SeriesAggregate } from "../../../lib/types/Series";
+	import { getSeriesAggregateById, seriesAggregate, volumesPage } from "../../../lib/stores/seriesStore";
 	import { onMount } from "svelte";
 	import { Route } from "svelte-navigator";
-	import Volumes from "./Volumes.svelte";
+	import Volumes from "./VolumesList.svelte";
+	import VolumesList from "./VolumesList.svelte";
 	import Navbar from "../../Navbar/Navbar.svelte";
 	import Overview from "./Overview.svelte";
+	import { get } from "svelte/store";
 
 	export let seriesId: string = "";
 
-	let data: SeriesAggregate | null = null;
+
 
 	const getSeries = async () => {
-		data = await getSeriesAggregateById(seriesId)
+		const res = await getSeriesAggregateById(seriesId)
+		seriesAggregate.set(res);
 	}
 
 	onMount(() => {
+		if(get(seriesAggregate) && get(seriesAggregate).series.id === seriesId) return;
+		seriesAggregate.set(null);
 		getSeries();
+		volumesPage.set(0)
 	})
 
 	const navItems = {
@@ -25,15 +30,15 @@
 	}
 </script>
 
-{#if data}
+{#if $seriesAggregate}
 	<div class="container">
 		<Navbar items={navItems} forwardUrl={null} backUrl="/series" />
 		<div class="content">
 			<Route path="/">
-				<Overview data={data} />
+				<Overview data={$seriesAggregate} />
 			</Route>
 			<Route path="/volumes">
-				<Volumes data={data} />
+				<VolumesList data={$seriesAggregate} />
 			</Route>
 		</div>
 	</div>

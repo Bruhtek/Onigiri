@@ -5,8 +5,17 @@ type ViewSettings = {
 	highCoverQuality: boolean;
 	// minimal column width in pixels (used for calculating the column count)
 	columnSize: number;
-	columnGap: number;
+	rowHeight: number;
+	gap: number;
 };
+
+export const viewSettings = cookieWritable<ViewSettings>("viewSettings", {
+	showCover: true,
+	highCoverQuality: false,
+	columnSize: 120,
+	rowHeight: 200,
+	gap: 10,
+});
 
 type ReaderSettings = {
 	fontSize: number;
@@ -15,13 +24,6 @@ type ReaderSettings = {
 	marginVertical: number;
 	marginHorizontal: number;
 };
-
-export const viewSettings = cookieWritable<ViewSettings>("viewSettings", {
-	showCover: true,
-	highCoverQuality: false,
-	columnSize: 120,
-	columnGap: 10,
-});
 
 export const readerSettings = cookieWritable<ReaderSettings>("readerSettings", {
 	fontSize: 16,
