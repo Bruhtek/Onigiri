@@ -1,16 +1,8 @@
 <script lang="ts">
 
 	import { SettingsIcon } from "svelte-feather-icons";
-<<<<<<< HEAD:src/assets/ViewSettings/SettingsModal.svelte
 	import Numerical from "./Numerical.svelte";
 	import Checkbox from "./Checkbox.svelte";
-=======
-	import Numerical from "./Settings/Numerical.svelte";
-	import Checkbox from "./Settings/Checkbox.svelte";
-<<<<<<< HEAD:src/assets/ViewSettings/SettingsModal.svelte
->>>>>>> master:src/assets/Releases/SettingsModal.svelte
-=======
->>>>>>> master:src/assets/Releases/SettingsModal.svelte
 
 	export let toggleSettings = () => {};
 </script>
