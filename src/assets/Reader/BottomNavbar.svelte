@@ -23,7 +23,4 @@
 		align-content: center;
 		text-align: center;
 	}
-	.border {
-		border-top: 2px solid black;
-	}
 </style>

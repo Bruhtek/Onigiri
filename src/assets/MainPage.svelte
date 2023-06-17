@@ -1,10 +1,8 @@
 <script lang="ts">
 
-	import { username } from "../lib/stores/accountStore";
 	import Navbar from "./Navbar/Navbar.svelte";
 	import { Route, Router } from "svelte-navigator";
 	import Releases from "./Releases/Releases.svelte";
-	import Reader from "./Reader/Reader.svelte";
 	import ReaderView from "./Reader/ReaderView.svelte";
 	import Series from "./Series/Series.svelte";
 	import Settings from "./Settings/Settings.svelte";
@@ -16,9 +14,15 @@
 		<div class="container">
 			<Navbar />
 			<div class="route-content">
-				<Route component={Series} path="series/*" />
-				<Route component={Settings} path="settings/*" />
-				<Route component={Releases} path="*" />
+				<Route path="series/*">
+					<Series />
+				</Route>
+				<Route path="settings/*">
+					<Settings />
+				</Route>
+				<Route path="*">
+					<Releases />
+				</Route>
 			</div>
 		</div>
 	</Route>

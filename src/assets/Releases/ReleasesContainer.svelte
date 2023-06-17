@@ -13,6 +13,7 @@
 		// plus 2 -> one for the current page, one for the next page
 		if (($releasesPage + 2) * itemsPerPage >= $releases.length) {
 			let remaining = $releases.length - ($releasesPage + 2) * itemsPerPage;
+			console.log("getting more releases", Math.max(remaining, itemsPerPage));
 			getMoreReleases(Math.max(remaining, itemsPerPage));
 		}
 	}
@@ -23,9 +24,9 @@
 	class="releases-container"
 	use:handleSwipe on:swipeLeft={prevPage} on:swipeRight={nextPage}
 >
-	{#each Array.from({ length: rowCount }) as _, i}
+	{#each { length: rowCount } as _, i}
 		<div class="release-row">
-			{#each Array.from({ length: columnCount }) as _, j}
+			{#each { length: columnCount } as _, j}
 				{#if $releases[$releasesPage * itemsPerPage + i * columnCount + j]}
 					<ReleaseItem
 						release={$releases[$releasesPage * itemsPerPage + i * columnCount + j]}

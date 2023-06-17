@@ -1,7 +1,7 @@
 import { get, writable } from "svelte/store";
 import type { VolumePart } from "../types/VolumePart";
-import { jfetch } from "../jnovel";
 import { jsonToVolumePart } from "../types/VolumePart";
+import { jfetch } from "../jnovel";
 import { cookieWritable } from "../types/CookieStoreType";
 import notificationStore from "./notificationStore";
 
@@ -27,7 +27,15 @@ export const getMoreReleases = async (count: number = 40) => {
 			jsonToVolumePart(part),
 		);
 
-		releases.update((old) => [...old, ...newReleases]);
+		releases.update((oldReleases) => {
+			let result = [...oldReleases];
+			for (const release of newReleases) {
+				if (!result.find((r) => r.id === release.id)) {
+					result.push(release);
+				}
+			}
+			return result;
+		});
 		return;
 	}
 

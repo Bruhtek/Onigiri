@@ -1,7 +1,5 @@
 import { get } from "svelte/store";
 import { token as tokenStore } from "./stores/accountStore";
-import type { VolumePart } from "./types/VolumePart";
-import { jsonToVolumePart } from "./types/VolumePart";
 import notificationStore from "./stores/notificationStore";
 
 // const jnovelURL = "https://labs.j-novel.club";
@@ -18,8 +16,6 @@ const jnovelURL = dev
 
 const apiURL = "/app/v1";
 const embedURL = "/embed";
-
-const releasesOnPage = 20;
 
 export const jfetch = (url: string, options?: RequestInit) => {
 	if (url.includes("?")) url += "&format=json";
@@ -52,8 +48,7 @@ export const getPartContent = async (id: string): Promise<String> => {
 	console.log(id);
 	const res = await jembed(`/${id}/data.xhtml`);
 	if (res.ok) {
-		const data = await res.text();
-		return data;
+		return await res.text();
 	}
 
 	notificationStore.set({

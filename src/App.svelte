@@ -1,19 +1,16 @@
 <script lang="ts">
-	import Reader from "./assets/Reader/Reader.svelte";
-
 	import { token, username } from "./lib/stores/accountStore";
 	import LoginPage from "./assets/Account/Login/LoginPage.svelte";
-	import { Route, Router } from "svelte-navigator";
 	import { jfetch } from "./lib/jnovel";
-	import { onMount } from "svelte";
 	import Home from "./assets/MainPage.svelte";
 	import NotificationsContainer from "./assets/Notifications/NotificationsContainer.svelte";
 	import notificationStore from "./lib/stores/notificationStore";
+	import type { MeResult } from "./lib/RequestResponses/Me";
 
 	const fetchUserData = async () => {
 		const res = await jfetch("/me");
 		if (res.ok) {
-			username.set((await res.json()).username);
+			username.set((await res.json() as MeResult).username);
 			return;
 		}
 
@@ -24,7 +21,7 @@
 	};
 
 	$: if ($token && $username === "") {
-		fetchUserData();
+		void fetchUserData();
 	}
 
 </script>

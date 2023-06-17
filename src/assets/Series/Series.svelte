@@ -17,7 +17,7 @@
 	let:itemsPerPage={itemsPerPage}
 	let:rowCount={rowCount}
 	let:columnCount={columnCount}
-	class="series-container"
+	className="series-container"
 >
 	<SeriesContainer
 		{itemsPerPage}
@@ -31,7 +31,7 @@
 
 
 <style>
-	.series-container {
+	:global(.series-container) {
 		width: 100%;
 		height: calc(95% + 20px);
 		display: flex;

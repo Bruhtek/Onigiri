@@ -23,9 +23,9 @@
 	class="releases-container"
 	use:handleSwipe on:swipeLeft={prevPage} on:swipeRight={nextPage}
 >
-	{#each Array.from({ length: rowCount }) as _, i}
+	{#each { length: rowCount } as _, i}
 		<div class="serie-row">
-			{#each Array.from({ length: columnCount }) as _, j}
+			{#each { length: columnCount } as _, j}
 				{#if $series[$seriesPage * itemsPerPage + i * columnCount + j]}
 					<SerieItem
 						serie={$series[$seriesPage * itemsPerPage + i * columnCount + j]}

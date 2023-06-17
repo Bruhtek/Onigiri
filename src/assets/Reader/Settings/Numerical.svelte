@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { readerSettings } from "../../../lib/stores/settingsStore";
-	import { PlusIcon, MinusIcon } from "svelte-feather-icons";
+	import { MinusIcon, PlusIcon } from "svelte-feather-icons";
 
 	export let settingName: string;
 
@@ -28,12 +28,12 @@
 		});
 	};
 
-	const reset = () => {
-		readerSettings.update((settings) => {
-			settings[settingName] = parseInt(defaultValue.toString());
-			return settings;
-		});
-	};
+	// const reset = () => {
+	// 	readerSettings.update((settings) => {
+	// 		settings[settingName] = parseInt(defaultValue.toString());
+	// 		return settings;
+	// 	});
+	// };
 </script>
 
 <div class="container">

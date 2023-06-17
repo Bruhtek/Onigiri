@@ -9,7 +9,7 @@
 
 	const params = useParams();
 
-	export let raw: string = "";
+	export let raw = "";
 
 	const columnGap = 40;
 
@@ -83,14 +83,12 @@
 		setPartProgress($params.id, partProgress)
 	}
 
-	const snapScroll = (floor: boolean = false) => {
+	const snapScroll = (floor = false) => {
 		const scrollLeft = contentDiv.scrollLeft;
 
 		let nearestPage = Math.round(scrollLeft / (pageWidth + columnGap));
 		if(floor) nearestPage = Math.floor(scrollLeft / (pageWidth + columnGap));
-		const nearestPageLeft = nearestPage * (pageWidth + columnGap);
-
-		contentDiv.scrollLeft = nearestPageLeft;
+		contentDiv.scrollLeft = nearestPage * (pageWidth + columnGap);
 	}
 
 	const onpageclick = el => {
@@ -177,7 +175,6 @@
 		height: calc(100% - 1.5rem);
 		overflow: auto;
 		column-fill: auto;
-		column-gap: 0;
 		width: var(--page-width);
 		column-width: var(--page-width);
 		column-gap: var(--column-gap);

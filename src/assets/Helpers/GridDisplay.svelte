@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { viewSettings } from "../../lib/stores/settingsStore";
 
+	export let className: string = "";
+
 	$: minColumnWidth = $viewSettings.columnSize;
 
 	const columnAspectRatio = 2 / 3;
@@ -17,8 +19,12 @@
 	let itemHeight: number = 0;
 
 	$: if (container) {
-		availableWidth = container.clientWidth;
-		availableHeight = container.clientHeight;
+		calculate();
+	}
+
+	const calculate = () => {
+		availableWidth = container?.clientWidth;
+		availableHeight = container?.clientHeight;
 
 		columnCount = Math.floor(availableWidth / (minColumnWidth + gap));
 
@@ -27,8 +33,8 @@
 		rowCount = Math.floor(availableHeight / (itemHeight + gap));
 
 		itemsPerPage = columnCount * rowCount;
-	}
 
+	}
 
 	$: cssVars = [
 		{ name: "--item-height", value: `${itemHeight}px` },
@@ -36,9 +42,23 @@
 		{ name: "--gap", value: `${gap}px` },
 	].map(({ name, value }) => `${name}: ${value}`).join(";");
 
+
+	const resizeObserver = el => {
+		const resizeObserver = new ResizeObserver(entries => {
+			calculate();
+		});
+
+		resizeObserver.observe(el);
+
+		return {
+			destroy: () => {
+				resizeObserver.disconnect();
+			}
+		}
+	}
 </script>
 
-<div class="container" style={cssVars} bind:this={container}>
+<div class={className} style={cssVars} use:resizeObserver bind:this={container}>
 	<slot
 		itemsPerPage={itemsPerPage}
 		rowCount={rowCount}

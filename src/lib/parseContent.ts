@@ -7,10 +7,10 @@ export function parseContent(content: string): string {
 	return result;
 }
 
-function removeImageSrc(content: string): string {
-	const imageSrc = /(<img.*?src=")(.*?)(")/g;
-	return content.replace(imageSrc, "$1#$3 alt='image'");
-}
+// function removeImageSrc(content: string): string {
+// 	const imageSrc = /(<img.*?src=")(.*?)(")/g;
+// 	return content.replace(imageSrc, "$1#$3 alt='image'");
+// }
 
 function getOnlyBodyTag(content: string): string {
 	const bodyTag = /<body>(.*)<\/body>/s;

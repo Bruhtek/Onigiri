@@ -2,9 +2,9 @@
 	import { token } from "../../../lib/stores/accountStore";
 
 	import { jfetch } from "../../../lib/jnovel";
-	import { onMount } from "svelte";
 	import { useNavigate } from "svelte-navigator";
 	import notificationStore from "../../../lib/stores/notificationStore";
+	import type { Otp4appCheck, Otp4appGenerate } from "../../../lib/RequestResponses/Auth";
 
 	const navigate = useNavigate();
 
@@ -20,7 +20,7 @@
 		inProgress = true;
 		const res = await jfetch("/auth/otp4app/generate");
 		if (res.ok) {
-			const data = await res.json();
+			const data = (await res.json()) as Otp4appGenerate;
 			otp = data.otp;
 			proof = data.proof;
 		} else {
@@ -39,7 +39,7 @@
 		console.log(res);
 
 		if (res.status === 200 || res.status === 201) {
-			const data = await res.json();
+			const data: Otp4appCheck = await res.json() as Otp4appCheck;
 			navigate("/");
 			token.set(data.id);
 		} else {

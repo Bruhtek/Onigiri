@@ -4,7 +4,7 @@
 	import SettingsModal from "../ViewSettings/SettingsModal.svelte";
 	import { get } from "svelte/store";
 
-	export let page: number = 0;
+	export let page = 0;
 	export let nextPage: () => void;
 	export let prevPage: () => void;
 	const toggleSettings = () => {

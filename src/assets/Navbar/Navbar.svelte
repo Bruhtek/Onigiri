@@ -1,45 +1,29 @@
 <script lang="ts">
-	import { Maximize2Icon, Minimize2Icon, ArrowLeftIcon, ArrowRightIcon } from "svelte-feather-icons";
-	import { onMount } from "svelte";
-	import { Link, useLocation, useNavigate } from "svelte-navigator";
+	import { ArrowLeftIcon, ArrowRightIcon } from "svelte-feather-icons";
+	import { useLocation, useNavigate } from "svelte-navigator";
 	import NavLink from "./NavLink.svelte";
 
 	const location = useLocation();
 	const navigation = useNavigate();
 	$: current = $location.pathname;
 
-	let maximized = window.document.fullscreenElement !== null;
-
-	const toggleFullscreen = () => {
-		if (window.document.fullscreenElement !== null) {
-			window.document.exitFullscreen();
-		} else {
-			window.document.documentElement.requestFullscreen();
-		}
-	};
-
-	const goback = () => {
+	const goBack = () => {
 		navigation(-1);
 	};
-	const goforward = () => {
+	const goForward = () => {
 		navigation(1);
 	};
 
-	onMount(() => {
-		window.document.addEventListener("fullscreenchange", () => {
-			maximized = window.document.fullscreenElement !== null;
-		});
-	});
 </script>
 
 <div class="navbar">
-	<NavLink currentUrl={current} to="/">Releases</NavLink>
-	<NavLink currentUrl={current} to="/series">Series</NavLink>
-	<NavLink currentUrl={current} to="/settings">Settings</NavLink>
-	<div class="navbar-icon back" on:click={goback}>
+	<NavLink currentUrl={current} to="/" replace={false}>Releases</NavLink>
+	<NavLink currentUrl={current} to="/series" replace={false}>Series</NavLink>
+	<NavLink currentUrl={current} to="/settings" replace={false}>Settings</NavLink>
+	<div class="navbar-icon back" on:click={goBack}>
 		<ArrowLeftIcon size="2x" />
 	</div>
-	<div class="navbar-icon forward" on:click={goforward}>
+	<div class="navbar-icon forward" on:click={goForward}>
 		<ArrowRightIcon size="2x" />
 	</div>
 </div>

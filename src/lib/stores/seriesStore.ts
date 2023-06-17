@@ -36,14 +36,14 @@ export const getMoreSeries = async (count: number = 40) => {
 		lastSeriesPage.set(data.pagination.lastPage);
 
 		series.update((oldSeries) => {
-			// let result = [...oldSeries];
-			// for (const serie of newSeries) {
-			// 	if (!result.find((s) => s.id === serie.id)) {
-			// 		result.push(serie);
-			// 	}
-			// }
-			// return result;
-			return [...oldSeries, ...newSeries];
+			let result = [...oldSeries];
+			for (const serie of newSeries) {
+				if (!result.find((s) => s.id === serie.id)) {
+					result.push(serie);
+				}
+			}
+			return result;
+			// return [...oldSeries, ...newSeries];
 		});
 		return;
 	}

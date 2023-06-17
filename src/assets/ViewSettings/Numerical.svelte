@@ -28,12 +28,12 @@
 		});
 	};
 
-	const reset = () => {
-		viewSettings.update((settings) => {
-			settings[settingName] = parseInt(defaultValue.toString());
-			return settings;
-		});
-	};
+	// const reset = () => {
+	// 	viewSettings.update((settings) => {
+	// 		settings[settingName] = parseInt(defaultValue.toString());
+	// 		return settings;
+	// 	});
+	// };
 </script>
 
 <div class="container">

@@ -2,8 +2,6 @@
 	import EmailLogin from "./EmailLogin.svelte";
 	import CodeLogin from "./CodeLogin.svelte";
 	import { Link, Route, Router } from "svelte-navigator";
-
-	let loginType: "email" | "code" | null = null;
 </script>
 
 <div class="login-page">

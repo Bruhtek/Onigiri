@@ -2,6 +2,7 @@
 	import { token } from "../../../lib/stores/accountStore";
 	import { useNavigate } from "svelte-navigator";
 	import { jfetch } from "../../../lib/jnovel";
+	import type { Login } from "../../../lib/RequestResponses/Auth";
 
 	const navigate = useNavigate();
 
@@ -33,14 +34,14 @@
 					errorMessage = "Login failed: Too many login attempts. Try again later";
 					break;
 				default:
-					errorMessage = "Login failed: Status code " + res.status + " " + res.statusText;
+					errorMessage = `Login failed: Status code ${res.status} ${res.statusText}`;
 					break;
 			}
 			loginInProgress = false;
 			return;
 		}
 
-		const data = await res.json();
+		const data = await res.json() as Login;
 		loginInProgress = false;
 		navigate("/", { replace: true });
 		token.set(data.id);
