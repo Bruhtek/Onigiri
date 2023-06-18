@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Volume } from "../../../lib/types/Volume";
-	import type { VolumePart } from "../../../lib/types/VolumePart";
+	import type { Volume } from "../../../../lib/types/Volume";
+	import type { VolumePart } from "../../../../lib/types/VolumePart";
 	import { link } from "svelte-navigator";
 
 	export let volume: Volume;

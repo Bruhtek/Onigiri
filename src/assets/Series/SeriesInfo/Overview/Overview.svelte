@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SeriesAggregate } from "../../../lib/types/Series";
+	import type { SeriesAggregate } from "../../../../lib/types/Series";
 	import OverviewTop from "./OverviewTop.svelte";
 
 	export let data: SeriesAggregate;

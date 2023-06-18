@@ -2,10 +2,10 @@
 	import { getSeriesAggregateById, seriesAggregate, volumesPage } from "../../../lib/stores/seriesStore";
 	import { onMount } from "svelte";
 	import { Route } from "svelte-navigator";
-	import Volumes from "./VolumesList.svelte";
-	import VolumesList from "./VolumesList.svelte";
+	import Volumes from "./Volumes/VolumesList.svelte";
+	import VolumesList from "./Volumes/VolumesList.svelte";
 	import Navbar from "../../Navbar/Navbar.svelte";
-	import Overview from "./Overview.svelte";
+	import Overview from "./Overview/Overview.svelte";
 	import { get } from "svelte/store";
 
 	export let seriesId: string = "";

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { SeriesAggregate } from "../../../lib/types/Series";
-	import { getSeriesAuthor } from "../../../lib/types/Series";
-	import toProperCase from "../../../lib/utils/toProperCase";
+	import type { SeriesAggregate } from "../../../../lib/types/Series";
+	import { getSeriesAuthor } from "../../../../lib/types/Series";
+	import toProperCase from "../../../../lib/utils/toProperCase";
 
 	export let data: SeriesAggregate;
 </script>

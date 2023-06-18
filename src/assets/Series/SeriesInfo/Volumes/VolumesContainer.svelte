@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { handleSwipe } from "../../Helpers/SwipeHandler";
-	import type { SeriesAggregate } from "../../../lib/types/Series";
-	import { volumesPage } from "../../../lib/stores/seriesStore.js";
+	import { handleSwipe } from "../../../Helpers/SwipeHandler";
+	import type { SeriesAggregate } from "../../../../lib/types/Series";
+	import { volumesPage } from "../../../../lib/stores/seriesStore.js";
 	import VolumeInfo from "./VolumeInfo.svelte";
 
 
