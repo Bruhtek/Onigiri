@@ -24,6 +24,7 @@
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
+		padding: 1rem;
 	}
 	.bottom {
 		margin-top: 0.5rem;

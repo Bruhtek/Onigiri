@@ -16,6 +16,9 @@ export const lastSeriesPage = writable<boolean>(false);
 
 export const seriesAggregate = writable<SeriesAggregate | null>(null);
 
+export const gridItemsPerPage = writable<number>(0);
+export const listItemsPerPage = writable<number>(0);
+
 export const getMoreSeries = async (count: number = 40) => {
 	if (get(lastSeriesPage)) {
 		return;

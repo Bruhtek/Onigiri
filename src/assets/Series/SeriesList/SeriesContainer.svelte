@@ -2,6 +2,7 @@
 	import SerieItem from "./SerieItem.svelte";
 	import { handleSwipe } from "../../Helpers/SwipeHandler";
 	import { getMoreSeries, series, seriesPage } from "../../../lib/stores/seriesStore";
+	import { onMount } from "svelte";
 
 	export let itemsPerPage = 0;
 	export let rowCount = 0;
@@ -9,13 +10,11 @@
 	export let prevPage = () => {};
 	export let nextPage = () => {};
 
-	$: {
-		// plus 2 -> one for the current page, one for the next page
-		if (($seriesPage + 2) * itemsPerPage >= $series.length) {
-			let remaining = $series.length - ($seriesPage + 2) * itemsPerPage;
-			getMoreSeries(Math.max(remaining, itemsPerPage));
+	onMount(() => {
+		if ($series.length === 0) {
+			getMoreSeries(10000);
 		}
-	}
+	});
 </script>
 
 

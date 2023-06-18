@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { viewSettings } from "../../lib/stores/settingsStore";
+	import { listItemsPerPage } from "../../lib/stores/seriesStore";
 
 	$: minRowHeight = $viewSettings.rowHeight;
 
@@ -22,6 +23,7 @@
 		rowCount = Math.floor(availableHeight / (minRowHeight + gap));
 		itemHeight = Math.floor(availableHeight / rowCount);
 		itemsPerPage = rowCount;
+		listItemsPerPage.set(itemsPerPage);
 	}
 
 	$: cssVars = [

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { viewSettings } from "../../lib/stores/settingsStore";
+	import { gridItemsPerPage as ipp } from "../../lib/stores/seriesStore";
 
 	$: minColumnWidth = $viewSettings.columnSize;
 
@@ -31,7 +32,7 @@
 		rowCount = Math.floor(availableHeight / (itemHeight + gap));
 
 		itemsPerPage = columnCount * rowCount;
-
+		ipp.set(itemsPerPage);
 	}
 
 	$: cssVars = [

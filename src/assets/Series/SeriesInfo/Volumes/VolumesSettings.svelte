@@ -3,6 +3,7 @@
 	import VolumesSettingsModal from "./VolumesSettingsModal.svelte";
 
 	export let page: number = 0;
+	export let pageCount: number = 0;
 	export let nextPage: () => void;
 	export let prevPage: () => void;
 	const toggleSettings = () => {
@@ -22,7 +23,7 @@
 		<div class="icon-button" on:click={toggleSettings}>
 			<SettingsIcon />
 		</div>
-		<p>Page {page + 1}</p>
+		<p>Page {page + 1}/{pageCount}</p>
 		<div></div>
 		<div class="icon-button" on:click={nextPage}>
 			<ArrowRightIcon />

@@ -52,7 +52,7 @@
 		width: 100%;
 	}
 	.content {
-		padding: 1rem;
+		padding: 0;
 		width: 100%;
 		height: calc(100% - 50px);
 		box-sizing: border-box;

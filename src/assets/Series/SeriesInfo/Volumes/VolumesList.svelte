@@ -1,13 +1,16 @@
 <script lang="ts">
 	import type { SeriesAggregate } from "../../../../lib/types/Series";
 	import ListDisplay from "../../../Helpers/ListDisplay.svelte";
-	import { volumesPage } from "../../../../lib/stores/seriesStore";
+	import { listItemsPerPage, volumesPage } from "../../../../lib/stores/seriesStore";
 	import VolumesContainer from "./VolumesContainer.svelte";
 	import VolumesSettings from "./VolumesSettings.svelte";
 
 	export let data: SeriesAggregate;
+
+	$: pageCount = Math.ceil(data?.volumes?.length / $listItemsPerPage);
+
 	const nextPage = () => {
-		volumesPage.update((p) => p + 1);
+		volumesPage.update((p) => Math.min(p + 1, pageCount - 1));
 	};
 	const prevPage = () => {
 		volumesPage.update((p) => Math.max(p - 1, 0));
@@ -26,4 +29,4 @@
 		{prevPage}
 	/>
 </ListDisplay>
-<VolumesSettings {nextPage} page={$volumesPage} {prevPage} />
+<VolumesSettings {pageCount} {nextPage} page={$volumesPage} {prevPage} />

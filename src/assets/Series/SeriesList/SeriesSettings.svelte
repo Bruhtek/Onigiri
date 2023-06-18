@@ -11,6 +11,7 @@
 	import { get } from "svelte/store";
 
 	export let page: number = 0;
+	export let pageCount: number = 0;
 	export let nextPage: () => void;
 	export let prevPage: () => void;
 	const toggleSettings = () => {
@@ -45,7 +46,7 @@
 		<div class="icon-button" on:click={toggleSettings}>
 			<SettingsIcon />
 		</div>
-		<p>Page {page + 1}</p>
+		<p>Page {page + 1}/{pageCount}</p>
 		<div class="group">
 			<div class="icon-button" on:click={toggleOnlyFollowed}>
 				<StarIcon class={$onlyFollowedSeries ? "filled" : ""} />
