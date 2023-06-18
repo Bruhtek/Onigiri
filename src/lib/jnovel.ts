@@ -51,6 +51,13 @@ export const getPartContent = async (id: string): Promise<String> => {
 		return await res.text();
 	}
 
+	if (res.status === 410) {
+		return "This part has expired. Please purchase the book or rent the part to continue reading.";
+	}
+	if (res.status === 400) {
+		return "This part is not available. Are you sure you aren't trying to read a manga?";
+	}
+
 	notificationStore.set({
 		type: "error",
 		message:
