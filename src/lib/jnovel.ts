@@ -2,28 +2,18 @@ import { get } from "svelte/store";
 import { token as tokenStore } from "./stores/accountStore";
 import notificationStore from "./stores/notificationStore";
 
-// const jnovelURL = "https://labs.j-novel.club";
-
-const dev = process.env.NODE_ENV === "development";
-if (dev)
-	console.log(
-		"Running in development mode. Requests will be proxied through https://cors.bruhtek.com/",
-	);
-
-const jnovelURL = dev
-	? "https://cors.bruhtek.com/https://labs.j-novel.club"
-	: "https://labs.j-novel.club";
+const jnovelURL = "https://labs.j-novel.club";
 
 const apiURL = "/app/v1";
 const embedURL = "/embed";
 
-export const jfetch = (url: string, options?: RequestInit) => {
+export const jfetch = async (url: string, options?: RequestInit) => {
 	if (url.includes("?")) url += "&format=json";
 	else url += "?format=json";
 
 	const token = get(tokenStore);
 
-	return fetch(`${jnovelURL}${apiURL}${url}`, {
+	const res = await fetch(`${jnovelURL}${apiURL}${url}`, {
 		...options,
 		headers: {
 			Authorization: `Bearer ${token}`,
@@ -31,6 +21,18 @@ export const jfetch = (url: string, options?: RequestInit) => {
 			...options?.headers,
 		},
 	});
+
+	if (res.status === 410) {
+		// login expired
+		notificationStore.set({
+			type: "error",
+			message: "Your login has expired. Please log in again.",
+		});
+		tokenStore.set("");
+		return;
+	}
+
+	return res;
 };
 
 export const jembed = (url: string) => {
