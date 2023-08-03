@@ -46,7 +46,7 @@ export const jembed = (url: string) => {
 	});
 };
 
-export const getPartContent = async (id: string): Promise<String> => {
+export const getPartContent = async (id: string): Promise<string> => {
 	console.log(id);
 	const res = await jembed(`/${id}/data.xhtml`);
 	if (res.ok) {
