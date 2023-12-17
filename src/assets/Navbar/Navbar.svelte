@@ -6,7 +6,7 @@
 	const navigation = useNavigate();
 	$: current = $location.pathname;
 
-	export let items: Map<string, string> = new Map();
+	export let items: { [key: string]: string } = {};
 	export let backUrl: string | null = "";
 	export let forwardUrl: string | null = "";
 
@@ -32,12 +32,12 @@
 		<Link class="link" to={key} replace={false}>{items[key]}</Link>
 	{/each}
 	{#if backUrl !== null}
-		<div class="navbar-icon back" on:click={goBack}>
+		<div class="navbar-icon back" on:click={goBack} on:keydown={goBack}>
 			<ArrowLeftIcon size="2x" />
 		</div>
 	{/if}
 	{#if forwardUrl !== null}
-		<div class="navbar-icon forward" on:click={goForward}>
+		<div class="navbar-icon forward" on:click={goForward} on:keydown={goForward}>
 			<ArrowRightIcon size="2x" />
 		</div>
 	{/if}
