@@ -6,18 +6,18 @@
 
 <div class="login-page">
 	<Router>
-		<Route path="/">
-			<div class="login-home">
-				<h2>Login to J-Novel Club to start using the reader!</h2>
-				<Link to="/email">Login with Email</Link>
-				<Link to="/code">Login with Code</Link>
-			</div>
-		</Route>
 		<Route path="/email">
 			<EmailLogin />
 		</Route>
 		<Route path="/code">
 			<CodeLogin />
+		</Route>
+		<Route>
+			<div class="login-home">
+				<h2>Login to J-Novel Club to start using the reader!</h2>
+				<Link to="/email">Login with Email</Link>
+				<Link to="/code">Login with Code</Link>
+			</div>
 		</Route>
 	</Router>
 </div>
