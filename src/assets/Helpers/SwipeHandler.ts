@@ -38,15 +38,17 @@ export const handleSwipe = (el: HTMLElement) => {
 	el.addEventListener("touchmove", handleTouchMove);
 	el.addEventListener("touchend", handleTouchEnd);
 
-	return () => {
-		el.removeEventListener("scroll", (e) => {
-			e.preventDefault();
-		});
-		el.removeEventListener("scrollend", (e) => {
-			e.preventDefault();
-		});
-		el.removeEventListener("touchstart", handleTouchStart);
-		el.removeEventListener("touchmove", handleTouchMove);
-		el.removeEventListener("touchend", handleTouchEnd);
+	return {
+		destroy: () => {
+			el.removeEventListener("scroll", (e) => {
+				e.preventDefault();
+			});
+			el.removeEventListener("scrollend", (e) => {
+				e.preventDefault();
+			});
+			el.removeEventListener("touchstart", handleTouchStart);
+			el.removeEventListener("touchmove", handleTouchMove);
+			el.removeEventListener("touchend", handleTouchEnd);
+		}
 	}
 }
