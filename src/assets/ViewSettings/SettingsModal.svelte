@@ -17,6 +17,9 @@
 	<Checkbox settingName="highCoverQuality">
 		High Quality Cover
 	</Checkbox>
+	<Checkbox settingName="hideMangas">
+		Hide Mangas
+	</Checkbox>
 </div>
 
 <style>

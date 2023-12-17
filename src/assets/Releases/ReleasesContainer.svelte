@@ -2,6 +2,7 @@
 	import { getMoreReleases, releases, releasesPage } from "../../lib/stores/releasesStore";
 	import ReleaseItem from "./ReleaseItem.svelte";
 	import { handleSwipe } from "../Helpers/SwipeHandler";
+	import { viewSettings } from "../../lib/stores/settingsStore";
 
 	export let itemsPerPage = 0;
 	export let rowCount = 0;
@@ -9,10 +10,18 @@
 	export let prevPage = () => {};
 	export let nextPage = () => {};
 
+	$: actualReleases = $releases;
+
+	$: if($viewSettings.hideMangas) {
+		actualReleases = actualReleases.filter(release => !release.isManga);
+	} else {
+		actualReleases = $releases;
+	}
+
 	$: {
 		// plus 2 -> one for the current page, one for the next page
-		if (($releasesPage + 2) * itemsPerPage >= $releases.length) {
-			let remaining = $releases.length - ($releasesPage + 2) * itemsPerPage;
+		if (($releasesPage + 2) * itemsPerPage >= actualReleases.length) {
+			let remaining = actualReleases.length - ($releasesPage + 2) * itemsPerPage;
 			console.log("getting more releases", Math.max(remaining, itemsPerPage));
 			getMoreReleases(Math.max(remaining, itemsPerPage));
 		}
@@ -27,9 +36,9 @@
 	{#each { length: rowCount } as _, i}
 		<div class="release-row">
 			{#each { length: columnCount } as _, j}
-				{#if $releases[$releasesPage * itemsPerPage + i * columnCount + j]}
+				{#if actualReleases[$releasesPage * itemsPerPage + i * columnCount + j]}
 					<ReleaseItem
-						release={$releases[$releasesPage * itemsPerPage + i * columnCount + j]}
+						release={actualReleases[$releasesPage * itemsPerPage + i * columnCount + j]}
 					/>
 				{/if}
 			{/each}

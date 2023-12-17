@@ -5,6 +5,7 @@ type ViewSettings = {
 	highCoverQuality: boolean;
 	columnCount: number;
 	rowHeight: number;
+	hideMangas: boolean;
 };
 
 export const viewSettings = cookieWritable<ViewSettings>("viewSettings", {
@@ -12,6 +13,7 @@ export const viewSettings = cookieWritable<ViewSettings>("viewSettings", {
 	highCoverQuality: false,
 	columnCount: 5,
 	rowHeight: 200,
+	hideMangas: false,
 });
 
 type ReaderSettings = {

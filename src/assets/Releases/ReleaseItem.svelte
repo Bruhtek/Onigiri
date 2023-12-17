@@ -11,7 +11,11 @@
 </script>
 
 <a href="/reader/{release.id}/{release.progress}" style={cssVars} use:link>
-	<div class="release">
+	<div
+		class="release"
+		class:release-manga={release.isManga}
+		class:release-expired={release.expired}
+	>
 		<img
 			alt="Cover"
 			class="cover"
@@ -56,7 +60,36 @@
 		position: relative;
 		z-index: 1;
 		border-radius: 15px;
+		overflow: hidden;
 	}
+
+	.release-manga:not(.release-expired)::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #ffffff;
+		opacity: 0.4;
+		z-index: 1000;
+	}
+
+	.release-expired {
+		opacity: 0.7;
+	}
+	.release-expired::before {
+		content: 'Expired';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 1.5rem;
+		text-shadow: 2px 2px 0 white , -2px -2px 0 white , 2px -2px 0 white , -2px 2px 0 white , 0 2px 0 white , 2px 0 0 white , 0 -2px 0 white , -2px 0 0 white;
+		z-index: 1001;
+		background-color: rgba(0,0,0,0);
+	}
+
 
 	.release img {
 		height: 100%;

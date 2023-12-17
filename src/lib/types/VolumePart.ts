@@ -5,13 +5,18 @@ export type VolumePart = {
 	partNumber: number;
 	volumeNumber?: number;
 	launchDate: Date;
+	expired?: boolean;
 	expirationDate?: Date;
 	coverURL: string;
 	thumbnailURL: string;
 	progress: number;
+	isManga: boolean;
 };
 
 export const jsonToVolumePart = (json: any): VolumePart => {
+	const isManga = json.totalMangaPages || (json.cover && json.cover.coverURL && json.cover.coverURL.includes("Manga"));
+	const expired = json.expiration && new Date(json.expiration) < new Date();
+
 	return {
 		id: json.legacyId,
 		title: json.title,
@@ -27,6 +32,8 @@ export const jsonToVolumePart = (json: any): VolumePart => {
 			? json.cover.thumbnailUrl
 			: "https://placehold.co/200x300",
 		progress: json.progress,
+		isManga: isManga,
+		expired: expired,
 	};
 };
 
