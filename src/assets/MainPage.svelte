@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import Navbar from "./Navbar/Navbar.svelte";
 	import { Route, Router } from "svelte-navigator";
 	import Releases from "./Releases/Releases.svelte";
@@ -21,7 +20,7 @@
 			<ReaderView partId={params.id} />
 		</Route>
 		<Route path=":id/:progress" let:params>
-			<ReaderView partId={params.id} progress={params.progress} />
+			<ReaderView partId={params.id} externalProgress={params.progress} />
 		</Route>
 	</Route>
 	<Route path="series/:seriesId/*" let:params>

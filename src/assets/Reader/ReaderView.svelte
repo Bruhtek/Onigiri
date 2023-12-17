@@ -3,7 +3,8 @@
 	import Reader from "./Reader.svelte";
 
 	export let partId: string;
-	export let progress: number = 0;
+	export let externalProgress: string = "0";
+	let progress: number = parseInt(externalProgress) || 0;
 
 	let rawData: string = null;
 	let inProgress = false;

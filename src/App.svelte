@@ -33,7 +33,3 @@
 	<NotificationsContainer />
 	<LoginPage />
 {/if}
-
-<style>
-
-</style>
