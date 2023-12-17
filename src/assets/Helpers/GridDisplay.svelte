@@ -2,10 +2,10 @@
 	import { viewSettings } from "../../lib/stores/settingsStore";
 	import { gridItemsPerPage as ipp } from "../../lib/stores/seriesStore";
 
-	$: minColumnWidth = $viewSettings.columnSize;
+	$: columnCount = $viewSettings.columnCount;
 
 	const columnAspectRatio = 2 / 3;
-	$: gap = $viewSettings.gap;
+	const gap = 10;
 
 	let container: HTMLDivElement = null;
 
@@ -14,18 +14,15 @@
 
 	let itemsPerPage: number = 0;
 	let rowCount = 0;
-	let columnCount = 0;
 	let itemHeight: number = 0;
 
-	$: if (container) {
+	$: if (container && columnCount) {
 		calculate();
 	}
 
 	const calculate = () => {
 		availableWidth = container?.clientWidth;
 		availableHeight = container?.clientHeight;
-
-		columnCount = Math.floor(availableWidth / (minColumnWidth + gap));
 
 		const columnWidth = (availableWidth - (columnCount - 1) * gap) / columnCount;
 		itemHeight = columnWidth / columnAspectRatio;

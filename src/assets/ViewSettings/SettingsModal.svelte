@@ -8,14 +8,11 @@
 </script>
 
 <div class="settings-modal">
-	<div class="icon-button settings-toggle" on:click={toggleSettings}>
+	<div class="icon-button settings-toggle" on:click={toggleSettings} on:keydown>
 		<SettingsIcon />
 	</div>
-	<Numerical settingName="columnSize" step="10" min="80" max="300">
-		Min. Column Size
-	</Numerical>
-	<Numerical settingName="gap" step="1" min="0" max="40">
-		Gap
+	<Numerical settingName="columnCount" step="1" min={1} max={10}>
+		Column Count
 	</Numerical>
 	<Checkbox settingName="highCoverQuality">
 		High Quality Cover

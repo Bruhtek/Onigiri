@@ -4,14 +4,13 @@
 
 	$: minRowHeight = $viewSettings.rowHeight;
 
-	$: gap = $viewSettings.gap;
-
 	let container: HTMLDivElement = null;
 
 	let availableHeight: number = 0;
 
 	let itemsPerPage: number = 0;
 	let rowCount = 0;
+	const gap = 10;
 	let itemHeight: number = 0;
 
 	$: if (container && $viewSettings.rowHeight && minRowHeight) {
