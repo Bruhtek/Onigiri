@@ -2,11 +2,12 @@
 	import { ArrowLeftIcon, ArrowRightIcon, CalendarIcon, SettingsIcon, StarIcon } from "svelte-feather-icons";
 	import SettingsModal from "../../ViewSettings/SettingsModal.svelte";
 	import {
+		getMoreSeries,
 		lastSeriesPage,
 		onlyCatchupSeries,
 		onlyFollowedSeries,
 		series,
-		seriesPage
+		seriesPage,
 	} from "../../../lib/stores/seriesStore";
 	import { get } from "svelte/store";
 
@@ -15,7 +16,7 @@
 	export let nextPage: () => void;
 	export let prevPage: () => void;
 	const toggleSettings = () => {
-		settintsOpen = !settintsOpen;
+		settingsOpen = !settingsOpen;
 	}
 
 	const toggleOnlyFollowed = () => {
@@ -24,6 +25,7 @@
 		series.set([])
 		lastSeriesPage.set(false)
 		onlyFollowedSeries.set(!$onlyFollowedSeries)
+		getMoreSeries(10000);
 	}
 	const toggleOnlyCatchups = () => {
 		if(get(series).length === 0) return;
@@ -31,31 +33,32 @@
 		series.set([])
 		lastSeriesPage.set(false)
 		onlyCatchupSeries.set(!$onlyCatchupSeries)
+		getMoreSeries(10000);
 	}
 
-	let settintsOpen = false;
+	let settingsOpen = false;
 </script>
 
-{#if settintsOpen}
+{#if settingsOpen}
 	<SettingsModal {toggleSettings} />
 {:else}
 	<div class="page-control">
-		<div class="icon-button" on:click={prevPage}>
+		<div class="icon-button" on:click={prevPage} on:keydown={prevPage}>
 			<ArrowLeftIcon on:click={prevPage} />
 		</div>
-		<div class="icon-button" on:click={toggleSettings}>
+		<div class="icon-button" on:click={toggleSettings} on:keydown={toggleSettings}>
 			<SettingsIcon />
 		</div>
 		<p>Page {page + 1}/{pageCount}</p>
 		<div class="group">
-			<div class="icon-button" on:click={toggleOnlyFollowed}>
+			<div class="icon-button" on:click={toggleOnlyFollowed} on:keydown={toggleOnlyFollowed}>
 				<StarIcon class={$onlyFollowedSeries ? "filled" : ""} />
 			</div>
-			<div class="icon-button" on:click={toggleOnlyCatchups}>
+			<div class="icon-button" on:click={toggleOnlyCatchups} on:keydown={toggleOnlyCatchups}>
 				<CalendarIcon class={$onlyCatchupSeries ? "filled" : ""} />
 			</div>
 		</div>
-		<div class="icon-button" on:click={nextPage}>
+		<div class="icon-button" on:click={nextPage} on:keydown={nextPage}>
 			<ArrowRightIcon />
 		</div>
 	</div>
