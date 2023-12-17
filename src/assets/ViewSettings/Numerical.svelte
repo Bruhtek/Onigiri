@@ -7,9 +7,7 @@
 	export let min: number;
 	export let max: number;
 
-	export let step: number | string = 1;
-
-	export let defaultValue: number | string = 10;
+	export let step: number = 1;
 
 	const increase = () => {
 		viewSettings.update((settings) => {
@@ -27,17 +25,10 @@
 			return settings;
 		});
 	};
-
-	// const reset = () => {
-	// 	viewSettings.update((settings) => {
-	// 		settings[settingName] = parseInt(defaultValue.toString());
-	// 		return settings;
-	// 	});
-	// };
 </script>
 
 <div class="container">
-	<div class="minus" on:click={decrease}>
+	<div class="minus" on:click={decrease} on:keydown={decrease}>
 		<MinusIcon size="2x" />
 	</div>
 	<p>
@@ -45,7 +36,7 @@
 		:
 		{$viewSettings[settingName]}
 	</p>
-	<div class="plus" on:click={increase}>
+	<div class="plus" on:click={increase} on:keydown={increase}>
 		<PlusIcon size="2x" />
 	</div>
 </div>

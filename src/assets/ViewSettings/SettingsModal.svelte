@@ -8,10 +8,10 @@
 </script>
 
 <div class="settings-modal">
-	<div class="icon-button settings-toggle" on:click={toggleSettings} on:keydown>
+	<div class="icon-button settings-toggle" on:click={toggleSettings} on:keydown={toggleSettings}>
 		<SettingsIcon />
 	</div>
-	<Numerical settingName="columnCount" step="1" min={1} max={10}>
+	<Numerical settingName="columnCount" step={1} min={1} max={10}>
 		Column Count
 	</Numerical>
 	<Checkbox settingName="highCoverQuality">
