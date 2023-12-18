@@ -21,8 +21,8 @@
 			class="cover"
 			src="{$viewSettings.highCoverQuality ? release.coverURL : release.thumbnailURL}"
 		/>
-		<p class="title">
-			{release.title}
+		<p class="title-container">
+			<span class="title">{release.title}</span>
 		</p>
 		<p class="volume">
 			V.{release.volumeNumber} P.{release.partNumber}
@@ -63,19 +63,7 @@
 		overflow: hidden;
 	}
 
-	.release-manga:not(.release-expired)::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: #ffffff;
-		opacity: 0.4;
-		z-index: 1000;
-	}
-
-	.release-expired {
+	.release-manga, .release-expired {
 		opacity: 0.7;
 	}
 	.release-expired::before {
@@ -101,15 +89,12 @@
 		z-index: 2;
 		border-radius: 15px;
 		border: 2px solid black;
-
 	}
 
-	.release p.title {
+	.release p.title-container {
 		position: absolute;
 		bottom: 0;
 		z-index: 10;
-		background-color: rgba(255, 255, 255, 1);
-
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
@@ -118,19 +103,12 @@
 		border-bottom-right-radius: 15px;
 		text-align: center;
 		border: 2px solid black;
-		/*border-top: none;*/
 		width: 100%;
+		background: linear-gradient(90deg, rgba(0, 0, 0) 0%, rgb(0,0,0) var(--part-progress), rgb(255, 255, 255) var(--part-progress), rgb(255, 255, 255) 100%);
 	}
-
-	p.title::before {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: var(--part-progress);
-		height: 100%;
-		backdrop-filter: invert(1);
-		z-index: 5;
+	.title {
+		color: white;
+		mix-blend-mode: difference;
 	}
 
 </style>

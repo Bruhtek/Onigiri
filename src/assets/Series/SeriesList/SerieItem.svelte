@@ -52,7 +52,7 @@
 
 	}
 
-	.serie p.title {
+	.serie p.title-container {
 		position: absolute;
 		bottom: 0;
 		z-index: 10;

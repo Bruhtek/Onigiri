@@ -73,7 +73,7 @@
 		object-fit: contain;
 		border: 2px solid black;
 	}
-	.title {
+	.title-container {
 		display: block;
 		font-size: 1.3rem;
 		border-bottom: 2px solid black;
