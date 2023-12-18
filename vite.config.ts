@@ -1,8 +1,13 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import mkcert from "vite-plugin-mkcert";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+const devconfig = defineConfig({
+	server: {
+		https: true,
+		port: 443,
+	},
 	plugins: [
 		svelte({
 			onwarn: (warning, handler) => {
@@ -13,6 +18,16 @@ export default defineConfig({
 				handler(warning);
 			},
 		}),
+		mkcert({
+			hosts: ["localhost", "dev.j-novel.club"],
+		}),
 	],
-	optimizeDeps: { exclude: ["svelte-navigator"] },
 });
+
+const prodconfig = defineConfig({
+	plugins: [
+		svelte(),
+	]
+});
+
+export default process.env.DEPLOY === "true" ? prodconfig : devconfig;
