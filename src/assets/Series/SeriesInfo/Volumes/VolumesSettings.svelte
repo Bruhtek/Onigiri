@@ -54,9 +54,4 @@
 		background-color: #fff;
 		border: 3px solid #000;
 	}
-
-	.group {
-		display: flex;
-		gap: 1rem;
-	}
 </style>

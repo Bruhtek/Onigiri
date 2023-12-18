@@ -61,8 +61,4 @@
 		margin: 5px;
 		height: 50px;
 	}
-
-	.container input {
-		margin-left: 1rem;
-	}
 </style>

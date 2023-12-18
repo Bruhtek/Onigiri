@@ -46,8 +46,6 @@
 		display: flex;
 		gap: 1rem;
 		flex-grow: 1;
-
-		/*flex-shrink: 0;*/
 	}
 	.padding {
 		padding: 0.5rem;
@@ -65,20 +63,12 @@
 		flex-grow: 1;
 		display: flex;
 		flex-direction: column;
-		/*justify-content: space-between;*/
 	}
 	.top img {
 		height: 100%;
 		border-radius: 1rem;
 		object-fit: contain;
 		border: 2px solid black;
-	}
-	.title-container {
-		display: block;
-		font-size: 1.3rem;
-		border-bottom: 2px solid black;
-		margin-bottom: 5px;
-		padding-bottom: 5px;
 	}
 	.description {
 		display: none;

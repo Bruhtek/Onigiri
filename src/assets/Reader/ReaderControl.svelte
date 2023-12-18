@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { ArrowLeftIcon } from "svelte-feather-icons";
 	import { useNavigate } from "svelte-navigator";
-	import Checkbox from "./Settings/Checkbox.svelte";
-	import Numerical from "./Settings/Numerical.svelte";
+	import Checkbox from "../Settings/Generics/Checkbox.svelte";
+	import Numerical from "../Settings/Generics/Numerical.svelte";
 
 	const navigate = useNavigate();
 
@@ -18,16 +18,16 @@
 		<ArrowLeftIcon size="2x" />
 		<p class="text">Back</p>
 	</div>
-	<Checkbox settingName="justify">
+	<Checkbox storeType="reader" settingName="justify">
 		Justify Text
 	</Checkbox>
-	<Numerical settingName="fontSize" min="10" max="30" step="1">
+	<Numerical storeType="reader" settingName="fontSize" min={10} max={30} step={1}>
 		Font Size
 	</Numerical>
-	<Numerical settingName="marginVertical" min="0" max="30" step="1">
+	<Numerical storeType="reader" settingName="marginVertical" min={0} max={30} step={1}>
 		Vertical Margin
 	</Numerical>
-	<Numerical settingName="marginHorizontal" min="0" max="30" step="1">
+	<Numerical storeType="reader" settingName="marginHorizontal" min={0} max={30} step={1}>
 		Horizontal Margin
 	</Numerical>
 </div>
