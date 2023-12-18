@@ -1,24 +1,24 @@
 <script lang="ts">
 
 	import { SettingsIcon } from "svelte-feather-icons";
-	import Numerical from "../../../ViewSettings/Numerical.svelte";
-	import Checkbox from "../../../ViewSettings/Checkbox.svelte";
+	import Checkbox from "../../../Settings/Generics/Checkbox.svelte";
+	import Numerical from "../../../Settings/Generics/Numerical.svelte";
 
 
 	export let toggleSettings = () => {};
 </script>
 
 <div class="settings-modal">
-	<div class="icon-button settings-toggle" on:click={toggleSettings}>
+	<div class="icon-button settings-toggle" on:click={toggleSettings} on:keydown={toggleSettings}>
 		<SettingsIcon />
 	</div>
-	<Numerical settingName="rowHeight" step="10" min="150" max="300">
+	<Numerical storeType="view" settingName="rowHeight" step={10} min={150} max={300}>
 		Min. Row Height
 	</Numerical>
-	<Numerical settingName="gap" step="1" min="0" max="40">
+	<Numerical storeType="view" settingName="gap" step={1} min={0} max={40}>
 		Gap
 	</Numerical>
-	<Checkbox settingName="highCoverQuality">
+	<Checkbox storeType="view" settingName="highCoverQuality">
 		High Quality Cover
 	</Checkbox>
 </div>

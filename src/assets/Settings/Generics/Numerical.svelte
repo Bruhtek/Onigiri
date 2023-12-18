@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { readerSettings } from "../../../lib/stores/settingsStore";
 	import { MinusIcon, PlusIcon } from "svelte-feather-icons";
+	import { getStore, type Store, type StoreType } from "./Generic";
 
-	export let settingType: "reader" | "viewer";
-
+	export let storeType: StoreType;
 	export let settingName: string;
+
+	let store: Store;
+	$: store = getStore(storeType);
 
 	export let min: number;
 	export let max: number;
@@ -12,15 +14,15 @@
 	export let step: number = 1;
 
 	const increase = () => {
-		readerSettings.update((settings) => {
+		store.update((settings) => {
 			if (settings[settingName] < max) {
-				settings[settingName] = parseInt(settings[settingName]) + parseInt(step.toString());
+				settings[settingName] = parseInt(settings[settingName]) + step;
 			}
 			return settings;
 		});
 	};
 	const decrease = () => {
-		readerSettings.update((settings) => {
+		store.update((settings) => {
 			if (settings[settingName] > min) {
 				settings[settingName] -= step;
 			}
@@ -36,7 +38,7 @@
 	<p>
 		<slot />
 		:
-		{$readerSettings[settingName]}
+		{$store[settingName]}
 	</p>
 	<div class="plus" on:click={increase} on:keydown={increase}>
 		<PlusIcon size="2x" />

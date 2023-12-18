@@ -1,8 +1,8 @@
 <script lang="ts">
 
 	import { SettingsIcon } from "svelte-feather-icons";
-	import Numerical from "./Numerical.svelte";
-	import Checkbox from "./Checkbox.svelte";
+	import Checkbox from "../Settings/Generics/Checkbox.svelte";
+	import Numerical from "../Settings/Generics/Numerical.svelte";
 
 	export let toggleSettings = () => {};
 </script>
@@ -11,13 +11,13 @@
 	<div class="icon-button settings-toggle" on:click={toggleSettings} on:keydown={toggleSettings}>
 		<SettingsIcon />
 	</div>
-	<Numerical settingName="columnCount" step={1} min={1} max={10}>
+	<Numerical storeType="view" settingName="columnCount" step={1} min={1} max={10}>
 		Column Count
 	</Numerical>
-	<Checkbox settingName="highCoverQuality">
+	<Checkbox storeType="view" settingName="highCoverQuality">
 		High Quality Cover
 	</Checkbox>
-	<Checkbox settingName="hideMangas">
+	<Checkbox storeType="view" settingName="hideMangas">
 		Hide Mangas
 	</Checkbox>
 </div>
