@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Volume } from "../../../../lib/types/Volume";
 	import type { VolumePart } from "../../../../lib/types/VolumePart";
-	import { link } from "svelte-navigator";
+	import { link } from "svelte-routing";
 	import { viewSettings } from "../../../../lib/stores/settingsStore.js";
 
 	export let volume: Volume;

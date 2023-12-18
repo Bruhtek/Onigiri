@@ -1,15 +1,10 @@
 <script lang="ts">
 	import { ArrowLeftIcon } from "svelte-feather-icons";
-	import { useNavigate } from "svelte-navigator";
 	import Checkbox from "../Settings/Generics/Checkbox.svelte";
 	import Numerical from "../Settings/Generics/Numerical.svelte";
 
-	const navigate = useNavigate();
-
-
-
 	function goBack() {
-		navigate(-1);
+		history.back();
 	}
 </script>
 

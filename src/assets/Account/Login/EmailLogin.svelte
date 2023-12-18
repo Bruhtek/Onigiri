@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { token } from "../../../lib/stores/accountStore";
-	import { useNavigate } from "svelte-navigator";
+	import { navigate } from "svelte-routing";
 	import { jfetch } from "../../../lib/jnovel";
 	import type { Login } from "../../../lib/RequestResponses/Auth";
-
-	const navigate = useNavigate();
 
 	let errorMessage = "";
 

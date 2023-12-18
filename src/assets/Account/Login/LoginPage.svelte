@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EmailLogin from "./EmailLogin.svelte";
 	import CodeLogin from "./CodeLogin.svelte";
-	import { Link, Route, Router } from "svelte-navigator";
+	import { Link, Route, Router } from "svelte-routing";
 </script>
 
 <div class="login-page">

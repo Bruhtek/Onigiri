@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon } from "svelte-feather-icons";
-	import { Link, useLocation, useNavigate } from "svelte-navigator";
+	import { Link, useLocation, navigate } from "svelte-routing";
 
 	const location = useLocation();
-	const navigation = useNavigate();
 	$: current = $location.pathname;
 
 	export let items: { [key: string]: string } = {};
@@ -12,16 +11,16 @@
 
 	const goBack = () => {
 		if(backUrl === "") {
-			navigation(-1);
+			history.back();
 		} else {
-			navigation(backUrl);
+			navigate(backUrl, { replace: true });
 		}
 	};
 	const goForward = () => {
 		if(forwardUrl === "") {
-			navigation(1);
+			history.forward();
 		} else {
-			navigation(forwardUrl);
+			navigate(forwardUrl);
 		}
 	};
 

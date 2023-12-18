@@ -2,13 +2,12 @@
 	import { token } from "../../../lib/stores/accountStore";
 
 	import { jfetch } from "../../../lib/jnovel";
-	import { useNavigate } from "svelte-navigator";
+	import { navigate } from "svelte-routing";
 	import notificationStore from "../../../lib/stores/notificationStore";
 	import type { Otp4appCheck, Otp4appGenerate } from "../../../lib/RequestResponses/Auth";
 	import { onMount } from "svelte";
 	import { otp, otp_proof } from "../../../lib/stores/accountStore";
 
-	const navigate = useNavigate();
 	let inProgress = false;
 
 	let errorMessage = "";

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getSeriesAggregateById, seriesAggregate, volumesPage } from "../../../lib/stores/seriesStore";
 	import { onMount } from "svelte";
-	import { Route } from "svelte-navigator";
+	import { Route, Router } from "svelte-routing";
 	import Volumes from "./Volumes/VolumesList.svelte";
 	import VolumesList from "./Volumes/VolumesList.svelte";
 	import Navbar from "../../Navbar/Navbar.svelte";
@@ -24,22 +24,26 @@
 		volumesPage.set(0)
 	})
 
-	const navItems = {
-		"": "Overview",
-		"volumes": "Volumes",
-	}
+	const overviewUrl = `/series/${seriesId}`
+	const volumesUrl = `/series/${seriesId}/volumes`
+
+	const navItems: {[key: string]: string} = {}
+	navItems[overviewUrl] = "Overview"
+	navItems[volumesUrl] = "Volumes"
 </script>
 
 {#if $seriesAggregate}
 	<div class="container">
 		<Navbar items={navItems} forwardUrl={null} backUrl="/series" />
 		<div class="content">
-			<Route path="/">
-				<Overview data={$seriesAggregate} />
-			</Route>
-			<Route path="/volumes">
-				<VolumesList data={$seriesAggregate} />
-			</Route>
+			<Router>
+				<Route path="/">
+					<Overview data={$seriesAggregate} />
+				</Route>
+				<Route path="/volumes">
+					<VolumesList data={$seriesAggregate} />
+				</Route>
+			</Router>
 		</div>
 	</div>
 {:else}

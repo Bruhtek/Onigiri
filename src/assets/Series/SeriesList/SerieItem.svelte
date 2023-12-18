@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { link } from "svelte-navigator";
+	import { link } from "svelte-routing";
 	import { viewSettings } from "../../../lib/stores/settingsStore";
 	import type { Series } from "../../../lib/types/Series";
 

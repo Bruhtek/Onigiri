@@ -3,11 +3,10 @@
 	import BottomNavbar from "./BottomNavbar.svelte";
 	import ReaderControl from "./ReaderControl.svelte";
 	import { readerSettings } from "../../lib/stores/settingsStore";
-	import { useParams } from "svelte-navigator";
 	import { handleSwipe } from "../Helpers/SwipeHandler";
 	import { setPartProgress } from "../../lib/setPartProgress";
 
-	const params = useParams();
+	export let bookId: string;
 
 	export let raw = "";
 	export let progress: number = 0;
@@ -71,15 +70,17 @@
 
 	const updatePartProgress = () => {
 		if(contentDiv.scrollLeft === 0) {
-			setPartProgress($params.id, 0);
+			setPartProgress(bookId, 0);
 			return;
 		}
 		const scrollLeft = contentDiv.scrollLeft + pageWidth;
 		const scrollWidth = contentDiv.scrollWidth;
 		const partProgress = scrollLeft / scrollWidth;
 
-		setPartProgress($params.id, partProgress)
+		setPartProgress(bookId, partProgress)
 	}
+
+	$: bookId && progress && goToPartProgress();
 
 	const snapScroll = (floor = false) => {
 		const scrollLeft = contentDiv.scrollLeft;

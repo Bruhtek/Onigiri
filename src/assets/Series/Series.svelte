@@ -1,9 +1,7 @@
 <script lang="ts">
 
-	import { Route } from "svelte-navigator";
+	import { Route } from "svelte-routing";
 	import SeriesList from "./SeriesList/SeriesList.svelte";
 </script>
 
-<Route path="/">
-	<SeriesList />
-</Route>
+<SeriesList />

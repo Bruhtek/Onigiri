@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { VolumePart } from "../../lib/types/VolumePart.js";
-	import { link } from "svelte-navigator";
+	import { link } from "svelte-routing";
 	import { viewSettings } from "../../lib/stores/settingsStore";
 
 	export let release: VolumePart;
