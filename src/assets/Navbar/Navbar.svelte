@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon } from "svelte-feather-icons";
 	import { Link, useLocation, navigate } from "svelte-routing";
+	import * as repl from "repl";
 
 	const location = useLocation();
 	$: current = $location.pathname;
@@ -8,6 +9,7 @@
 	export let items: { [key: string]: string } = {};
 	export let backUrl: string | null = "";
 	export let forwardUrl: string | null = "";
+	export let replace: boolean = false;
 
 	const goBack = () => {
 		if(backUrl === "") {
@@ -28,7 +30,7 @@
 
 <div class="navbar">
 	{#each Object.keys(items) as key}
-		<Link class="link" to={key} replace={false}>{items[key]}</Link>
+		<Link class="link" to={key} replace={replace}>{items[key]}</Link>
 	{/each}
 	{#if backUrl !== null}
 		<div class="navbar-icon back" on:click={goBack} on:keydown={goBack}>

@@ -34,7 +34,7 @@
 
 {#if $seriesAggregate}
 	<div class="container">
-		<Navbar items={navItems} forwardUrl={null} backUrl="/series" />
+		<Navbar items={navItems} replace={true} forwardUrl={null} backUrl="/series" />
 		<div class="content">
 			<Router>
 				<Route path="/">
