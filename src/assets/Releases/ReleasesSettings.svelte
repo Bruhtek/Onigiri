@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon, SettingsIcon, StarIcon } from "svelte-feather-icons";
 	import { onlyFollowedReleases, releases, releasesPage } from "../../lib/stores/releasesStore";
-	import SettingsModal from "../ViewSettings/SettingsModal.svelte";
+	import SettingsModal from "../ViewSettings/ViewSettings.svelte";
 	import { get } from "svelte/store";
 
 	export let page = 0;

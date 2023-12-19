@@ -2,7 +2,7 @@
 	import { parseContent } from "../../lib/parseContent";
 	import BottomNavbar from "./BottomNavbar.svelte";
 	import ReaderControl from "./ReaderControl.svelte";
-	import { readerSettings } from "../../lib/stores/settingsStore";
+	import { fontFamilies, readerSettings } from "../../lib/stores/settingsStore";
 	import { handleSwipe } from "../Helpers/SwipeHandler";
 	import { setPartProgress } from "../../lib/setPartProgress";
 
@@ -40,6 +40,7 @@
 	let documentWidth = document.body.clientWidth;
 	$: pageWidth = documentWidth - 2 * $readerSettings.marginHorizontal;
 	$: pageHeight = contentDiv ? contentDiv.clientHeight : 0;
+	$: fontFamily = fontFamilies[$readerSettings.fontFamily][1];
 	$: cssVars = `
 	--page-width: ${pageWidth}px;
 	--page-height: ${pageHeight}px;
@@ -48,6 +49,7 @@
 	--text-align: ${$readerSettings.justify ? "justify" : "left"};
 	--font-size: ${$readerSettings.fontSize}px;
 	--column-gap: ${columnGap}px;
+	--font-family: ${fontFamily};
 	`;
 
 	$: if(pageWidth && pageHeight) snapScroll()
@@ -134,7 +136,7 @@
 
 <style>
 	:global(#content *) {
-		font-family: "Times New Roman", Times, serif;
+		font-family: var(--font-family);
 	}
 
 	:global(#content img) {

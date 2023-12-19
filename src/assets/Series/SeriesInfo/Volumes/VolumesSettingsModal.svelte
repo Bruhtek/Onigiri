@@ -1,8 +1,8 @@
 <script lang="ts">
 
 	import { SettingsIcon } from "svelte-feather-icons";
-	import Checkbox from "../../../Settings/Generics/Checkbox.svelte";
-	import Numerical from "../../../Settings/Generics/Numerical.svelte";
+	import Checkbox from "../../../Settings/Components/Checkbox.svelte";
+	import Numerical from "../../../Settings/Components/Numerical.svelte";
 
 
 	export let toggleSettings = () => {};

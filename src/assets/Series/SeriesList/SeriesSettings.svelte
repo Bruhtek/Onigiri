@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ArrowLeftIcon, ArrowRightIcon, CalendarIcon, SettingsIcon, StarIcon } from "svelte-feather-icons";
-	import SettingsModal from "../../ViewSettings/SettingsModal.svelte";
+	import SettingsModal from "../../ViewSettings/ViewSettings.svelte";
 	import {
 		getMoreSeries,
 		lastSeriesPage,

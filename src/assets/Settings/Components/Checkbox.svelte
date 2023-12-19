@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getStore, type Store, type StoreType } from "./Generic";
+	import InputContainer from "./InputContainer.svelte";
 
 	export let storeType: StoreType;
 	export let settingName: string;
@@ -15,28 +16,20 @@
 	};
 </script>
 
-<div class="container" on:click={toggle} on:keydown={toggle}>
+<InputContainer event={toggle}>
 	<p>
 		<slot />
 	</p>
 	<input type="checkbox" checked={$store[settingName]} />
-</div>
+</InputContainer>
 
 <style>
 	p {
 		padding-top: 3px;
 	}
-	.container {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 15px;
-		border: 2px solid #000;
-		margin: 5px;
-		height: 50px;
-	}
 
-	.container input {
+
+	input {
 		margin-left: 1rem;
 	}
 </style>

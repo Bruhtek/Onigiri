@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { MinusIcon, PlusIcon } from "svelte-feather-icons";
 	import { getStore, type Store, type StoreType } from "./Generic";
+	import InputContainer from "./InputContainer.svelte";
 
 	export let storeType: StoreType;
 	export let settingName: string;
@@ -31,7 +32,7 @@
 	};
 </script>
 
-<div class="container">
+<InputContainer>
 	<div class="minus" on:click={decrease} on:keydown={decrease}>
 		<MinusIcon size="2x" />
 	</div>
@@ -43,22 +44,13 @@
 	<div class="plus" on:click={increase} on:keydown={increase}>
 		<PlusIcon size="2x" />
 	</div>
-</div>
+</InputContainer>
 
 <style>
-	.container :global(svg) {
+	.minus :global(svg), .plus :global(svg) {
 		padding-top: 4px;
 	}
 	p {
 		padding-top: 3px;
-	}
-	.container {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 5px;
-		border: 2px solid #000;
-		margin: 5px;
-		height: 50px;
 	}
 </style>
