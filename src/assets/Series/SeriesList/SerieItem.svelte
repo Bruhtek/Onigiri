@@ -49,6 +49,23 @@
 		z-index: 2;
 		border-radius: 15px;
 		border: 2px solid black;
+	}
 
+	.serie p.title {
+		position: absolute;
+		bottom: 0;
+		z-index: 10;
+		background-color: rgba(255, 255, 255, 1);
+
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		border-bottom-left-radius: 15px;
+		border-bottom-right-radius: 15px;
+		text-align: center;
+		border: 2px solid black;
+		/*border-top: none;*/
+		width: 100%;
 	}
 </style>
