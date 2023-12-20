@@ -37,7 +37,7 @@
 		progressAlreadySet = true;
 	}
 
-	let documentWidth = document.body.clientWidth;
+	let documentWidth = window.innerWidth;
 	$: pageWidth = documentWidth - 2 * $readerSettings.marginHorizontal;
 	$: pageHeight = contentDiv ? contentDiv.clientHeight : 0;
 	$: fontFamily = fontFamilies[$readerSettings.fontFamily][1];
@@ -115,6 +115,8 @@
 	$: currentPage = contentDiv ? Math.ceil(contentDiv.scrollLeft / (pageWidth + columnGap)) + 1 : -1;
 
 </script>
+
+<svelte:window bind:innerWidth={documentWidth} />
 
 <div
 	class="container"
