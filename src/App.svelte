@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { token, username } from "./lib/stores/accountStore";
-	import LoginPage from "./assets/Account/Login/LoginPage.svelte";
+	import LoginPage from "./assets/Login/LoginPage.svelte";
 	import { jfetch } from "./lib/jnovel";
 	import Home from "./assets/MainPage.svelte";
 	import NotificationsContainer from "./assets/Notifications/NotificationsContainer.svelte";

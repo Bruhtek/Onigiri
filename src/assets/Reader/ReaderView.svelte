@@ -4,7 +4,7 @@
 
 	export let partId: string;
 	export let externalProgress: string = "0";
-	let progress: number = parseInt(externalProgress) || 0;
+	let progress: number = parseFloat(externalProgress) || 0;
 
 	let rawData: string = null;
 	let inProgress = false;
@@ -23,7 +23,7 @@
 	{#if !rawData}
 		Loading...
 	{:else}
-		<Reader raw={rawData} progress={progress} />
+		<Reader {partId} raw={rawData} progress={progress} />
 	{/if}
 </div>
 

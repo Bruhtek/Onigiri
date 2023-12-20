@@ -6,7 +6,7 @@
 	import { handleSwipe } from "../Helpers/SwipeHandler";
 	import { setPartProgress } from "../../lib/setPartProgress";
 
-	export let bookId: string;
+	export let partId: string;
 
 	export let raw = "";
 	export let progress: number = 0;
@@ -72,17 +72,15 @@
 
 	const updatePartProgress = () => {
 		if(contentDiv.scrollLeft === 0) {
-			setPartProgress(bookId, 0);
+			setPartProgress(partId, 0);
 			return;
 		}
 		const scrollLeft = contentDiv.scrollLeft + pageWidth;
 		const scrollWidth = contentDiv.scrollWidth;
 		const partProgress = scrollLeft / scrollWidth;
 
-		setPartProgress(bookId, partProgress)
+		setPartProgress(partId, partProgress)
 	}
-
-	$: bookId && progress && goToPartProgress();
 
 	const snapScroll = (floor = false) => {
 		const scrollLeft = contentDiv.scrollLeft;
@@ -92,7 +90,7 @@
 		contentDiv.scrollLeft = nearestPage * (pageWidth + columnGap);
 	}
 
-	const onpageclick = el => {
+	const handlePageClick = (el: HTMLDivElement) => {
 		el.addEventListener("click", (event) => {
 			const actualY = event.clientY - el.offsetTop;
 			const actualX = event.clientX - el.offsetLeft;
@@ -121,7 +119,7 @@
 <div
 	class="container"
 	style="{cssVars}"
-	use:onpageclick
+	use:handlePageClick
 	use:handleSwipe
 	on:swipeLeft={scrollLeft}
 	on:swipeRight={scrollRight}

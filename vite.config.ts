@@ -5,7 +5,7 @@ import mkcert from "vite-plugin-mkcert";
 // https://vitejs.dev/config/
 const devconfig = defineConfig({
 	server: {
-		https: true,
+		// https: true,
 		port: 443,
 	},
 	plugins: [
