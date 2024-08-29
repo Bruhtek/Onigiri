@@ -1,3 +1,8 @@
+import { z } from 'zod';
+
+// TODO: Add validation for Volume
+export const VolumeSchema = z.object({});
+
 class Volume {
 	legacyId: string;
 	slug: string;
@@ -45,11 +50,11 @@ class Volume {
 
 		this.coverURL = json.cover
 			? json.cover.coverUrl || json.cover.thumbnailUrl || json.cover.originalUrl
-			: "https://placehold.co/200x300";
+			: 'https://placehold.co/200x300';
 
 		this.thumbnailURL = json.cover
 			? json.cover.thumbnailUrl || json.cover.coverUrl || json.cover.originalUrl
-			: "https://placehold.co/200x300";
+			: 'https://placehold.co/200x300';
 
 		this.totalParts = json.totalParts;
 	}
@@ -59,6 +64,6 @@ export type Creator = {
 	name: string;
 	role: string;
 	originalName: string;
-}
+};
 
 export default Volume;

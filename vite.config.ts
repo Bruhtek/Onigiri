@@ -1,6 +1,20 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import mkcert from 'vite-plugin-mkcert';
+import Icons from 'unplugin-icons/vite';
 
 export default defineConfig({
-	plugins: [sveltekit()]
+	server: {
+		port: 443,
+		proxy: {}
+	},
+	plugins: [
+		sveltekit(),
+		Icons({
+			compiler: 'svelte'
+		}),
+		mkcert({
+			hosts: ['localhost', 'dev.j-novel.club']
+		})
+	]
 });

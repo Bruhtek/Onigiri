@@ -1,35 +1,37 @@
 export type Notification = {
-	title: string;
 	message: string;
-	icon?: string;
+} & NotificationOptions;
+
+type NotificationOptions = {
+	icon?: 'info' | 'success' | 'warning' | 'error';
 	timeout?: number;
-}
+};
 
 function createNotificationStore() {
 	let currentNotification = $state<Notification | null>(null);
 	const waitingNotifications = $state<Notification[]>([]);
 
 	const updateNotifications = () => {
-		if(waitingNotifications.length > 0 && currentNotification === null) {
+		if (waitingNotifications.length > 0 && currentNotification === null) {
 			currentNotification = waitingNotifications.shift()!;
-			console.log("New notification", currentNotification);
 
 			setTimeout(() => {
 				currentNotification = null;
 				updateNotifications();
 			}, currentNotification.timeout || 5000);
 		}
-	}
+	};
 
-	const notify = (notification: Notification) => {
+	const notify = (message: string, options?: NotificationOptions) => {
+		const notification = { message, ...options };
 		waitingNotifications.push(notification);
 		updateNotifications();
-	}
+	};
 
 	const dismiss = () => {
 		currentNotification = null;
 		updateNotifications();
-	}
+	};
 
 	return {
 		notify,
@@ -37,7 +39,7 @@ function createNotificationStore() {
 		get notification() {
 			return currentNotification;
 		}
-	}
+	};
 }
 
 const notificationStore = createNotificationStore();

@@ -28,11 +28,15 @@
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.0.0-alpha.20",
-		"vite": "^5.0.3"
+		"vite": "^5.0.3",
+		"vite-plugin-mkcert": "^1.17.6"
 	},
 	"type": "module",
 	"packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81",
 	"dependencies": {
-		"localforage": "^1.10.0"
+		"@iconify-json/ph": "^1.1.14",
+		"localforage": "^1.10.0",
+		"unplugin-icons": "^0.19.2",
+		"zod": "^3.23.8"
 	}
 }
