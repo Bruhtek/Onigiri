@@ -3,18 +3,22 @@
 	import Notifications from '$lib/components/Notifications/Notifications.svelte';
 	import TopBar from '$lib/components/Navigation/TopBar/TopBar.svelte';
 	import BottomBar from '$lib/components/Navigation/BottomBar/BottomBar.svelte';
+
+	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 </script>
 
-<div class="container">
+<div class="container" class:responsive={preferencesStore.value.verticalTabsWhileHorizontal}>
 	<TopBar />
 
 	<div class="content">
-		<Notifications />
+		<div class="slot">
+			<Notifications />
 
-		<slot />
+			<slot />
+		</div>
+
+		<BottomBar />
 	</div>
-
-	<BottomBar />
 </div>
 
 <style>
@@ -23,9 +27,22 @@
 		flex-direction: column;
 		height: 100dvh;
 		overflow: hidden;
+
+		&.responsive {
+			@media screen and (min-aspect-ratio: 1/1) {
+				flex-direction: row;
+			}
+		}
 	}
 
 	.content {
+		flex: 1;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.slot {
 		flex: 1;
 		overflow: hidden;
 		position: relative;

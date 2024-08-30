@@ -26,7 +26,6 @@ export const fetchMoreReleases = async (limit: number = 200) => {
 		const res = await jfetch(`/releases${query}`);
 		const json = await res.json();
 		const data = ReleasesScheme.parse(json);
-		console.log(data);
 
 		const newParts = data.parts.map((part: unknown) => new Part(part));
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import releasesStore, { fetchMoreReleases } from '$lib/api/releases.svelte';
+	import GridLayout from '$lib/components/Layouts/GridLayout.svelte';
 
 	if (releasesStore.value.length == 0) {
 		fetchMoreReleases();
@@ -7,9 +8,4 @@
 </script>
 
 
-{#each releasesStore.value as release}
-	<div>
-		{release.title}
-	</div>
-{/each}
-
+<GridLayout items={releasesStore.value} />

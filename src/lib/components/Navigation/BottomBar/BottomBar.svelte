@@ -1,10 +1,15 @@
+<script lang="ts">
+
+</script>
+
 <div class="bottom-bar">
-	Bottom Bar
+	<span>Bottom Bar</span>
 </div>
 
 <style>
 	.bottom-bar {
+		display: flex;
 		height: 3rem;
-		border-top: 3px solid var(--text);
+		place-content: center;
 	}
 </style>

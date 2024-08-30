@@ -49,5 +49,6 @@
 		align-items: center;
 		gap: 10px;
 		border-radius: 20px;
+		z-index: 10000;
 	}
 </style>

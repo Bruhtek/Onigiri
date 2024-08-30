@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { LayoutItem, LayoutItemFactory } from '$lib/types/LayoutItem';
 
 export const PartScheme = z.object({
 	legacyId: z.string(),
@@ -25,7 +26,7 @@ export const PartScheme = z.object({
 	totalMangaPages: z.number()
 });
 
-class Part {
+class Part implements LayoutItemFactory {
 	legacyId: string;
 	slug: string;
 	title: string;
@@ -51,7 +52,6 @@ class Part {
 	 * @param api_result - JSON object from the API
 	 */
 	constructor(api_result: unknown) {
-		console.log(api_result);
 		const json = PartScheme.parse(api_result);
 
 		this.legacyId = json.legacyId;
@@ -98,6 +98,16 @@ class Part {
 		} else {
 			this.type = 'NOVEL';
 		}
+	}
+
+	toLayoutItem(): LayoutItem {
+		return {
+			title: this.title,
+			type: this.type,
+			imageSrc: this.thumbnailURL,
+			HDImageSrc: this.coverURL,
+			href: `/reader/${this.legacyId}`
+		};
 	}
 }
 

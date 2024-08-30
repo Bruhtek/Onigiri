@@ -4,7 +4,8 @@ export async function createPersistentStore<T>(key: string, initialValue: T) {
 	const previousValue = await localforage.getItem<T>(key);
 	let value = previousValue || initialValue;
 
-	// if this is an object, we want to ensure that all keys are present - even when updating initialValue in the future
+	// if this is an object, we want to ensure that all keys are present
+	// even after updating initialValue in the future and adding new keys
 	if (typeof initialValue === 'object') {
 		value = initialValue;
 		// @ts-expect-error - we checked that this is an object
@@ -15,13 +16,29 @@ export async function createPersistentStore<T>(key: string, initialValue: T) {
 
 	const set = async (value: T) => {
 		current = value;
-		await localforage.setItem(key, value);
+
+		// this basically only saves options the user has changed
+		// that way we can change defaults, and they will still be applied
+		// unless the user has changed them manually of course
+		if (typeof value === 'object') {
+			const copy: T = { ...value };
+			for (const key in initialValue) {
+				if (copy[key] === initialValue[key]) {
+					delete copy[key];
+				}
+			}
+			await localforage.setItem(key, copy);
+		} else {
+			await localforage.setItem(key, value);
+		}
 	};
+	const patch = (value: Partial<T>) => set({ ...current, ...value });
 	const update = (fn: (value: T) => T) => set(fn(current));
 	const reset = () => set(initialValue);
 
 	return {
 		set,
+		patch,
 		update,
 		reset,
 		get value() {
