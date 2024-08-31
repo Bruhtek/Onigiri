@@ -5,6 +5,7 @@ export type LayoutItem = {
 	HDImageSrc?: string;
 	href: string | ((event: MouseEvent) => Promise<string>);
 	longPressHref?: string | ((event: MouseEvent) => Promise<string>);
+	indexesFunction?: () => string;
 };
 
 export interface LayoutItemFactory {

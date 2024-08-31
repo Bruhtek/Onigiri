@@ -1,9 +1,10 @@
 <script lang="ts">
 
+	import { releasesPageProperties } from '$lib/api/releases.svelte';
 </script>
 
 <div class="bottom-bar">
-	<span>Bottom Bar</span>
+	<span>{releasesPageProperties.value.page}</span>
 </div>
 
 <style>

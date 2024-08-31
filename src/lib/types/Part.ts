@@ -18,12 +18,12 @@ export const PartScheme = z.object({
 		.object({
 			coverUrl: z.string().optional(),
 			thumbnailUrl: z.string().optional(),
-			originalUrl: z.string().optional()
+			originalUrl: z.string().optional(),
 		})
 		.or(z.null()),
 
 	progress: z.number(),
-	totalMangaPages: z.number()
+	totalMangaPages: z.number(),
 });
 
 class Part implements LayoutItemFactory {
@@ -46,6 +46,38 @@ class Part implements LayoutItemFactory {
 	totalMangaPages: number;
 
 	type: 'NOVEL' | 'MANGA';
+
+	getIndexes(): string {
+		const index = ['Arc', 'Chapter', 'Volume', 'Part', 'Book', 'Fanbook'] as const;
+		const regexes = {
+			Arc: /Arc (\d+)/,
+			Chapter: /Chapter (\d+)/,
+			Volume: /(?:Volume|Vol.) (\d+)/,
+			Part: /Part (\d+)/,
+			Book: /Book (\d+)/,
+			Fanbook: /Fanbook (\d+)/,
+		};
+		const indexes: { index: number; value: string; name: string }[] = [];
+		for (const key of index) {
+			const match = this.title.match(regexes[key]);
+			if (match) {
+				indexes.push({ index: match.index!, value: match[1], name: key[0] });
+			}
+		}
+		indexes.sort((a, b) => a.index - b.index);
+		return indexes.map((i) => `${i.name}. ${i.value}`).join(' ');
+	}
+
+	toLayoutItem(): LayoutItem {
+		return {
+			title: this.title,
+			type: this.type,
+			imageSrc: this.thumbnailURL,
+			HDImageSrc: this.coverURL,
+			href: `/reader/${this.legacyId}`,
+			indexesFunction: this.getIndexes.bind(this),
+		};
+	}
 
 	/**
 	 * Constructor for Part
@@ -91,23 +123,13 @@ class Part implements LayoutItemFactory {
 				(word) =>
 					this.slug.includes(word) ||
 					this.thumbnailURL.includes(word) ||
-					this.coverURL.includes(word)
+					this.coverURL.includes(word),
 			)
 		) {
 			this.type = 'MANGA';
 		} else {
 			this.type = 'NOVEL';
 		}
-	}
-
-	toLayoutItem(): LayoutItem {
-		return {
-			title: this.title,
-			type: this.type,
-			imageSrc: this.thumbnailURL,
-			HDImageSrc: this.coverURL,
-			href: `/reader/${this.legacyId}`
-		};
 	}
 }
 

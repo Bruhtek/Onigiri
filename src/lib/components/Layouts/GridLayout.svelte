@@ -2,6 +2,10 @@
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
+	import { releasesPageProperties } from '$lib/api/releases.svelte';
+	import notificationStore from '$lib/stores/notificationStore.svelte';
+	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
+	import GridItem from '$lib/components/Layouts/GridItem.svelte';
 
 	interface GridLayoutProps {
 		items: LayoutItemProp[];
@@ -16,22 +20,6 @@
 
 	let availableWidth = $state(0);
 	let availableHeight = $state(0);
-	
-	const resizeObserver = (el: HTMLDivElement) => {
-		const resizeObserver = new ResizeObserver((entries) => {
-			const { width, height } = entries[0].contentRect;
-			availableWidth = width;
-			availableHeight = height;
-		});
-
-		resizeObserver.observe(el);
-
-		return {
-			destroy: () => {
-				resizeObserver.disconnect();
-			}
-		};
-	};
 
 	$inspect({ availableWidth, availableHeight });
 
@@ -40,7 +28,7 @@
 		const rowHeight = columnWidth / columnAspectRatio;
 		return {
 			rowCount: Math.floor((availableHeight + gap) / (rowHeight + gap)),
-			itemHeight: rowHeight
+			itemHeight: rowHeight,
 		};
 	});
 
@@ -50,20 +38,42 @@
 			'--column-count': columnCount,
 			'--row-count': rowCount,
 			'--column-aspect-ratio': columnAspectRatio,
-			'--item-height': `${itemHeight}px`
+			'--item-height': `${itemHeight}px`,
 		};
 		return Object.entries(variables).map(([key, value]) => `${key}: ${value}`).join(';');
 	});
 
 	let itemsPerPage = $derived.by(() => columnCount * rowCount);
+	let currentPage = $state(0);
+	let itemsOnPage = $derived.by(() => items.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
+
+	$effect(() => {
+		releasesPageProperties.set({
+			partsPerPage: itemsPerPage,
+			page: currentPage,
+		});
+	});
+
+	const gestureCallback = (direction: Direction) => {
+		if (direction == 'right') {
+			currentPage = Math.max(0, currentPage - 1);
+		} else if (direction == 'left') {
+			currentPage = Math.min(Math.ceil(items.length / itemsPerPage) - 1, currentPage + 1);
+		}
+	};
+
 </script>
 
-<div class="layout" use:resizeObserver style={layoutVariables}>
+<div
+	class="layout"
+	style={layoutVariables}
+	bind:clientHeight={availableHeight}
+	bind:clientWidth={availableWidth}
+	use:gestureNavigation={gestureCallback}
+>
 	<div class="grid">
-		{#each items as _, i}
-			{#if i < itemsPerPage}
-				<div class="item">{i}</div>
-			{/if}
+		{#each itemsOnPage as item}
+			<GridItem item={item} />
 		{/each}
 	</div>
 </div>
@@ -84,15 +94,5 @@
 		grid-template-columns: repeat(var(--column-count), 1fr);
 		grid-template-rows: repeat(var(--row-count), var(--item-height));
 		grid-gap: var(--gap);
-	}
-
-	.item {
-		background-color: black;
-		color: white;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		line-height: 100%;
-		aspect-ratio: var(--column-aspect-ratio);
 	}
 </style>
