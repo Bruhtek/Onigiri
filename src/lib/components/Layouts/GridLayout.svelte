@@ -3,7 +3,6 @@
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
 	import { releasesPageProperties } from '$lib/api/releases.svelte';
-	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import GridItem from '$lib/components/Layouts/GridItem.svelte';
 

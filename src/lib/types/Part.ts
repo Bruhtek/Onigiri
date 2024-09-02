@@ -47,7 +47,12 @@ class Part implements LayoutItemFactory {
 
 	type: 'NOVEL' | 'MANGA';
 
-	getIndexes(): string {
+	_indexes: Index[] = [];
+
+	get indexes(): Index[] {
+		// we cache the indexes so we don't have to recalculate them every time, especially since they're constant
+		if (this._indexes && this._indexes.length > 0) return this._indexes;
+
 		const index = ['Arc', 'Chapter', 'Volume', 'Part', 'Book', 'Fanbook'] as const;
 		const regexes = {
 			Arc: /Arc (\d+)/,
@@ -57,15 +62,27 @@ class Part implements LayoutItemFactory {
 			Book: /Book (\d+)/,
 			Fanbook: /Fanbook (\d+)/,
 		};
-		const indexes: { index: number; value: string; name: string }[] = [];
+		const indexes: Index[] = [];
 		for (const key of index) {
 			const match = this.title.match(regexes[key]);
 			if (match) {
-				indexes.push({ index: match.index!, value: match[1], name: key[0] });
+				indexes.push({ index: match.index!, value: match[1], name: key[0], match: match });
 			}
 		}
 		indexes.sort((a, b) => a.index - b.index);
-		return indexes.map((i) => `${i.name}. ${i.value}`).join(' ');
+		this._indexes = indexes;
+
+		return indexes;
+	}
+
+	getIndexes(): string {
+		return this.indexes.map((i) => `${i.name}. ${i.value}`).join(' ');
+	}
+
+	getTitleWithoutIndexes(): string {
+		const indexes = this.indexes;
+		const earliestIndex = indexes.length > 0 ? indexes[0].index : this.title.length;
+		return this.title.slice(0, earliestIndex).trim().replace(/:$/, '');
 	}
 
 	toLayoutItem(): LayoutItem {
@@ -75,7 +92,8 @@ class Part implements LayoutItemFactory {
 			imageSrc: this.thumbnailURL,
 			HDImageSrc: this.coverURL,
 			href: `/reader/${this.legacyId}`,
-			indexesFunction: this.getIndexes.bind(this),
+			indexes: this.getIndexes.bind(this),
+			titleWithoutIndexes: this.getTitleWithoutIndexes.bind(this),
 		};
 	}
 
@@ -134,3 +152,10 @@ class Part implements LayoutItemFactory {
 }
 
 export default Part;
+
+type Index = {
+	index: number;
+	value: string;
+	name: string;
+	match: RegExpMatchArray;
+};

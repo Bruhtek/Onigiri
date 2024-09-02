@@ -16,23 +16,78 @@
 </script>
 
 <div class="item">
-	<p>
-		{actualItem.title}
-	</p>
-	<p>
-		{actualItem.indexesFunction()}
-	</p>
+	<div class="image">
+		<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />
+	</div>
+	<div class="title">
+		<p class="title-p">
+			{#if actualItem.titleWithoutIndexes}
+				{actualItem.titleWithoutIndexes()}
+			{:else}
+				{actualItem.title}
+			{/if}
+		</p>
+	</div>
+	<!-- Dont have a good name for this, its basically Part 8, Volume 3, etc. -->
+	{#if actualItem.indexes}
+		<div class="indexes-badge">
+			{actualItem.indexes()}
+		</div>
+	{/if}
 </div>
 
 <style>
 	.item {
-		background-color: black;
-		color: white;
+		background-color: var(--bg);
+		color: var(--text);
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		align-items: center;
 		line-height: 100%;
 		aspect-ratio: var(--column-aspect-ratio);
+		position: relative;
+		border: 3px solid var(--text);
+	}
+
+	.image {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+
+		.image-obj {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			overflow: hidden;
+		}
+	}
+
+	.title {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		color: var(--text);
+		background-color: var(--bg);
+		border-top: 3px solid var(--text);
+
+		.title-p {
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			text-align: center;
+			overflow: hidden;
+			margin: 0.2rem;
+		}
+	}
+
+
+	.indexes-badge {
+		position: absolute;
+		top: 0.2rem;
+		left: 0.2rem;
+		padding: 0.2em;
+		border: 3px solid var(--text);
+		background-color: var(--bg);
 	}
 </style>
