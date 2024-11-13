@@ -2,7 +2,7 @@
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
-	import { releasesPageProperties } from '$lib/api/releases.svelte';
+	import { changeReleasesPage, releasesPageProperties } from '$lib/api/releases.svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import GridItem from '$lib/components/Layouts/GridItem.svelte';
 
@@ -43,21 +43,23 @@
 	});
 
 	let itemsPerPage = $derived.by(() => columnCount * rowCount);
-	let currentPage = $state(0);
+	let currentPage = $derived(releasesPageProperties.value.page);
 	let itemsOnPage = $derived.by(() => items.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
 
 	$effect(() => {
 		releasesPageProperties.set({
 			partsPerPage: itemsPerPage,
 			page: currentPage,
+			itemsPerPage: itemsPerPage,
+			itemsCount: items.length,
 		});
 	});
 
 	const gestureCallback = (direction: Direction) => {
 		if (direction == 'right') {
-			currentPage = Math.max(0, currentPage - 1);
+			changeReleasesPage(-1);
 		} else if (direction == 'left') {
-			currentPage = Math.min(Math.ceil(items.length / itemsPerPage) - 1, currentPage + 1);
+			changeReleasesPage(1);
 		}
 	};
 

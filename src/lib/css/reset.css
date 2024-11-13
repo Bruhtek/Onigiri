@@ -1,0 +1,11 @@
+button {
+	all: unset;
+	outline: revert;
+	line-height: normal;
+	-webkit-appearance: none;
+	-webkit-font-smoothing: inherit;
+	-moz-osx-font-smoothing: inherit;
+	display: flex;
+	flex-direction: column;
+	user-select: none;
+}

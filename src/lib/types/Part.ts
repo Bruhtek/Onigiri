@@ -1,10 +1,16 @@
 import { z } from 'zod';
 import type { LayoutItem, LayoutItemFactory } from '$lib/types/LayoutItem';
 
+const HACKY_TYPE_DETECTION = true;
+
 export const PartScheme = z.object({
+	id: z.string(),
+
 	legacyId: z.string(),
-	slug: z.string(),
 	title: z.string(),
+	shortTitle: z.string(),
+
+	slug: z.string(),
 	number: z.number(),
 
 	preview: z.boolean(),
@@ -27,6 +33,7 @@ export const PartScheme = z.object({
 });
 
 class Part implements LayoutItemFactory {
+	id: string;
 	legacyId: string;
 	slug: string;
 	title: string;
@@ -91,7 +98,7 @@ class Part implements LayoutItemFactory {
 			type: this.type,
 			imageSrc: this.thumbnailURL,
 			HDImageSrc: this.coverURL,
-			href: `/reader/${this.legacyId}`,
+			href: `/reader/${this.id}`,
 			indexes: this.getIndexes.bind(this),
 			titleWithoutIndexes: this.getTitleWithoutIndexes.bind(this),
 		};
@@ -101,48 +108,49 @@ class Part implements LayoutItemFactory {
 	 * Constructor for Part
 	 * @param api_result - JSON object from the API
 	 */
-	constructor(api_result: unknown) {
-		const json = PartScheme.parse(api_result);
+	constructor(api_result: z.infer<typeof PartScheme>) {
+		this.id = api_result.id;
+		this.legacyId = api_result.legacyId;
+		this.slug = api_result.slug;
+		this.title = api_result.title;
+		this.number = api_result.number;
 
-		this.legacyId = json.legacyId;
-		this.slug = json.slug;
-		this.title = json.title;
-		this.number = json.number;
+		this.preview = api_result.preview;
+		this.hidden = api_result.hidden;
 
-		this.preview = json.preview;
-		this.hidden = json.hidden;
-
-		this.created = new Date(json.created);
+		this.created = new Date(api_result.created);
 		// if expiration is null, set it to a very large number, so that it's treated as never-expiring
 		this.expiration =
-			typeof json.expiration === 'string' ? new Date(json.expiration) : new Date(8.64e15);
-		this.launch = new Date(json.launch);
+			typeof api_result.expiration === 'string'
+				? new Date(api_result.expiration)
+				: new Date(8.64e15);
+		this.launch = new Date(api_result.launch);
 
-		this.thumbnailURL = json.cover
-			? json.cover.thumbnailUrl ||
-				json.cover.coverUrl ||
-				json.cover.originalUrl ||
+		this.thumbnailURL = api_result.cover
+			? api_result.cover.thumbnailUrl ||
+				api_result.cover.coverUrl ||
+				api_result.cover.originalUrl ||
 				'https://placehold.co/200x300'
 			: 'https://placehold.co/200x300';
 
-		this.coverURL = json.cover
-			? json.cover.coverUrl ||
-				json.cover.thumbnailUrl ||
-				json.cover.originalUrl ||
+		this.coverURL = api_result.cover
+			? api_result.cover.coverUrl ||
+				api_result.cover.thumbnailUrl ||
+				api_result.cover.originalUrl ||
 				'https://placehold.co/200x300'
 			: 'https://placehold.co/200x300';
 
-		this.progress = json.progress;
-		this.totalMangaPages = json.totalMangaPages;
+		this.progress = api_result.progress;
+		this.totalMangaPages = api_result.totalMangaPages;
 
-		// check if either slug, thumbnailURL or coverURL contains the word 'manga'
+		// check if either slug contains the word 'manga' to determinte type
+		// also, since not all novels are properly named
+		// (depending on if J-Novel also publishes the novel, or only manga)
+		// HACK: so since it **SEEMS** that all manga parts have shorttitle in the form of Chapter X,
+		// we check if it matches. This may result in missed novel parts!
 		if (
-			['manga', 'Manga'].some(
-				(word) =>
-					this.slug.includes(word) ||
-					this.thumbnailURL.includes(word) ||
-					this.coverURL.includes(word),
-			)
+			this.slug.toLowerCase().includes('manga') ||
+			(HACKY_TYPE_DETECTION && api_result.shortTitle.startsWith('Chapter '))
 		) {
 			this.type = 'MANGA';
 		} else {

@@ -15,6 +15,6 @@ export function createStore<T>(initialValue: T) {
 		patch,
 		get value() {
 			return current;
-		}
+		},
 	};
 }

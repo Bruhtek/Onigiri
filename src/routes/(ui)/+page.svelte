@@ -5,7 +5,9 @@
 	if (releasesStore.value.length == 0) {
 		fetchMoreReleases();
 	}
+
+	const items = $derived(releasesStore.value.filter((v) => v.type !== 'MANGA'));
 </script>
 
 
-<GridLayout items={releasesStore.value} />
+<GridLayout items={items} />
