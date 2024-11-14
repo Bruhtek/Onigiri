@@ -36,7 +36,13 @@ export const jembed = async (partId: string): Promise<string> => {
 			headers: getHeaders(),
 		});
 
-		// TODO: Check different status codes
+		// TODO: Handle expired parts as well
+
+		if (res.status === 403) {
+			return 'Error: You have to log in to read this part!';
+		} else if (res.status !== 200) {
+			return 'Error: Something went wrong while requesting novel data';
+		}
 
 		const text = await res.text();
 

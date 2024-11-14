@@ -28,17 +28,41 @@ function createNotificationStore() {
 		updateNotifications();
 	};
 
+	const info = (message: string, timeout?: number) =>
+		notify(message, {
+			timeout,
+			icon: 'info',
+		});
+	const success = (message: string, timeout?: number) =>
+		notify(message, {
+			timeout,
+			icon: 'success',
+		});
+	const error = (message: string, timeout?: number) =>
+		notify(message, {
+			timeout,
+			icon: 'error',
+		});
+	const warn = (message: string, timeout?: number) =>
+		notify(message, {
+			timeout,
+			icon: 'warning',
+		});
+
 	const dismiss = () => {
 		currentNotification = null;
 		updateNotifications();
 	};
 
 	return {
-		notify,
 		dismiss,
 		get notification() {
 			return currentNotification;
-		}
+		},
+		info,
+		success,
+		warn,
+		error,
 	};
 }
 

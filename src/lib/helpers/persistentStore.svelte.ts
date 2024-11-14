@@ -1,6 +1,7 @@
 import localforage from 'localforage';
 
 export async function createPersistentStore<T>(key: string, initialValue: T) {
+	await localforage.setDriver(localforage.INDEXEDDB);
 	const previousValue = await localforage.getItem<T>(key);
 	let value = previousValue || initialValue;
 

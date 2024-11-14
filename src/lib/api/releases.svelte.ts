@@ -25,8 +25,10 @@ export const changeReleasesPage = (direction: number) => {
 		let page = 0;
 		if (direction < 0) {
 			page = Math.max(0, v.page - 1);
+			page = Math.min(Math.ceil(v.itemsCount / v.itemsPerPage) - 1, page);
 		} else {
-			page = Math.min(Math.ceil(v.itemsCount / v.itemsPerPage) - 1, v.page + 1);
+			page = Math.max(0, v.page + 1);
+			page = Math.min(Math.ceil(v.itemsCount / v.itemsPerPage) - 1, page);
 		}
 
 		return { ...v, page };
@@ -50,10 +52,10 @@ export const fetchMoreReleases = async (limit: number = 200) => {
 
 		releasesStore.update((parts) => [...parts, ...newParts]);
 
-		notificationStore.notify(`Loaded ${limit} more releases`);
+		notificationStore.success(`Loaded ${limit} more releases`);
 	} catch (e) {
 		console.log(e);
-		notificationStore.notify(`Error loading more releases: ${e}`);
+		notificationStore.error(`Error loading more releases: ${e}`);
 	}
 };
 

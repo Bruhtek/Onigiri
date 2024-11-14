@@ -1,6 +1,4 @@
 <script lang="ts">
-	import '../../app.css';
-	import Notifications from '$lib/components/Notifications/Notifications.svelte';
 	import TopBar from '$lib/components/Navigation/TopBar/TopBar.svelte';
 	import BottomBar from '$lib/components/Navigation/BottomBar/BottomBar.svelte';
 
@@ -12,7 +10,6 @@
 
 	<div class="content">
 		<div class="slot">
-			<Notifications />
 
 			<slot />
 		</div>

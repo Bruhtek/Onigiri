@@ -11,7 +11,7 @@ type PreferencesData = {
 const preferencesStore = await createPersistentStore<PreferencesData>('preferences', {
 	verticalTabsWhileHorizontal: true,
 	releasesDisplayType: 'grid',
-	columnCountVertical: 3,
+	columnCountVertical: 4,
 	columnCountHorizontal: 6,
 	gridObjectGap: 16,
 });

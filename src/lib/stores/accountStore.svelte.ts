@@ -7,10 +7,11 @@ type AccountData = {
 
 const accountStore = await createPersistentStore<AccountData>('account', {
 	token: null,
-	expiration: null
+	expiration: null,
 });
 
 export const loggedIn = () => {
+	console.log(accountStore.value);
 	return accountStore.value.token !== null;
 };
 

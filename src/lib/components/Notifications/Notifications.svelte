@@ -2,14 +2,14 @@
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import PhInfo from '~icons/ph/info';
 	import PhCheckFat from '~icons/ph/check-fat';
-	import WarningOctagon from '~icons/ph/warning-octagon';
+	import XCircle from '~icons/ph/x-circle';
 	import Warning from '~icons/ph/warning';
 
 	const iconMap = {
 		'info': PhInfo,
 		'success': PhCheckFat,
 		'warning': Warning,
-		'error': WarningOctagon
+		'error': XCircle,
 	};
 
 	const dismissNotification = () => {
@@ -37,10 +37,8 @@
 
 	.notification {
 		position: absolute;
-		bottom: 20px;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 80%;
+		top: 30px;
+		right: 30px;
 		min-width: 200px;
 		background-color: var(--bg);
 		padding: 10px;

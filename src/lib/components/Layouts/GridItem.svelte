@@ -64,21 +64,26 @@
 
 	.title {
 		position: absolute;
-		display: block;
+		display: grid;
+		align-items: center;
 		bottom: 0;
 		left: 0;
 		width: 100%;
 		color: var(--text);
 		background-color: var(--bg);
 		border-top: 3px solid var(--text);
+		box-sizing: content-box;
+		height: calc(2lh + 0.4rem);
 
 		.title-p {
 			display: -webkit-box;
 			-webkit-line-clamp: 2;
+			line-clamp: 2;
 			-webkit-box-orient: vertical;
 			text-align: center;
 			overflow: hidden;
 			margin: 0.2rem;
+			padding: 0.1rem;
 		}
 	}
 
