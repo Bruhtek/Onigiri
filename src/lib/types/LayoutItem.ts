@@ -3,8 +3,8 @@ export type LayoutItem = {
 	type: 'NOVEL' | 'MANGA';
 	imageSrc: string;
 	HDImageSrc?: string;
-	href: string | ((event: MouseEvent) => Promise<string>);
-	longPressHref?: string | ((event: MouseEvent) => Promise<string>);
+	href: string;
+	longPressHref?: string;
 	indexes?: () => string;
 	titleWithoutIndexes?: () => string;
 };

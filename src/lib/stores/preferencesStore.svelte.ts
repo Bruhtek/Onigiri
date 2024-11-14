@@ -5,13 +5,15 @@ type PreferencesData = {
 	releasesDisplayType: 'grid' | 'list' | 'thumbnailList';
 	columnCountVertical: number;
 	columnCountHorizontal: number;
+	gridObjectGap: number;
 };
 
 const preferencesStore = await createPersistentStore<PreferencesData>('preferences', {
 	verticalTabsWhileHorizontal: true,
 	releasesDisplayType: 'grid',
-	columnCountVertical: 5,
-	columnCountHorizontal: 6
+	columnCountVertical: 3,
+	columnCountHorizontal: 6,
+	gridObjectGap: 16,
 });
 
 export default preferencesStore;

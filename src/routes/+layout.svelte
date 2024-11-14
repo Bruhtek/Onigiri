@@ -6,6 +6,6 @@
 	};
 </script>
 
-<svelte:window onresize={checkOrientation} />
+<svelte:window onload={checkOrientation} onresize={checkOrientation} />
 
 <slot />

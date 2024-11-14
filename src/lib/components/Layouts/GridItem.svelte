@@ -15,7 +15,7 @@
 	});
 </script>
 
-<div class="item">
+<a class="item" href="{actualItem.href}">
 	<div class="image">
 		<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />
 	</div>
@@ -34,7 +34,7 @@
 			{actualItem.indexes()}
 		</div>
 	{/if}
-</div>
+</a>
 
 <style>
 	.item {
@@ -64,6 +64,7 @@
 
 	.title {
 		position: absolute;
+		display: block;
 		bottom: 0;
 		left: 0;
 		width: 100%;

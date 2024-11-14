@@ -143,15 +143,11 @@ class Part implements LayoutItemFactory {
 		this.progress = api_result.progress;
 		this.totalMangaPages = api_result.totalMangaPages;
 
-		// check if either slug contains the word 'manga' to determinte type
-		// also, since not all novels are properly named
-		// (depending on if J-Novel also publishes the novel, or only manga)
-		// HACK: so since it **SEEMS** that all manga parts have shorttitle in the form of Chapter X,
-		// we check if it matches. This may result in missed novel parts!
-		if (
-			this.slug.toLowerCase().includes('manga') ||
-			(HACKY_TYPE_DETECTION && api_result.shortTitle.startsWith('Chapter '))
-		) {
+		// it has been confirmed (by chocolatey on discord)
+		// that all manga parts have shortTitle in the form of Chapter X,
+		// while all the novels have it as Part X
+		// we check if it matches.
+		if (api_result.shortTitle.startsWith('Chapter ')) {
 			this.type = 'MANGA';
 		} else {
 			this.type = 'NOVEL';
