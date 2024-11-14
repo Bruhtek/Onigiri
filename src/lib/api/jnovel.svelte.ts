@@ -2,7 +2,7 @@ import accountStore from '$lib/stores/accountStore.svelte';
 
 const JNOVEL_URL = 'https://labs.j-novel.club';
 const API_URL = `${JNOVEL_URL}/app/v2`;
-const EMBED_URL = `${JNOVEL_URL}/embed`;
+const EMBED_URL = `${JNOVEL_URL}/embed/v2`;
 
 const getHeaders = (options?: RequestInit) => {
 	const headers: HeadersInit = {
@@ -30,8 +30,23 @@ export const jfetch = async (url: string, options?: RequestInit) => {
 	});
 };
 
-export const jembed = (url: string) => {
-	return fetch(EMBED_URL + url, {
-		headers: getHeaders(),
-	});
+export const jembed = async (partId: string): Promise<string> => {
+	try {
+		const res = await fetch(EMBED_URL + `/${partId}/data.xhtml`, {
+			headers: getHeaders(),
+		});
+
+		// TODO: Check different status codes
+
+		const text = await res.text();
+
+		const parser = new DOMParser();
+		const dom = parser.parseFromString(text, 'text/html');
+
+		const mainDiv = dom.querySelector('div.main');
+		return mainDiv?.innerHTML || 'Error: Unable to parse text from API';
+	} catch (err) {
+		console.error(err);
+		return 'Error: Unable to retrieve novel data';
+	}
 };

@@ -1,4 +1,4 @@
-import * as localforage from 'localforage';
+import localforage from 'localforage';
 
 export async function createPersistentStore<T>(key: string, initialValue: T) {
 	const previousValue = await localforage.getItem<T>(key);
@@ -17,9 +17,9 @@ export async function createPersistentStore<T>(key: string, initialValue: T) {
 	const set = async (value: T) => {
 		current = value;
 
-		// this basically only saves options the user has changed
+		// this basically only saves options that differ from defaults
 		// that way we can change defaults, and they will still be applied
-		// unless the user has changed them manually of course
+		// unless the user has changed them
 		if (typeof value === 'object') {
 			const copy: T = { ...value };
 			for (const key in initialValue) {
@@ -43,6 +43,6 @@ export async function createPersistentStore<T>(key: string, initialValue: T) {
 		reset,
 		get value() {
 			return current;
-		}
+		},
 	};
 }
