@@ -19,7 +19,8 @@
 	<div class="image">
 		<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />
 	</div>
-	<div class="title">
+	<div class="title" style="--progress: {actualItem.progress}">
+		<div class="title-bg"></div>
 		<p class="title-p">
 			{#if actualItem.titleWithoutIndexes}
 				{actualItem.titleWithoutIndexes()}
@@ -82,8 +83,19 @@
 			-webkit-box-orient: vertical;
 			text-align: center;
 			overflow: hidden;
-			margin: 0.2rem;
-			padding: 0.1rem;
+			margin: 0.3rem;
+			mix-blend-mode: difference;
+			z-index: 10;
+			color: white;
+		}
+
+		.title-bg {
+			position: absolute;
+			height: 100%;
+			width: calc(var(--progress) * 100%);
+			background-color: var(--text);
+			left: 0;
+			top: 0;
 		}
 	}
 

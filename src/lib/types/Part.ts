@@ -1,8 +1,6 @@
 import { z } from 'zod';
 import type { LayoutItem, LayoutItemFactory } from '$lib/types/LayoutItem';
 
-const HACKY_TYPE_DETECTION = true;
-
 export const PartScheme = z.object({
 	id: z.string(),
 
@@ -101,6 +99,7 @@ class Part implements LayoutItemFactory {
 			href: `/reader/${this.id}`,
 			indexes: this.getIndexes.bind(this),
 			titleWithoutIndexes: this.getTitleWithoutIndexes.bind(this),
+			progress: this.progress,
 		};
 	}
 

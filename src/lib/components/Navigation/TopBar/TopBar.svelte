@@ -8,7 +8,7 @@
 	import SignIn from '~icons/ph/sign-in';
 	import User from '~icons/ph/user';
 
-	import { loggedIn } from '$lib/stores/accountStore.svelte';
+	import { loggedIn } from '$lib/api/account.svelte.js';
 </script>
 
 <div class="top-bar" class:responsive={preferencesStore.value.verticalTabsWhileHorizontal}>

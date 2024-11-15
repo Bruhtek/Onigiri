@@ -1,6 +1,5 @@
 <script lang="ts">
 	import TopBar from '$lib/components/Navigation/TopBar/TopBar.svelte';
-	import BottomBar from '$lib/components/Navigation/BottomBar/BottomBar.svelte';
 
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 </script>
@@ -9,12 +8,7 @@
 	<TopBar />
 
 	<div class="content">
-		<div class="slot">
-
 			<slot />
-		</div>
-
-		<BottomBar />
 	</div>
 </div>
 
@@ -37,11 +31,5 @@
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
-	}
-
-	.slot {
-		flex: 1;
-		overflow: hidden;
-		position: relative;
 	}
 </style>

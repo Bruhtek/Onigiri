@@ -1,4 +1,4 @@
-import accountStore from '$lib/stores/accountStore.svelte';
+import accountStore from '$lib/api/account.svelte.js';
 
 const JNOVEL_URL = 'https://labs.j-novel.club';
 const API_URL = `${JNOVEL_URL}/app/v2`;

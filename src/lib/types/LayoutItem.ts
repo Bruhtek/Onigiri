@@ -4,6 +4,7 @@ export type LayoutItem = {
 	imageSrc: string;
 	HDImageSrc?: string;
 	href: string;
+	progress: number;
 	longPressHref?: string;
 	indexes?: () => string;
 	titleWithoutIndexes?: () => string;
