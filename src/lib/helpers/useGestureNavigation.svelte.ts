@@ -34,18 +34,21 @@ const gestureNavigation = (node: HTMLElement, callback: (direction: Direction) =
 		if (Math.abs(scrollDirectionX) > Math.abs(scrollDirectionY) + minScroll) {
 			if (scrollDirectionX > minScroll) {
 				callback('left');
+				e.preventDefault();
 			} else if (scrollDirectionX < -minScroll) {
 				callback('right');
+				e.preventDefault();
 			}
 			// same thing here
 		} else if (Math.abs(scrollDirectionY) > Math.abs(scrollDirectionX) + minScroll) {
 			if (scrollDirectionY > minScroll) {
 				callback('up');
+				e.preventDefault();
 			} else if (scrollDirectionY < -minScroll) {
 				callback('down');
+				e.preventDefault();
 			}
 		}
-		e.preventDefault();
 		reset();
 	};
 

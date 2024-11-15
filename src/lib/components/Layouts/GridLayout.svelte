@@ -23,10 +23,10 @@
 	$inspect(columnCount, isVertical.value);
 
 	let { rowCount, itemHeight } = $derived.by(() => {
-		const columnWidth = ((availableWidth + gap) / (columnCount)) - gap;
+		const columnWidth = ((availableWidth - gap) / (columnCount)) - gap;
 		const rowHeight = columnWidth / columnAspectRatio;
 		return {
-			rowCount: Math.floor((availableHeight + gap) / (rowHeight + gap)),
+			rowCount: Math.floor((availableHeight - gap) / (rowHeight + gap)),
 			itemHeight: rowHeight,
 		};
 	});
@@ -81,9 +81,9 @@
 
 <style>
 	.layout {
-		width: calc(100% - var(--gap) * 2);
-		height: calc(100% - var(--gap) * 2);
-		margin: var(--gap);
+		width: 100%;
+		height: 100%;
+		padding: var(--gap);
 		position: relative;
 	}
 

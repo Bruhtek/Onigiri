@@ -1,6 +1,8 @@
 <script lang="ts">
 	import readerPreferencesStore from '$lib/stores/readerPreferencesStore.svelte';
 	import { onMount } from 'svelte';
+	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
+	import BottomBar from '$lib/components/Reader/BottomBar.svelte';
 
 	interface Props {
 		content: string;
@@ -65,7 +67,6 @@
 	}
 
 	const changePage = (direction: number) => {
-
 		if(direction < 0) {
 			currentPage = Math.max(0, currentPage - 1);
 			updateCurrentPage();
@@ -74,12 +75,22 @@
 			updateCurrentPage();
 		}
 	}
+
+	const gestureCallback = (direction: Direction) => {
+		if (direction == 'right') {
+			changePage(-1);
+		} else if (direction == 'left') {
+			changePage(1);
+		}
+	};
+
 </script>
 
 <svelte:window
 	bind:innerWidth={innerWidth}
     onresize={onResize}
     onkeydown={handleKeyDown}
+	use:gestureNavigation={gestureCallback}
 />
 
 <div class="reader-container"
@@ -95,22 +106,12 @@
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html props.content}
 	</div>
-	<div class="bottom-bar">
-		{currentPage + 1} / {pageCount + 1}
-	</div>
+	<BottomBar page={currentPage} totalPages={pageCount} />
 </div>
 
 <style>
 	:root {
 		--bottom-bar-height: 2rem;
-	}
-
-	.bottom-bar {
-		position: absolute;
-		width: 100%;
-		height: var(--bottom-bar-height);
-		left: 0;
-		bottom: 0;
 	}
 
 	.reader-container {
@@ -126,7 +127,7 @@
 
 	#content {
 		height: calc(100% - var(--bottom-bar-height));
-		overflow-x: auto;
+		overflow-x: hidden;
 		overflow-y: hidden;
 		column-fill: auto;
 		width: 100%;

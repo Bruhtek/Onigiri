@@ -3,22 +3,23 @@
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import Numpad from '~icons/ph/numpad';
 	import SignIn from '~icons/ph/sign-in';
-	import { logIn } from '$lib/api/account.svelte';
+	import { login } from '$lib/api/account.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
+	import { goto } from '$app/navigation';
 
-	let email = $state("");
-	let password = $state("");
+	let email = $state('');
+	let password = $state('');
 
 	const onSubmit = async () => {
-		const res = await logIn(email, password);
-		if(res == null) {
-			notificationStore.success("Succesfully logged in!");
-			redirect(307, "/");
+		const [success, error] = await login(email, password);
+		if (success) {
+			notificationStore.success('Succesfully logged in!');
+			await goto('/');
 		} else {
-			notificationStore.error(res);
+			notificationStore.error(error);
 		}
-	}
+	};
 </script>
 
 <CenteredLayout>
@@ -31,14 +32,16 @@
 		<input name="password" type="password" bind:value={password}>
 
 		<button onclick={onSubmit} class="button form-btn" type="button">
-			<SignIn /> Login
+			<SignIn />
+			Login
 		</button>
 	</div>
 
 	<HrWithText width="80px">Or</HrWithText>
 
 	<a class="button" href="/login/otp">
-		<Numpad width="16" height="16" /> Login with Code
+		<Numpad width="16" height="16" />
+		Login with Code
 	</a>
 </CenteredLayout>
 
@@ -46,9 +49,11 @@
 	h1 {
 		margin-bottom: 1rem;
 	}
+
 	.form {
 		display: flex;
 		flex-direction: column;
+		text-align: left;
 	}
 
 	.form-btn {

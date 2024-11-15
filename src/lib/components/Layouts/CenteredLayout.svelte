@@ -15,5 +15,6 @@
 		flex-direction: column;
 		width: 80%;
 		min-width: 300px;
+		text-align: center;
 	}
 </style>
