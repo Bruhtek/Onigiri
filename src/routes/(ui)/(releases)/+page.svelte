@@ -6,8 +6,9 @@
 		fetchMoreReleases();
 	}
 
-	const items = $derived(releasesStore.value.filter((v) => v.type !== 'MANGA'));
+	// we are now able to skip this, since we have type query parameter in requests
+	// const items = $derived(releasesStore.value.filter((v) => v.type !== 'MANGA'));
 </script>
 
 
-<GridLayout items={items} />
+<GridLayout items={releasesStore.value} />

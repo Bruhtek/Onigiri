@@ -40,7 +40,7 @@ const ReleasesScheme = z.object({
 });
 export const fetchMoreReleases = async (limit: number = 200) => {
 	const currentNum = releasesStore.value.length;
-	const query = `?limit=${limit}&skip=${currentNum}`;
+	const query = `?limit=${limit}&skip=${currentNum}&type=1`; // type 1 - only Novels
 
 	try {
 		const res = await jfetch(`/releases${query}`);

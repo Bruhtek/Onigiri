@@ -142,7 +142,7 @@ class Part implements LayoutItemFactory {
 		this.progress = api_result.progress;
 		this.totalMangaPages = api_result.totalMangaPages;
 
-		// it has been confirmed (by chocolatey on discord)
+		// it has been confirmed (by chocolatey on J-Novel discord)
 		// that all manga parts have shortTitle in the form of Chapter X,
 		// while all the novels have it as Part X
 		// we check if it matches.
