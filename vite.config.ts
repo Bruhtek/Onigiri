@@ -6,15 +6,18 @@ import Icons from 'unplugin-icons/vite';
 export default defineConfig({
 	server: {
 		port: 443,
-		proxy: {}
+		proxy: {},
 	},
 	plugins: [
 		sveltekit(),
 		Icons({
-			compiler: 'svelte'
+			compiler: 'svelte',
 		}),
-		mkcert({
-			hosts: ['localhost', 'dev.j-novel.club']
-		})
-	]
+		// mkcert({
+		// 	hosts: ['localhost', 'dev.j-novel.club']
+		// })
+	],
+	build: {
+		target: 'es2022',
+	},
 });

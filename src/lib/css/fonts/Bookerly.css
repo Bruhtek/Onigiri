@@ -1,7 +1,7 @@
 @font-face {
 	font-family: 'Bookerly';
-	src: url('Bookerly-BoldItalic.woff2') format('woff2'),
-	url('Bookerly-BoldItalic.woff') format('woff');
+	src: url('/fonts/Bookerly/Bookerly-BoldItalic.woff2') format('woff2'),
+	url('/fonts/Bookerly/Bookerly-BoldItalic.woff') format('woff');
 	font-weight: bold;
 	font-style: italic;
 }
