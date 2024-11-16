@@ -7,6 +7,7 @@
 	import ReaderZones from '$lib/components/Reader/ReaderZones.svelte';
 	import ReaderSettings from '$lib/components/Reader/ReaderSettings/ReaderSettings.svelte';
 	import { isPartTocResult, type PartTocResult, updatePartProgress } from '$lib/api/parts.svelte';
+	import { mapFontFamily } from '$lib/stores/readerPreferencesStore.svelte.js';
 
 	interface Props {
 		content: string;
@@ -172,7 +173,8 @@
 	 style="--margins: {margins}px;
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
-			--fontSize: {readerPreferencesStore.value.fontSize}px;"
+			--fontSize: {readerPreferencesStore.value.fontSize}px;
+			--font-family: {mapFontFamily(readerPreferencesStore.value.fontFamily).css}"
 	 use:touchPosition={touchPositionCallback}
 >
 	{#if showZones}
@@ -218,6 +220,7 @@
 		scrollbar-width: none;
 		-ms-overflow-style: none;
 		user-select: none;
+		font-family: var(--font-family), fantasy;
 	}
 
 	#content :global(*) {
@@ -234,6 +237,21 @@
 		max-width: var(--pageWidth);
 		height: var(--pageHeight);
 		min-height: var(--pageHeight);
+	}
+
+	#content :global(h1) {
+		font-size: 1.55em;
+		margin-top: 2em;
+		margin-bottom: 1em;
+		line-height: 1.2em;
+		text-indent: 20pt;
+	}
+	#content :global(h2) {
+		font-size: 1.15em;
+		margin-top: 1.5em;
+		margin-bottom: .5em;
+		line-height: 1.2em;
+		text-indent: 20pt;
 	}
 
 	#content :global(p) {

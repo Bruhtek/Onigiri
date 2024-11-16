@@ -1,0 +1,119 @@
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_Bd.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_Bd.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_Bd.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_Bd.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_BdIt.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_BdIt.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_BdIt.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_BdIt.woff') format('woff');
+	font-weight: bold;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_He.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_He.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_He.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_He.woff') format('woff');
+	font-weight: 900; /* Heavy weight */
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_HeIt.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_HeIt.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_HeIt.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_HeIt.woff') format('woff');
+	font-weight: 900;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_Lt.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_Lt.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_Lt.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_Lt.woff') format('woff');
+	font-weight: 300; /* Light weight */
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_LtIt.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_LtIt.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_LtIt.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_LtIt.woff') format('woff');
+	font-weight: 300;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_Rg.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_Rg.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_Rg.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_Rg.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_RgIt.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_RgIt.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_RgIt.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_RgIt.woff') format('woff');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_SBd.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_SBd.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_SBd.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_SBd.woff') format('woff');
+	font-weight: 600; /* Semi-bold */
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_SBdIt.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_SBdIt.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_SBdIt.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_SBdIt.woff') format('woff');
+	font-weight: 600;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_Th.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_Th.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_Th.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_Th.woff') format('woff');
+	font-weight: 100; /* Thin */
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'AmazonEmber';
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_ThIt.eot');
+	src: url('/fonts/AmazonEmber/AmazonEmber_W_ThIt.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_ThIt.woff2') format('woff2'),
+	url('/fonts/AmazonEmber/AmazonEmber_W_ThIt.woff') format('woff');
+	font-weight: 100;
+	font-style: italic;
+}

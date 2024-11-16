@@ -57,10 +57,49 @@ export const mapTapZones = (
 	}
 };
 
+export enum FontFamily {
+	AmazonEmber,
+	Bookerly,
+	LibreBaskerville,
+	Helvetica,
+	Jost,
+}
+
+export const mapFontFamily = (ff: FontFamily) => {
+	switch (ff) {
+		case FontFamily.AmazonEmber:
+			return {
+				name: 'Amazon Ember',
+				css: `"AmazonEmber", serif`,
+			};
+		case FontFamily.Bookerly:
+			return {
+				name: 'Bookerly',
+				css: `"Bookerly", sans-serif`,
+			};
+		case FontFamily.LibreBaskerville:
+			return {
+				name: 'Libre Baskerville',
+				css: `"Libre Baskerville", serif`,
+			};
+		case FontFamily.Helvetica:
+			return {
+				name: 'Helvetica',
+				css: `"Helvetica", sans-serif`,
+			};
+		case FontFamily.Jost:
+			return {
+				name: 'Jost',
+				css: `"Jost", sans-serif`,
+			};
+	}
+};
+
 type ReaderPreferencesData = {
 	pageMargins: number;
 	fontSize: number;
 	tapZone: TapZone;
+	fontFamily: FontFamily;
 };
 
 const readerPreferencesStore = await createPersistentStore<ReaderPreferencesData>(
@@ -69,6 +108,7 @@ const readerPreferencesStore = await createPersistentStore<ReaderPreferencesData
 		pageMargins: 12,
 		fontSize: 18,
 		tapZone: TapZone.Edges,
+		fontFamily: FontFamily.Bookerly,
 	},
 );
 

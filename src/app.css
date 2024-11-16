@@ -5,8 +5,11 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Tilt Neon', sans-serif;
 	font-size: 18px;
+}
+
+body {
+	font-family: 'Tilt Neon', sans-serif;
 }
 
 :root {
