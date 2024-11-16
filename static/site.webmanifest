@@ -1,6 +1,7 @@
 {
   "name": "Onigiri for J-Novel Club",
   "short_name": "Onigiri",
+  "start_url": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
