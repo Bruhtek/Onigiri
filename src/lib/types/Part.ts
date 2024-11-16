@@ -71,7 +71,13 @@ class Part implements LayoutItemFactory {
 		for (const key of index) {
 			const match = this.title.match(regexes[key]);
 			if (match) {
-				indexes.push({ index: match.index!, value: match[1], name: key[0], match: match });
+				indexes.push({
+					index: match.index!,
+					value: match[1],
+					fullName: key,
+					name: key[0],
+					match: match,
+				});
 			}
 		}
 		indexes.sort((a, b) => a.index - b.index);
@@ -82,6 +88,10 @@ class Part implements LayoutItemFactory {
 
 	getIndexes(): string {
 		return this.indexes.map((i) => `${i.name}. ${i.value}`).join(' ');
+	}
+
+	getFullIndexes(): string {
+		return this.indexes.map((i) => `${i.fullName} ${i.value}`).join(' ');
 	}
 
 	getTitleWithoutIndexes(): string {
@@ -154,11 +164,12 @@ class Part implements LayoutItemFactory {
 	}
 }
 
-export default Part;
-
 type Index = {
 	index: number;
 	value: string;
 	name: string;
+	fullName: string;
 	match: RegExpMatchArray;
 };
+
+export default Part;

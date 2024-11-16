@@ -15,7 +15,7 @@
 	<div class="top">
 		<TopBarItem title="Releases" href="/" icon={Calendar} />
 		<TopBarItem title="Series" href="/series" icon={Books} />
-		<TopBarItem title="Settings" href="/books" icon={Gear} />
+		<TopBarItem title="Settings" href="/settings" icon={Gear} />
 	</div>
 	<div class="bottom">
 		{#if loggedIn()}

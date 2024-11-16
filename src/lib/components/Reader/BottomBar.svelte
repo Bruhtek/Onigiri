@@ -15,7 +15,7 @@
 		{props.page + 1} / {props.totalPages + 1}
 	</div>
 	<div class="right">
-		
+
 	</div>
 </div>
 

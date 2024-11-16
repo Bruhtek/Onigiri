@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { jembed } from '$lib/api/jnovel.svelte';
+	import { jembed, jfetch } from '$lib/api/jnovel.svelte';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import Reader from '$lib/components/Reader/Reader.svelte';
+	import { onMount } from 'svelte';
+	import { parse_part_toc, type PartTocResult } from '$lib/api/parts.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -12,23 +14,49 @@
 		redirect(307, '/');
 	}
 
+	let partText = $state<string>('');
+	let partTocResult = $state<PartTocResult | { error: string }>({ error: 'Loading part data...' });
+
 	const requestData = async () => {
+		const res = jfetch(`/parts/${data.partId}/toc`);
 		const text = await jembed(data.partId);
 
 		if (text.startsWith('Error')) {
 			const errorText = text.slice(7);
 			notificationStore.error(errorText);
 			history.back();
-			return errorText;
+			partText = errorText;
 		}
 
-		return text;
+		res.then(async (response) => {
+			if (response.status !== 200) {
+				console.error(response);
+				partTocResult = { error: 'Error getting part data' };
+				return;
+			}
+
+			const json = await response.json();
+			const partData = parse_part_toc(json, data.partId);
+
+			if (partData.error !== undefined) {
+				console.error(partData.error);
+				partTocResult = { error: partData.error };
+				return;
+			}
+
+			partTocResult = partData;
+		});
+
+		partText = text;
 	};
+
+	onMount(() => {
+		requestData();
+	});
 </script>
 
-{#await requestData()}
-	<Reader content={"Loading novel data"} />
-{:then text}
-	<Reader content={text} />
-{/await}
-
+{#if partText}
+	<Reader content={partText} {partTocResult} />
+{:else}
+	<Reader content={"Loading novel data"} {partTocResult} />
+{/if}

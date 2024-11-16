@@ -1,14 +1,21 @@
 <script lang="ts">
-	import readerPreferencesStore from '$lib/stores/readerPreferencesStore.svelte';
+	import readerPreferencesStore, { mapTapZones } from '$lib/stores/readerPreferencesStore.svelte';
 	import { onMount } from 'svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import BottomBar from '$lib/components/Reader/BottomBar.svelte';
+	import touchPosition from '$lib/helpers/useTouchPosition.svelte';
+	import ReaderZones from '$lib/components/Reader/ReaderZones.svelte';
+	import ReaderSettings from '$lib/components/Reader/ReaderSettings/ReaderSettings.svelte';
+	import type { PartTocResult } from '$lib/api/parts.svelte';
 
 	interface Props {
 		content: string;
+		partTocResult: PartTocResult | { error: string };
 	}
 
 	let margins = $derived(readerPreferencesStore.value.pageMargins);
+	let showZones = $state<boolean>(false);
+	let showSettings = $state<boolean>(false);
 
 	let contentDiv: HTMLDivElement|undefined = $state();
 	let innerWidth: number = $state(window.innerWidth);
@@ -84,6 +91,32 @@
 		}
 	};
 
+	let tapActions = $derived(mapTapZones(readerPreferencesStore.value.tapZone))
+
+	let timer = $state<number>(0);
+
+	const touchPositionCallback = (x: number, y: number) => {
+		console.log('On touch position');
+
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			const action = tapActions[Math.floor(y * 3)][Math.floor(x * 3)][0] as "P" | "S" | "N" | "X";
+
+			switch (action) {
+				case 'N':
+					changePage(1);
+					break;
+				case "P":
+					changePage(-1);
+					break;
+				case "S":
+					showSettings = true;
+					break;
+				case 'X':
+					break;
+			}
+		}, 30);
+	}
 </script>
 
 <svelte:window
@@ -93,12 +126,22 @@
 	use:gestureNavigation={gestureCallback}
 />
 
+{#if showSettings}
+	<ReaderSettings
+		onHide={() => showSettings = false}
+		partTocResult={props.partTocResult}
+	/>
+{/if}
 <div class="reader-container"
 	 style="--margins: {margins}px;
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
 			--fontSize: {readerPreferencesStore.value.fontSize}px;"
+	 use:touchPosition={touchPositionCallback}
 >
+	{#if showZones}
+		<ReaderZones tapZone={readerPreferencesStore.value.tapZone} onTap={() => showZones = false}/>
+	{/if}
 	<div
 		id="content"
 		bind:this={contentDiv}
