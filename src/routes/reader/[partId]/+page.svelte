@@ -56,7 +56,7 @@
 </script>
 
 {#if partText}
-	<Reader content={partText} {partTocResult} />
+	<Reader content={partText} {partTocResult} loading={false} id={data.partId} />
 {:else}
-	<Reader content={"Loading novel data"} {partTocResult} />
+	<Reader content={"Loading novel data"} {partTocResult} loading={true} id={data.partId} />
 {/if}

@@ -1,5 +1,5 @@
 import Part, { PartScheme } from '$lib/types/Part';
-import { createStore } from '$lib/helpers/store.svelte';
+import { createArrayStore, createStore } from '$lib/helpers/store.svelte';
 import { jfetch } from '$lib/api/jnovel.svelte';
 import { z } from 'zod';
 import notificationStore from '$lib/stores/notificationStore.svelte';
@@ -11,7 +11,7 @@ type ReleasesPageProperties = {
 	itemsCount: number;
 };
 
-const releasesStore = createStore<Part[]>([]);
+const releasesStore = createArrayStore<Part>([]);
 
 export const releasesPageProperties = createStore<ReleasesPageProperties>({
 	page: 0,
@@ -57,6 +57,17 @@ export const fetchMoreReleases = async (limit: number = 200) => {
 		console.log(e);
 		notificationStore.error(`Error loading more releases: ${e}`);
 	}
+};
+
+export const updateReleaseProgress = (id: string, progress: number) => {
+	const index = releasesStore.value.findIndex((v) => v.id === id);
+	if (index === -1) {
+		return;
+	}
+	const part = releasesStore.value[index];
+	part.progress = progress;
+
+	releasesStore.patchAtIndex(part, index);
 };
 
 export default releasesStore;

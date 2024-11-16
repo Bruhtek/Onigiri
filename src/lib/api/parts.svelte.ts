@@ -1,13 +1,35 @@
 import { z } from 'zod';
 import Part, { PartScheme } from '$lib/types/Part';
+import { updateReleaseProgress } from '$lib/api/releases.svelte';
+import { jfetch } from '$lib/api/jnovel.svelte';
 
 const partTocSchema = z.object({
 	parts: z.object({ parts: z.array(PartScheme) }),
 	seriesTitle: z.string(),
 });
 
+// #region Parts
+export const updatePartProgress = async (partId: string, progress: number) => {
+	const promise = jfetch(`/me/completion/${partId}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/x-protobuf',
+		},
+		body: progress.toFixed(5),
+	});
+
+	updateReleaseProgress(partId, progress);
+
+	const res = await promise;
+	if (!res.ok) {
+		console.error('Error updating progress - status code ' + res.status);
+	}
+};
+
+// #region parse_part_toc
 export type PartTocResult = {
 	partIndex: number;
+	progress: number;
 	nextPartId?: string;
 	previousPartId?: string;
 	partIndexes: string;
@@ -55,6 +77,7 @@ export const parse_part_toc = (
 		previousPartId: prevId,
 		seriesTitle: toc.data.seriesTitle,
 		partIndexes: currentPart.getFullIndexes(),
+		progress: currentPart.progress,
 		error: undefined,
 	};
 };

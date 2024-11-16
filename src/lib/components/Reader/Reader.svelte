@@ -1,17 +1,21 @@
 <script lang="ts">
 	import readerPreferencesStore, { mapTapZones } from '$lib/stores/readerPreferencesStore.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import BottomBar from '$lib/components/Reader/BottomBar.svelte';
 	import touchPosition from '$lib/helpers/useTouchPosition.svelte';
 	import ReaderZones from '$lib/components/Reader/ReaderZones.svelte';
 	import ReaderSettings from '$lib/components/Reader/ReaderSettings/ReaderSettings.svelte';
-	import type { PartTocResult } from '$lib/api/parts.svelte';
+	import { isPartTocResult, type PartTocResult, updatePartProgress } from '$lib/api/parts.svelte';
 
 	interface Props {
 		content: string;
 		partTocResult: PartTocResult | { error: string };
+		loading: boolean;
+		id: string;
 	}
+
+	let ready = $state<boolean>(false);
 
 	let margins = $derived(readerPreferencesStore.value.pageMargins);
 	let showZones = $state<boolean>(false);
@@ -38,7 +42,6 @@
 			return;
 		}
 
-		await new Promise<void>(resolve => { setTimeout(resolve, 10); });
 		const pw = calculatePageWidth();
 
 		pageHeight = contentDiv!.clientHeight;
@@ -48,19 +51,51 @@
 		updateCurrentPage(currentPage, pw);
 	}
 
+	let shouldGoToProgress = $state<boolean>(false);
+
 	const updateCurrentPage = (page?: number, width?: number) => {
 		const p = page ?? currentPage;
 		const w = width ?? pageWidth;
 
+		currentPage = p;
+
 		contentDiv!.scrollLeft = p * (w + margins);
 		pageCount = Math.floor(contentDiv!.scrollWidth / (w + margins));
+
+		if(ready) {
+			updatePartProgress(props.id, currentPage / pageCount);
+		}
 	}
 
 	onMount(() => {
 		onResize();
 		setTimeout(() => {
 			onResize();
+			if(shouldGoToProgress) {
+				if(!isPartTocResult(props.partTocResult)) {
+					return;
+				}
+				updateCurrentPage(Math.floor(props.partTocResult.progress * pageCount));
+				shouldGoToProgress = false;
+			} else {
+				shouldGoToProgress = true;
+			}
+			ready = true;
 		}, 300)
+	})
+
+	$effect(() => {
+		if(!isPartTocResult(props.partTocResult)) {
+			return;
+		}
+
+		if(untrack(() => shouldGoToProgress)) {
+			console.log("Going to progress from effect", Math.floor(props.partTocResult.progress * pageCount));
+			updateCurrentPage(Math.floor(props.partTocResult.progress * pageCount));
+			shouldGoToProgress = false;
+		} else {
+			shouldGoToProgress = true;
+		}
 	})
 
 	let props: Props = $props();
@@ -133,6 +168,7 @@
 	/>
 {/if}
 <div class="reader-container"
+	 class:hide={!ready && !props.loading}
 	 style="--margins: {margins}px;
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
@@ -166,6 +202,9 @@
 		display: flex;
 		flex-direction: column;
 		padding: var(--margins);
+	}
+	.reader-container.hide {
+		opacity: 0;
 	}
 
 	#content {

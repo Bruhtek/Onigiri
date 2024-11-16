@@ -7,17 +7,19 @@
 	let props: Props = $props();
 </script>
 
-<div class="bottom-bar">
-	<div class="left">
+{#if props.totalPages !== 0}
+	<div class="bottom-bar">
+		<div class="left">
 
-	</div>
-	<div class="center">
-		{props.page + 1} / {props.totalPages + 1}
-	</div>
-	<div class="right">
+		</div>
+		<div class="center">
+			{props.page + 1} / {props.totalPages + 1}
+		</div>
+		<div class="right">
 
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.bottom-bar {

@@ -17,7 +17,9 @@
 
 <a class="item" href="{actualItem.href}">
 	<div class="image">
-		<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />
+		{#key actualItem.imageSrc}
+			<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />
+		{/key}
 	</div>
 	<div class="title" style="--progress: {actualItem.progress}">
 		<div class="title-bg"></div>
