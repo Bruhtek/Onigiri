@@ -33,12 +33,4 @@
 		width: 80px;
 		aspect-ratio: 1/1;
 	}
-
-	.title-container h1 {
-		font-size: 1.4em;
-	}
-
-	.title-container h2 {
-		font-size: 1.2em;
-	}
 </style>
