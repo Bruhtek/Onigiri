@@ -6,6 +6,7 @@ type PreferencesData = {
 	columnCountVertical: number;
 	columnCountHorizontal: number;
 	gridObjectGap: number;
+	useCorsProxy: boolean;
 };
 
 const preferencesStore = await createPersistentStore<PreferencesData>('preferences', {
@@ -14,6 +15,7 @@ const preferencesStore = await createPersistentStore<PreferencesData>('preferenc
 	columnCountVertical: 4,
 	columnCountHorizontal: 6,
 	gridObjectGap: 16,
+	useCorsProxy: false,
 });
 
 export default preferencesStore;

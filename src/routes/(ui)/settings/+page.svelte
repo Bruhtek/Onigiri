@@ -1,7 +1,11 @@
 <script lang="ts">
 
+	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
+	import Branding from './Branding.svelte';
+	import Settings from './Settings.svelte';
 </script>
 
-<h1>
-	WIP: Settings
-</h1>
+<CenteredLayout>
+	<Branding />
+	<Settings />
+</CenteredLayout>
