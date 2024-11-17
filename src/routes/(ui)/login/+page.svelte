@@ -4,7 +4,6 @@
 	import Numpad from '~icons/ph/numpad';
 	import SignIn from '~icons/ph/sign-in';
 	import { login } from '$lib/api/account.svelte';
-	import { redirect } from '@sveltejs/kit';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import { goto } from '$app/navigation';
 
@@ -14,7 +13,7 @@
 	const onSubmit = async () => {
 		const [success, error] = await login(email, password);
 		if (success) {
-			notificationStore.success('Succesfully logged in!');
+			notificationStore.success('Successfully logged in!');
 			await goto('/');
 		} else {
 			notificationStore.error(error);

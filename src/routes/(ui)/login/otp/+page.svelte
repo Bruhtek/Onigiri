@@ -1,14 +1,11 @@
 <script lang="ts">
-
 	import { onMount } from 'svelte';
 	import { otp_check, otp_delete, otp_generate, type OTPResponse, OTPResponseStates } from '$lib/api/account.svelte';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
-	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
 
 	let otpData = $state<OTPResponse>();
-	let shouldRedirect = $state<boolean>(false);
 
 	onMount(() => {
 		(async () => {

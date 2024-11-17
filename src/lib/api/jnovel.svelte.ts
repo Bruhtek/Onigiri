@@ -1,4 +1,4 @@
-import accountStore, { getAccountInfo } from '$lib/api/account.svelte.js';
+import accountStore from '$lib/api/account.svelte.js';
 
 const JNOVEL_URL = 'https://labs.j-novel.club';
 
@@ -15,6 +15,7 @@ const getHeaders = (options?: RequestInit) => {
 	return headers;
 };
 
+// #region J-Fetch
 export const jfetch = async (url: string, options?: RequestInit) => {
 	if (url.includes('?')) url += '&format=json';
 	else url += '?format=json';
@@ -31,6 +32,7 @@ export const jfetch = async (url: string, options?: RequestInit) => {
 	});
 };
 
+// #region J-Embed
 export const jembed = async (partId: string): Promise<string> => {
 	try {
 		const res = await fetch(EMBED_URL + `/${partId}/data.xhtml`, {

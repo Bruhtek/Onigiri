@@ -1,13 +1,44 @@
 <script lang="ts">
-	import { getAccountInfo } from '$lib/api/account.svelte';
 	import { onMount } from 'svelte';
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import { goto } from '$app/navigation';
 	import User from '~icons/ph/user';
 	import { toProperCase } from '$lib/helpers/utils';
+	import { z } from 'zod';
+	import { jfetch } from '$lib/api/jnovel.svelte';
 
-	let data = $state<Awaited<ReturnType<typeof getAccountInfo>>>();
+	let data = $state<z.infer<typeof accountInfoSchema>>();
+
+	export const accountInfoSchema = z
+		.object({
+			id: z.string(),
+			email: z.string(),
+			username: z.string(),
+			country: z.string(),
+			created: z.string().datetime(),
+			level: z.string(),
+			subscriptionStatus: z.string(),
+		})
+		.optional();
+
+	export const getAccountInfo = async (): Promise<z.infer<typeof accountInfoSchema>> => {
+		const res = await jfetch('/me');
+
+		if (!res.ok) {
+			console.error('Error getting account info - ', res.status);
+			return;
+		}
+
+		try {
+			const json = await res.json();
+			return accountInfoSchema.parse(json);
+		} catch (err) {
+			console.error('Error getting account info - ', err);
+			return;
+		}
+	};
+
 
 	let emailHash = $derived.by(() => {
 		if (!data) return '';

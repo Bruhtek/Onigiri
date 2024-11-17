@@ -22,7 +22,7 @@ export const releasesPageProperties = createStore<ReleasesPageProperties>({
 
 export const changeReleasesPage = (direction: number) => {
 	releasesPageProperties.update((v) => {
-		let page = 0;
+		let page: number;
 		if (direction < 0) {
 			page = Math.max(0, v.page - 1);
 			page = Math.min(Math.ceil(v.itemsCount / v.itemsPerPage) - 1, page);
@@ -35,6 +35,7 @@ export const changeReleasesPage = (direction: number) => {
 	});
 };
 
+// #region Fetch releases
 const ReleasesScheme = z.object({
 	parts: z.array(PartScheme),
 });

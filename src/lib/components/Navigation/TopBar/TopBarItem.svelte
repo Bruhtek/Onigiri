@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Component } from 'svelte';
 	import Books from '~icons/ph/books';
 
 	interface Props {

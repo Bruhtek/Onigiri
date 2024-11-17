@@ -26,7 +26,7 @@ export const updatePartProgress = async (partId: string, progress: number) => {
 	}
 };
 
-// #region parse_part_toc
+// #region Parts TOC
 export type PartTocResult = {
 	partIndex: number;
 	progress: number;

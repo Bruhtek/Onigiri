@@ -2,7 +2,6 @@ import { createPersistentStore } from '$lib/helpers/persistentStore.svelte.js';
 import { jfetch } from '$lib/api/jnovel.svelte';
 import { z } from 'zod';
 import { addSeconds } from 'date-fns';
-import { createStore } from '$lib/helpers/store.svelte';
 
 type AccountData = {
 	token: string | null;
@@ -14,35 +13,7 @@ const accountStore = await createPersistentStore<AccountData>('account', {
 	expiration: null,
 });
 
-export const accountInfoSchema = z
-	.object({
-		id: z.string(),
-		email: z.string(),
-		username: z.string(),
-		country: z.string(),
-		created: z.string().datetime(),
-		level: z.string(),
-		subscriptionStatus: z.string(),
-	})
-	.optional();
-
-export const getAccountInfo = async (): Promise<z.infer<typeof accountInfoSchema>> => {
-	const res = await jfetch('/me');
-
-	if (!res.ok) {
-		console.error('Error getting account info - ', res.status);
-		return;
-	}
-
-	try {
-		const json = await res.json();
-		return accountInfoSchema.parse(json);
-	} catch (err) {
-		console.error('Error getting account info - ', err);
-		return;
-	}
-};
-
+// #region Login
 export const loggedIn = () => {
 	console.log(accountStore.value);
 	return accountStore.value.token !== null;
@@ -64,8 +35,6 @@ const _setToken = async (responseObject: unknown) => {
 		token: res.id,
 		expiration: expires,
 	});
-
-	getAccountInfo();
 };
 
 /// Returns:
@@ -108,6 +77,8 @@ export const login = async (
 		return [false, 'Unspecified error while logging in. Contact the developer'];
 	}
 };
+
+// #region OTP
 
 export const OTPResponseScheme = z.object({
 	otp: z.string(),
