@@ -6,14 +6,11 @@
 
 	onMount(async () => {
 		if (accountStore.value.token) {
-			const res = await jfetch('/auth/logout', {
+			await jfetch('/auth/logout', {
 				method: 'POST',
 			});
 
-			console.log(res);
-
 			await accountStore.set({ token: null, expiration: null });
-
 			window.location.href = '/';
 		}
 	});

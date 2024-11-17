@@ -2,6 +2,7 @@ import { createPersistentStore } from '$lib/helpers/persistentStore.svelte.js';
 import { jfetch } from '$lib/api/jnovel.svelte';
 import { z } from 'zod';
 import { addSeconds } from 'date-fns';
+import releasesStore from '$lib/api/releases.svelte';
 
 type AccountData = {
 	token: string | null;
@@ -30,6 +31,9 @@ const _setToken = async (responseObject: unknown) => {
 
 	const created = new Date(res.created);
 	const expires = addSeconds(created, parseInt(res.ttl));
+
+	// clear releases, to get parts progress when we next request them
+	releasesStore.reset();
 
 	await accountStore.set({
 		token: res.id,

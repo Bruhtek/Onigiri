@@ -8,6 +8,7 @@
 	import ReaderSettings from '$lib/components/Reader/ReaderSettings/ReaderSettings.svelte';
 	import { isPartTocResult, type PartTocResult, updatePartProgress } from '$lib/api/parts.svelte';
 	import { mapFontFamily } from '$lib/stores/readerPreferencesStore.svelte.js';
+	import { waitMS } from '$lib/helpers/utils';
 
 	interface Props {
 		content: string;
@@ -43,7 +44,12 @@
 			return;
 		}
 
+		// hacky, but it works!
+		await waitMS(0);
+
 		const pw = calculatePageWidth();
+
+		console.log(pw)
 
 		pageHeight = contentDiv!.clientHeight;
 		const oldProgress = progress;
@@ -68,21 +74,23 @@
 		}
 	}
 
-	onMount(() => {
-		onResize();
-		setTimeout(() => {
-			onResize();
-			if(shouldGoToProgress) {
-				if(!isPartTocResult(props.partTocResult)) {
-					return;
-				}
-				updateCurrentPage(Math.floor(props.partTocResult.progress * pageCount));
-				shouldGoToProgress = false;
-			} else {
-				shouldGoToProgress = true;
+	onMount(async () => {
+		await onResize();
+		if(readerPreferencesStore.value.zonesFirstShow) {
+			showZones = true;
+		}
+		await waitMS(300);
+		await onResize();
+		if(shouldGoToProgress) {
+			if(!isPartTocResult(props.partTocResult)) {
+				return;
 			}
-			ready = true;
-		}, 300)
+			updateCurrentPage(Math.floor(props.partTocResult.progress * pageCount));
+			shouldGoToProgress = false;
+		} else {
+			shouldGoToProgress = true;
+		}
+		ready = true;
 	})
 
 	$effect(() => {
@@ -165,6 +173,7 @@
 {#if showSettings}
 	<ReaderSettings
 		onHide={() => showSettings = false}
+		showZones={() => showZones = true}
 		partTocResult={props.partTocResult}
 	/>
 {/if}
@@ -178,7 +187,10 @@
 	 use:touchPosition={touchPositionCallback}
 >
 	{#if showZones}
-		<ReaderZones tapZone={readerPreferencesStore.value.tapZone} onTap={() => showZones = false}/>
+		<ReaderZones tapZone={readerPreferencesStore.value.tapZone} onTap={() => {
+			readerPreferencesStore.patch({zonesFirstShow: false});
+			showZones = false
+		}}/>
 	{/if}
 	<div
 		id="content"

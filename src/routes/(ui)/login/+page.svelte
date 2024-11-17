@@ -6,9 +6,18 @@
 	import { login } from '$lib/api/account.svelte';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	let email = $state('');
 	let password = $state('');
+
+	onMount(() => {
+		const expired = $page.url.searchParams.get('expired');
+		if (expired === 'true') {
+			notificationStore.warn('Your login expired. Please login again.');
+		}
+	});
 
 	const onSubmit = async () => {
 		const [success, error] = await login(email, password);

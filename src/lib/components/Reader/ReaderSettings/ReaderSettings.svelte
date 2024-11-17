@@ -4,7 +4,8 @@
 	import type { PartTocResult } from '$lib/api/parts.svelte';
 
 	interface Props {
-		onHide: () => void;
+		onHide: () => unknown;
+		showZones: () => unknown;
 		partTocResult: PartTocResult | { error: string };
 	}
 
@@ -77,5 +78,6 @@
 
 	.bottom {
 		border-top: 2px solid var(--text);
+		flex-direction: row;
 	}
 </style>

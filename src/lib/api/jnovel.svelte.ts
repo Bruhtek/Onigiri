@@ -1,4 +1,5 @@
 import accountStore from '$lib/api/account.svelte.js';
+import { goto } from '$app/navigation';
 
 const JNOVEL_URL = 'https://labs.j-novel.club';
 
@@ -23,13 +24,23 @@ export const jfetch = async (url: string, options?: RequestInit) => {
 	//403 - Requires a subscription
 	//401 - Unauthorized
 	//410 on Me - Token expired
-	//410 on Part - Part expired
 
 	console.log(url);
-	return await fetch(API_URL + url, {
+	const res = await fetch(API_URL + url, {
 		...options,
 		headers: getHeaders(options),
 	});
+
+	if (res.status !== 410) {
+		return res;
+	} else {
+		// clear the expired token, redirect to log in with an explanatory message
+		// we use window.location.href to interrupt any other control flow, to avoid any problems
+		// related to incorrect 410 handling further in
+		await accountStore.reset();
+		window.location.href = `/login?expired=true`;
+		return res;
+	}
 };
 
 // #region J-Embed
@@ -44,6 +55,7 @@ export const jembed = async (partId: string): Promise<string> => {
 		if (res.status === 403) {
 			return 'Error: You have to log in to read this part!';
 		} else if (res.status !== 200) {
+			console.error(res);
 			return 'Error: Something went wrong while requesting novel data';
 		}
 

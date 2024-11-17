@@ -99,6 +99,7 @@ type ReaderPreferencesData = {
 	pageMargins: number;
 	fontSize: number;
 	tapZone: TapZone;
+	zonesFirstShow: boolean; // show tap zones when someone opens the reader for the first time
 	fontFamily: FontFamily;
 };
 
@@ -108,6 +109,7 @@ const readerPreferencesStore = await createPersistentStore<ReaderPreferencesData
 		pageMargins: 12,
 		fontSize: 18,
 		tapZone: TapZone.Edges,
+		zonesFirstShow: true,
 		fontFamily: FontFamily.Bookerly,
 	},
 );
