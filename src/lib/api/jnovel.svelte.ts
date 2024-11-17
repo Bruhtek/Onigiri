@@ -1,13 +1,9 @@
 import accountStore from '$lib/api/account.svelte.js';
-import preferencesStore from '$lib/stores/preferencesStore.svelte';
 
-const JNOVEL_URL = $derived(
-	preferencesStore.value.useCorsProxy
-		? 'https://cors.bruhtek.com/https://labs.j-novel.club'
-		: 'https://labs.j-novel.club',
-);
-const API_URL = $derived(`${JNOVEL_URL}/app/v2`);
-const EMBED_URL = $derived(`${JNOVEL_URL}/embed/v2`);
+const JNOVEL_URL = 'https://labs.j-novel.club';
+
+const API_URL = `${JNOVEL_URL}/app/v2`;
+const EMBED_URL = `${JNOVEL_URL}/embed/v2`;
 
 const getHeaders = (options?: RequestInit) => {
 	const headers: HeadersInit = {

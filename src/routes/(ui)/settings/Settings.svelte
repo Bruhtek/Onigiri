@@ -5,10 +5,10 @@
 <div class="settings-container">
 	<label>
 		<input type="checkbox"
-			   checked={preferencesStore.value.useCorsProxy}
-			   onchange={() => preferencesStore.patch({useCorsProxy: !preferencesStore.value.useCorsProxy})}
+			   checked={preferencesStore.value.verticalTabsWhileHorizontal}
+			   onchange={() => preferencesStore.patch({verticalTabsWhileHorizontal: !preferencesStore.value.verticalTabsWhileHorizontal})}
 		/>
-		Use CORS Proxy
+		Place Top Bar on the side while horizontal
 	</label>
 </div>
 
