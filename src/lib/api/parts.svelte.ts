@@ -9,21 +9,26 @@ const partTocSchema = z.object({
 });
 
 // #region Parts
-export const updatePartProgress = async (partId: string, progress: number) => {
-	const promise = jfetch(`/me/completion/${partId}`, {
-		method: 'PUT',
-		headers: {
-			'Content-Type': 'application/x-protobuf',
-		},
-		body: progress.toFixed(5),
-	});
+let debounceTimer = $state<number>(0);
+export const updatePartProgress = (partId: string, progress: number) => {
+	clearTimeout(debounceTimer);
 
-	updateReleaseProgress(partId, progress);
+	debounceTimer = setTimeout(async () => {
+		const promise = jfetch(`/me/completion/${partId}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/x-protobuf',
+			},
+			body: progress.toFixed(5),
+		});
 
-	const res = await promise;
-	if (!res.ok) {
-		console.error('Error updating progress - status code ' + res.status);
-	}
+		updateReleaseProgress(partId, progress);
+
+		const res = await promise;
+		if (!res.ok) {
+			console.error('Error updating progress - status code ' + res.status);
+		}
+	}, 500);
 };
 
 // #region Parts TOC

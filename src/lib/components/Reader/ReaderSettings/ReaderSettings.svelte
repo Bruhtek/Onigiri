@@ -5,7 +5,7 @@
 
 	interface Props {
 		onHide: () => unknown;
-		showZones: () => unknown;
+		toggleZones: (state: boolean) => unknown;
 		partTocResult: PartTocResult | { error: string };
 	}
 
@@ -37,7 +37,7 @@
 		/>
 	</div>
 	<div class="bottom">
-		<SettingsBottom />
+		<SettingsBottom toggleZones={props.toggleZones} />
 	</div>
 </div>
 
@@ -48,7 +48,7 @@
 		height: 100%;
 		left: 0;
 		top: 0;
-		z-index: 99;
+		z-index: 50;
 		display: flex;
 		justify-content: space-between;
 		flex-direction: column;

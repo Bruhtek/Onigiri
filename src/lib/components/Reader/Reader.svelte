@@ -4,15 +4,16 @@
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import BottomBar from '$lib/components/Reader/BottomBar.svelte';
 	import touchPosition from '$lib/helpers/useTouchPosition.svelte';
-	import ReaderZones from '$lib/components/Reader/ReaderZones.svelte';
 	import ReaderSettings from '$lib/components/Reader/ReaderSettings/ReaderSettings.svelte';
 	import { isPartTocResult, type PartTocResult, updatePartProgress } from '$lib/api/parts.svelte';
 	import { mapFontFamily } from '$lib/stores/readerPreferencesStore.svelte.js';
 	import { waitMS } from '$lib/helpers/utils';
+	import releasesStore from '$lib/api/releases.svelte';
 
 	interface Props {
 		content: string;
 		partTocResult: PartTocResult | { error: string };
+		toggleZones: (state: boolean) => unknown;
 		loading: boolean;
 		id: string;
 	}
@@ -20,7 +21,6 @@
 	let ready = $state<boolean>(false);
 
 	let margins = $derived(readerPreferencesStore.value.pageMargins);
-	let showZones = $state<boolean>(false);
 	let showSettings = $state<boolean>(false);
 
 	let contentDiv: HTMLDivElement|undefined = $state();
@@ -74,11 +74,16 @@
 		}
 	}
 
+	// when some settings are changes, refresh the reader
+	$effect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+		readerPreferencesStore.value.fontFamily;
+
+		onResize();
+	})
+
 	onMount(async () => {
 		await onResize();
-		if(readerPreferencesStore.value.zonesFirstShow) {
-			showZones = true;
-		}
 		await waitMS(300);
 		await onResize();
 		if(shouldGoToProgress) {
@@ -173,10 +178,11 @@
 {#if showSettings}
 	<ReaderSettings
 		onHide={() => showSettings = false}
-		showZones={() => showZones = true}
+		toggleZones={props.toggleZones}
 		partTocResult={props.partTocResult}
 	/>
 {/if}
+
 <div class="reader-container"
 	 class:hide={!ready && !props.loading}
 	 style="--margins: {margins}px;
@@ -186,12 +192,6 @@
 			--font-family: {mapFontFamily(readerPreferencesStore.value.fontFamily).css}"
 	 use:touchPosition={touchPositionCallback}
 >
-	{#if showZones}
-		<ReaderZones tapZone={readerPreferencesStore.value.tapZone} onTap={() => {
-			readerPreferencesStore.patch({zonesFirstShow: false});
-			showZones = false
-		}}/>
-	{/if}
 	<div
 		id="content"
 		bind:this={contentDiv}

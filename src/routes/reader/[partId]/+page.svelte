@@ -6,6 +6,8 @@
 	import Reader from '$lib/components/Reader/Reader.svelte';
 	import { onMount } from 'svelte';
 	import { parse_part_toc, type PartTocResult } from '$lib/api/parts.svelte';
+	import readerPreferencesStore from '$lib/stores/readerPreferencesStore.svelte';
+	import ReaderZones from '$lib/components/Reader/ReaderZones.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -13,6 +15,16 @@
 		notificationStore.error(data.error);
 		redirect(307, '/');
 	}
+
+	let showZones = $state<boolean>(false);
+	if (readerPreferencesStore.value.alwaysShowTapZones ||
+		readerPreferencesStore.value.tapZonesFirstShow
+	) {
+		showZones = true;
+	}
+	const toggleZones = (state: boolean) => {
+		showZones = state;
+	};
 
 	let partText = $state<string>('');
 	let partTocResult = $state<PartTocResult | { error: string }>({ error: 'Loading part data...' });
@@ -55,8 +67,17 @@
 	});
 </script>
 
+
+{#if showZones}
+	<ReaderZones tapZone={readerPreferencesStore.value.tapZone} onTap={() => {
+			if(readerPreferencesStore.value.tapZonesFirstShow) {
+				readerPreferencesStore.patch({tapZonesFirstShow: false});
+			}
+			showZones = false
+		}} />
+{/if}
 {#if partText}
-	<Reader content={partText} {partTocResult} loading={false} id={data.partId} />
+	<Reader content={partText} {partTocResult} loading={false} id={data.partId} {toggleZones} />
 {:else}
-	<Reader content={"Loading novel data"} {partTocResult} loading={true} id={data.partId} />
+	<Reader content={"Loading novel data"} {partTocResult} loading={true} id={data.partId} {toggleZones} />
 {/if}

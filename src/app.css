@@ -26,29 +26,6 @@ textarea {
 	padding: 0.2rem;
 }
 
-label:has(input[type="checkbox"]) {
-	display: flex;
-	align-items: center;
-	gap: 0.2rem;
-}
-
-input[type="checkbox"] {
-	-webkit-appearance: none;
-	appearance: none;
-	background-color: #fff0;
-	margin: 0;
-	font: inherit;
-	color: currentColor;
-	width: 1em;
-	height: 1em;
-	border: 0.15em solid currentColor;
-	border-radius: 0.15em;
-}
-
-input[type="checkbox"]:checked {
-	border-width: 0.4em;
-}
-
 a.button, button.button {
 	display: flex;
 	flex-direction: row;

@@ -99,19 +99,23 @@ type ReaderPreferencesData = {
 	pageMargins: number;
 	fontSize: number;
 	tapZone: TapZone;
-	zonesFirstShow: boolean; // show tap zones when someone opens the reader for the first time
+	tapZonesFirstShow: boolean; // show tap zones when someone opens the reader for the first time
+	alwaysShowTapZones: boolean;
 	fontFamily: FontFamily;
+};
+
+export const defaultReaderPreferencesData = {
+	pageMargins: 12,
+	fontSize: 18,
+	tapZone: TapZone.Edges,
+	tapZonesFirstShow: true,
+	alwaysShowTapZones: false,
+	fontFamily: FontFamily.Bookerly,
 };
 
 const readerPreferencesStore = await createPersistentStore<ReaderPreferencesData>(
 	'readerPreferences',
-	{
-		pageMargins: 12,
-		fontSize: 18,
-		tapZone: TapZone.Edges,
-		zonesFirstShow: true,
-		fontFamily: FontFamily.Bookerly,
-	},
+	defaultReaderPreferencesData,
 );
 
 export default readerPreferencesStore;

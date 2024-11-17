@@ -17,8 +17,6 @@
 			goto('/');
 		}
 	};
-
-	$inspect(props.partTocResult);
 </script>
 
 {#if !isPartTocResult(props.partTocResult)}
