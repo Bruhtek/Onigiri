@@ -214,7 +214,7 @@
 		overflow-x: hidden;
 		overflow-y: hidden;
 		column-fill: auto;
-		width: 100%;
+		width: var(--pageWidth);
 		column-width: var(--pageWidth);
 		column-gap: var(--margins);
 		scrollbar-width: none;
