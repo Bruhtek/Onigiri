@@ -297,8 +297,8 @@
 	#content :global(hr) {
 		margin-top: 0.2em;
 		margin-bottom: 0.2em;
-		color: black;
-		background-color: black;
+		color: var(--text);
+		background-color: var(--text);
 		width: 100%;
 	}
 

@@ -27,7 +27,7 @@
 	.hr::after {
 		content: '';
 		flex: 1;
-		border-bottom: 2px solid #000;
+		border-bottom: 2px solid var(--text);
 	}
 
 	.hr:not(:empty)::before {
