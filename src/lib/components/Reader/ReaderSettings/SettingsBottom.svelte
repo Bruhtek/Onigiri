@@ -8,6 +8,7 @@
 	} from '$lib/stores/readerPreferencesStore.svelte';
 	import Number from '$lib/components/Inputs/Number.svelte';
 	import Checkbox from '$lib/components/Inputs/Checkbox.svelte';
+	import HrWithText from '$lib/components/Utils/HrWithText.svelte';
 
 	interface Props {
 		toggleZones: (state: boolean) => void;
@@ -30,7 +31,13 @@
 			toggleZones(true);
 		}}
 	/>
-	<!-- TODO: Rework the reader so that pages update properly when changing fonts -->
+	<Checkbox
+		title="Show tap zones when entering the reader"
+		defaultValue={defaultReaderPreferencesData.alwaysShowTapZones}
+		current={readerPreferencesStore.value.alwaysShowTapZones}
+		onChange={(val) => readerPreferencesStore.patch({alwaysShowTapZones: val})}
+	/>
+	<hr>
 	<Select
 		title="Font Family"
 		options={availableFonts}
@@ -54,6 +61,13 @@
 		current={readerPreferencesStore.value.fontSize}
 		onChange={(val) => readerPreferencesStore.patch({fontSize: val})}
 	/>
+	<Checkbox
+		title="Justify Text"
+		defaultValue={defaultReaderPreferencesData.justifyText}
+		current={readerPreferencesStore.value.justifyText}
+		onChange={(val) => readerPreferencesStore.patch({justifyText: val})}
+	/>
+	<hr>
 	<Number
 		title="Page Margins"
 		min={0}
@@ -63,11 +77,23 @@
 		current={readerPreferencesStore.value.pageMargins}
 		onChange={(val) => readerPreferencesStore.patch({pageMargins: val})}
 	/>
-	<Checkbox
-		title="Show tap zones when entering the reader"
-		defaultValue={defaultReaderPreferencesData.alwaysShowTapZones}
-		current={readerPreferencesStore.value.alwaysShowTapZones}
-		onChange={(val) => readerPreferencesStore.patch({alwaysShowTapZones: val})}
+	<Number
+		title="Line Spacing"
+		min={0.9}
+		max={2}
+		step={0.05}
+		defaultValue={defaultReaderPreferencesData.lineSpacing}
+		current={readerPreferencesStore.value.lineSpacing}
+		onChange={(val) => readerPreferencesStore.patch({lineSpacing: val})}
+	/>
+	<Number
+		title="Paragraph Spacing"
+		min={0}
+		max={80}
+		step={2}
+		defaultValue={defaultReaderPreferencesData.paragraphSpacing}
+		current={readerPreferencesStore.value.paragraphSpacing}
+		onChange={(val) => readerPreferencesStore.patch({paragraphSpacing: val})}
 	/>
 </div>
 

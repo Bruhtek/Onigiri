@@ -189,7 +189,11 @@
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
 			--fontSize: {readerPreferencesStore.value.fontSize}px;
-			--font-family: {mapFontFamily(readerPreferencesStore.value.fontFamily).css}"
+			--font-family: {mapFontFamily(readerPreferencesStore.value.fontFamily).css};
+			--text-align: {readerPreferencesStore.value.justifyText ? 'justify' : 'left'};
+			--line-height: {readerPreferencesStore.value.lineSpacing}em;
+			--paragraph-spacing: {readerPreferencesStore.value.paragraphSpacing}px;
+"
 	 use:touchPosition={touchPositionCallback}
 >
 	<div
@@ -233,10 +237,11 @@
 		-ms-overflow-style: none;
 		user-select: none;
 		font-family: var(--font-family), fantasy;
+		text-align: var(--text-align);
 	}
 
 	#content :global(*) {
-		line-height: 1.2em;
+		line-height: var(--line-height);
 		max-width: var(--pageWidth);
 		font-size: var(--fontSize);
 	}
@@ -255,20 +260,22 @@
 		font-size: 1.55em;
 		margin-top: 2em;
 		margin-bottom: 1em;
-		line-height: 1.2em;
 		text-indent: 20pt;
 	}
 	#content :global(h2) {
 		font-size: 1.15em;
 		margin-top: 1.5em;
 		margin-bottom: .5em;
-		line-height: 1.2em;
 		text-indent: 20pt;
 	}
 
 	#content :global(p) {
 		display: block;
 		text-indent: 1rem;
+
+		:global(+ p) {
+			margin-top: var(--paragraph-spacing);
+		}
 
 		:global(&.noindent) {
 			text-indent: 0;

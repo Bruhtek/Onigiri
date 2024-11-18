@@ -101,7 +101,10 @@ type ReaderPreferencesData = {
 	tapZone: TapZone;
 	tapZonesFirstShow: boolean; // show tap zones when someone opens the reader for the first time
 	alwaysShowTapZones: boolean;
+	justifyText: boolean;
 	fontFamily: FontFamily;
+	lineSpacing: number;
+	paragraphSpacing: number;
 };
 
 export const defaultReaderPreferencesData = {
@@ -110,7 +113,10 @@ export const defaultReaderPreferencesData = {
 	tapZone: TapZone.Edges,
 	tapZonesFirstShow: true,
 	alwaysShowTapZones: false,
+	justifyText: true,
 	fontFamily: FontFamily.Bookerly,
+	lineSpacing: 1.2,
+	paragraphSpacing: 8,
 };
 
 const readerPreferencesStore = await createPersistentStore<ReaderPreferencesData>(

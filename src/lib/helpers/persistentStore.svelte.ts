@@ -8,7 +8,7 @@ export async function createPersistentStore<T>(key: string, initialValue: T) {
 	// if this is an object, we want to ensure that all keys are present
 	// even after updating initialValue in the future and adding new keys
 	if (typeof initialValue === 'object') {
-		value = initialValue;
+		value = structuredClone(initialValue);
 		// @ts-expect-error - we checked that this is an object
 		Object.assign(value, previousValue);
 	}

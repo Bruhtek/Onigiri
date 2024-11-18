@@ -2,6 +2,7 @@
 	import Plus from '~icons/ph/plus';
 	import Minus from '~icons/ph/minus';
 	import ArrowArcLeft from '~icons/ph/arrow-arc-left';
+	import { defaultReaderPreferencesData } from '$lib/stores/readerPreferencesStore.svelte';
 
 	interface Props {
 		onChange: (selected: number) => void;
@@ -16,16 +17,18 @@
 	let { onChange, current, title, min, max, defaultValue = current, step = 1 }: Props = $props();
 
 	const increase = () => {
-		const newVal = Math.min(current + step, max);
+		const newVal = Math.round(Math.min(current + step, max) * 1000) / 1000;
 		onChange(newVal);
 	};
 	const decrease = () => {
-		const newVal = Math.max(current - step, min);
+		const newVal = Math.round(Math.max(current - step, min) * 1000) / 1000;
 		onChange(newVal);
 	};
 	const reset = () => {
 		onChange(defaultValue);
 	};
+
+	$inspect(defaultReaderPreferencesData);
 </script>
 
 <div class="container">
@@ -78,5 +81,7 @@
 		cursor: pointer;
 		font-size: 1.4em;
 		text-decoration: underline;
+		min-width: 2em;
+		text-align: center
 	}
 </style>
