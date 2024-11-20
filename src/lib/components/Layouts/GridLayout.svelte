@@ -2,9 +2,10 @@
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
-	import { changeReleasesPage, releasesPageProperties } from '$lib/api/releases.svelte';
+	import { changeReleasesPage, fetchMoreReleases, releasesPageProperties } from '$lib/api/releases.svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import GridItem from '$lib/components/Layouts/GridItem.svelte';
+	import { untrack } from 'svelte';
 
 	interface GridLayoutProps {
 		items: LayoutItemProp[];
@@ -47,12 +48,30 @@
 	let itemsOnPage = $derived.by(() => items.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
 
 	$effect(() => {
-		releasesPageProperties.set({
-			partsPerPage: itemsPerPage,
-			page: currentPage,
-			itemsPerPage: itemsPerPage,
-			itemsCount: items.length,
+		const ipp = itemsPerPage;
+		const p = currentPage;
+		const ic = items.length;
+
+		untrack(() => {
+			releasesPageProperties.patch({
+				partsPerPage: ipp,
+				page: p,
+				itemsPerPage: ipp,
+				itemsCount: ic,
+			});
 		});
+
+
+		// if we are two pages away from the last page
+		if (currentPage * itemsPerPage > items.length - itemsPerPage * 2) {
+			untrack(() => {
+				if (releasesPageProperties.value.lastPage || releasesPageProperties.value.loading) {
+					return;
+				}
+
+				fetchMoreReleases();
+			});
+		}
 	});
 
 	const gestureCallback = (direction: Direction) => {

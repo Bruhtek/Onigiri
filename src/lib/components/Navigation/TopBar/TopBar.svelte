@@ -28,11 +28,11 @@
 
 <style>
 	.top-bar {
-		height: 4rem;
+		height: 5rem;
 		border-bottom: 3px solid var(--text);
 		display: flex;
 		justify-content: space-between;
-		padding: 0 1rem;
+		padding: 0.5rem 1rem;
 
 		&.responsive {
 			@media screen and (min-aspect-ratio: 1/1) {

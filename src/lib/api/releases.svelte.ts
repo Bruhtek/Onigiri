@@ -3,12 +3,17 @@ import { createArrayStore, createStore } from '$lib/helpers/store.svelte';
 import { jfetch } from '$lib/api/jnovel.svelte';
 import { z } from 'zod';
 import notificationStore from '$lib/stores/notificationStore.svelte';
+import { PaginationScheme } from '$lib/api/schemas';
+import releasesPreferencesStore from '$lib/stores/releasesPreferencesStore.svelte';
+import { loggedIn } from '$lib/api/account.svelte';
 
 type ReleasesPageProperties = {
 	page: number;
 	partsPerPage: number;
 	itemsPerPage: number;
 	itemsCount: number;
+	loading: boolean;
+	lastPage: boolean;
 };
 
 const releasesStore = createArrayStore<Part>([]);
@@ -18,6 +23,8 @@ export const releasesPageProperties = createStore<ReleasesPageProperties>({
 	partsPerPage: 0,
 	itemsPerPage: -1,
 	itemsCount: 0,
+	loading: false,
+	lastPage: false,
 });
 
 export const changeReleasesPage = (direction: number) => {
@@ -38,10 +45,19 @@ export const changeReleasesPage = (direction: number) => {
 // #region Fetch releases
 const ReleasesScheme = z.object({
 	parts: z.array(PartScheme),
+	pagination: PaginationScheme,
 });
 export const fetchMoreReleases = async (limit: number = 200) => {
+	if (releasesPageProperties.value.lastPage || releasesPageProperties.value.loading) {
+		return;
+	}
+
+	releasesPageProperties.patch({ loading: true });
 	const currentNum = releasesStore.value.length;
-	const query = `?limit=${limit}&skip=${currentNum}&type=1`; // type 1 - only Novels
+	let query = `?limit=${limit}&skip=${currentNum}&type=1`; // type 1 - only Novels
+	if (loggedIn() && releasesPreferencesStore.value.favoritesOnly) {
+		query += '&only_follows=true';
+	}
 
 	try {
 		const res = await jfetch(`/releases${query}`);
@@ -53,10 +69,17 @@ export const fetchMoreReleases = async (limit: number = 200) => {
 
 		releasesStore.update((parts) => [...parts, ...newParts]);
 
+		if (data.pagination.lastPage) {
+			notificationStore.info('You have reached the last page');
+			releasesPageProperties.patch({ lastPage: true });
+		}
+
 		notificationStore.success(`Loaded ${limit} more releases`);
 	} catch (e) {
 		console.log(e);
 		notificationStore.error(`Error loading more releases: ${e}`);
+	} finally {
+		releasesPageProperties.patch({ loading: false });
 	}
 };
 
