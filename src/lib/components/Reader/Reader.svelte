@@ -8,7 +8,7 @@
 	import { isPartTocResult, type PartTocResult, updatePartProgress } from '$lib/api/parts.svelte';
 	import { mapFontFamily } from '$lib/stores/readerPreferencesStore.svelte.js';
 	import { waitMS } from '$lib/helpers/utils';
-	import releasesStore from '$lib/api/releases.svelte';
+	import ArrowRight from '~icons/ph/arrow-right';
 
 	interface Props {
 		content: string;
@@ -40,16 +40,14 @@
 	let progress = $derived(currentPage / pageCount);
 
 	const onResize = async () => {
-		if(!contentDiv) {
-			return;
-		}
-
 		// hacky, but it works!
 		await waitMS(0);
 
 		const pw = calculatePageWidth();
 
-		console.log(pw)
+		if(!contentDiv) {
+			return;
+		}
 
 		pageHeight = contentDiv!.clientHeight;
 		const oldProgress = progress;
@@ -90,7 +88,7 @@
 			if(!isPartTocResult(props.partTocResult)) {
 				return;
 			}
-			updateCurrentPage(Math.floor(props.partTocResult.progress * pageCount));
+			updateCurrentPage(Math.floor(props.partTocResult.currentPart.progress * pageCount));
 			shouldGoToProgress = false;
 		} else {
 			shouldGoToProgress = true;
@@ -104,8 +102,8 @@
 		}
 
 		if(untrack(() => shouldGoToProgress)) {
-			console.log("Going to progress from effect", Math.floor(props.partTocResult.progress * pageCount));
-			updateCurrentPage(Math.floor(props.partTocResult.progress * pageCount));
+			console.log("Going to progress from effect", Math.floor(props.partTocResult.currentPart.progress * pageCount));
+			updateCurrentPage(Math.floor(props.partTocResult.currentPart.progress * pageCount));
 			shouldGoToProgress = false;
 		} else {
 			shouldGoToProgress = true;
@@ -202,6 +200,12 @@
 		onresize={onResize}>
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html props.content}
+
+		{#if props.partTocResult && isPartTocResult(props.partTocResult) && props.partTocResult.nextPart}
+			<a class="button next-part-button" href="/reader/{props.partTocResult.nextPart.id}">
+				Next Part <ArrowRight width="32" height="32" />
+			</a>
+		{/if}
 	</div>
 	<BottomBar page={currentPage} totalPages={pageCount} />
 </div>
@@ -223,6 +227,11 @@
 	}
 	.reader-container.hide {
 		opacity: 0;
+	}
+	.next-part-button {
+		width: max-content;
+		margin: 2rem auto;
+		padding: 0.5rem;
 	}
 
 	#content {

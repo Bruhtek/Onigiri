@@ -34,10 +34,9 @@ export const updatePartProgress = (partId: string, progress: number) => {
 // #region Parts TOC
 export type PartTocResult = {
 	partIndex: number;
-	progress: number;
-	nextPartId?: string;
-	previousPartId?: string;
-	partIndexes: string;
+	nextPart?: Part;
+	previousPart?: Part;
+	currentPart: Part;
 	seriesTitle: string;
 };
 export const isPartTocResult = (res: PartTocResult | { error: string }): res is PartTocResult => {
@@ -64,25 +63,24 @@ export const parse_part_toc = (
 		return { error: 'Part not found in the TOC' };
 	}
 
-	let prevId: string | undefined = undefined;
-	let nextId: string | undefined = undefined;
+	let prevPart: Part | undefined = undefined;
+	let nextPart: Part | undefined = undefined;
 
 	if (currentPartIndex > 0) {
-		prevId = toc.data.parts.parts[currentPartIndex - 1].id;
+		prevPart = new Part(toc.data.parts.parts[currentPartIndex - 1]);
 	}
 	if (currentPartIndex < toc.data.parts.parts.length - 1) {
-		nextId = toc.data.parts.parts[currentPartIndex + 1].id;
+		nextPart = new Part(toc.data.parts.parts[currentPartIndex + 1]);
 	}
 
 	const currentPart = new Part(toc.data.parts.parts[currentPartIndex]);
 
 	return {
 		partIndex: currentPartIndex + 1,
-		nextPartId: nextId,
-		previousPartId: prevId,
 		seriesTitle: toc.data.seriesTitle,
-		partIndexes: currentPart.getFullIndexes(),
-		progress: currentPart.progress,
+		currentPart: currentPart,
+		nextPart: nextPart,
+		previousPart: prevPart,
 		error: undefined,
 	};
 };

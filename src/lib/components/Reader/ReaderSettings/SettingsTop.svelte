@@ -46,11 +46,27 @@
 			</button>
 		</div>
 		<div class="right">
-			{props.partTocResult.partIndexes}
+			{props.partTocResult.currentPart.getFullIndexes()}
 		</div>
 	</div>
 	<div class="partTitle">
 		{props.partTocResult.seriesTitle}
+	</div>
+	<div class="navigation">
+		<div class="left">
+			{#if props.partTocResult.previousPart}
+				<a class="button" href="/reader/{props.partTocResult.previousPart.id}">
+					Previous Part
+				</a>
+			{/if}
+		</div>
+		<div class="right">
+			{#if props.partTocResult.nextPart}
+				<a class="button" href="/reader/{props.partTocResult.nextPart.id}">
+					Next Part
+				</a>
+			{/if}
+		</div>
 	</div>
 {/if}
 
@@ -68,5 +84,10 @@
 
 	.partTitle {
 		text-align: center;
+	}
+
+	.navigation {
+		display: flex;
+		justify-content: space-between;
 	}
 </style>

@@ -4,10 +4,10 @@
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import Reader from '$lib/components/Reader/Reader.svelte';
-	import { onMount } from 'svelte';
 	import { parse_part_toc, type PartTocResult } from '$lib/api/parts.svelte';
 	import readerPreferencesStore from '$lib/stores/readerPreferencesStore.svelte';
 	import ReaderZones from '$lib/components/Reader/ReaderZones.svelte';
+	import { untrack } from 'svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -17,11 +17,15 @@
 	}
 
 	let showZones = $state<boolean>(false);
-	if (readerPreferencesStore.value.alwaysShowTapZones ||
-		readerPreferencesStore.value.tapZonesFirstShow
-	) {
-		showZones = true;
-	}
+	const conditionallyShowZones = () => {
+		if (readerPreferencesStore.value.alwaysShowTapZones ||
+			readerPreferencesStore.value.tapZonesFirstShow
+		) {
+			showZones = true;
+		}
+	};
+	conditionallyShowZones();
+
 	const toggleZones = (state: boolean) => {
 		showZones = state;
 	};
@@ -30,6 +34,9 @@
 	let partTocResult = $state<PartTocResult | { error: string }>({ error: 'Loading part data...' });
 
 	const requestData = async () => {
+		partText = '';
+		partTocResult = { error: 'Loading part data...' };
+
 		const res = jfetch(`/parts/${data.partId}/toc`);
 		const text = await jembed(data.partId);
 
@@ -62,22 +69,25 @@
 		partText = text;
 	};
 
-	onMount(() => {
-		requestData();
+	$effect(() => {
+		data.partId;
+		untrack(() => requestData());
 	});
 </script>
 
 
-{#if showZones}
-	<ReaderZones tapZone={readerPreferencesStore.value.tapZone} onTap={() => {
+{#key data.partId}
+	{#if showZones}
+		<ReaderZones tapZone={readerPreferencesStore.value.tapZone} onTap={() => {
 			if(readerPreferencesStore.value.tapZonesFirstShow) {
 				readerPreferencesStore.patch({tapZonesFirstShow: false});
 			}
 			showZones = false
 		}} />
-{/if}
-{#if partText}
-	<Reader content={partText} {partTocResult} loading={false} id={data.partId} {toggleZones} />
-{:else}
-	<Reader content={"Loading novel data"} {partTocResult} loading={true} id={data.partId} {toggleZones} />
-{/if}
+	{/if}
+	{#if partText}
+		<Reader content={partText} {partTocResult} loading={false} id={data.partId} {toggleZones} />
+	{:else}
+		<Reader content={"Loading novel data"} {partTocResult} loading={true} id={data.partId} {toggleZones} />
+	{/if}
+{/key}
