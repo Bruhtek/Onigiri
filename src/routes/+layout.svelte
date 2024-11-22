@@ -4,6 +4,7 @@
 	import Notifications from '$lib/components/Notifications/Notifications.svelte';
 	import { onMount } from 'svelte';
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
+	import connectivityCheck from '$lib/helpers/useConnectivityCheck.svelte';
 
 	const checkOrientation = () => {
 		isVertical.set(!window.matchMedia('screen and (min-aspect-ratio: 1/1)').matches);
@@ -14,7 +15,11 @@
 
 <title>Onigiri for J-Novel Club</title>
 
-<svelte:window onload={checkOrientation} onresize={checkOrientation} />
+<svelte:window
+	onload={checkOrientation}
+	onresize={checkOrientation}
+	use:connectivityCheck
+/>
 
 <div class="content"
 	 class:dark={preferencesStore.value.darkMode}
