@@ -10,12 +10,13 @@ import { build, files, version, prerendered } from '$service-worker';
 const CACHE_RESOURCES = `cache-resources-${version}`;
 const CACHE_IMAGES_CDN = `cache-images`;
 
-const ASSETS = [...build, ...files, ...prerendered];
+const ASSETS = [...build, ...files];
+const FILES_TO_CACHE = [...ASSETS, ...prerendered];
 
 sw.addEventListener('install', (event: ExtendableEvent) => {
 	const addFilesToCache = async () => {
 		const cache = await caches.open(CACHE_RESOURCES);
-		await cache.addAll(ASSETS);
+		await cache.addAll(FILES_TO_CACHE);
 	};
 	console.log('Install');
 
