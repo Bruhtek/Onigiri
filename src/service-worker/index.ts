@@ -5,12 +5,12 @@
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
-import { build, files, version } from '$service-worker';
+import { build, files, version, prerendered } from '$service-worker';
 
 const CACHE_RESOURCES = `cache-resources-${version}`;
 const CACHE_IMAGES_CDN = `cache-images`;
 
-const ASSETS = [...build, ...files];
+const ASSETS = [...build, ...files, ...prerendered];
 
 sw.addEventListener('install', (event: ExtendableEvent) => {
 	const addFilesToCache = async () => {
@@ -33,6 +33,7 @@ sw.addEventListener('activate', (event: ExtendableEvent) => {
 	};
 
 	console.log('Activate');
+	console.log(prerendered);
 
 	event.waitUntil(deleteOldCaches());
 });
