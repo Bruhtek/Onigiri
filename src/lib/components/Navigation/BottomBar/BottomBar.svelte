@@ -1,16 +1,24 @@
 <script lang="ts">
 	import { changeReleasesPage, releasesPageProperties } from '$lib/api/releases.svelte';
-
 	import ArrowRight from '~icons/ph/arrow-right';
 	import ArrowLeft from '~icons/ph/arrow-left';
 	import Star from '~icons/ph/star';
 	import StarFill from '~icons/ph/star-fill';
+	import Gear from '~icons/ph/gear';
 	import { loggedIn } from '$lib/api/account.svelte';
 	import IconCheckbox from '$lib/components/Inputs/IconCheckbox.svelte';
 	import releasesPreferencesStore, { changeFavoritesOnly } from '$lib/stores/releasesPreferencesStore.svelte';
+	import type { Snippet } from 'svelte';
+
+	let { settingsPanel }: { settingsPanel: Snippet } = $props();
+
+	let settingsOpen = $state<boolean>(false);
 </script>
 
 <div class="bottom-bar">
+	{#if settingsOpen}
+		{@render settingsPanel()}
+	{/if}
 	<div class="left">
 		{#if loggedIn() && releasesPreferencesStore.value.favoritesOnly}
 			Releases (Only followed)
@@ -41,6 +49,9 @@
 				{/snippet}
 			</IconCheckbox>
 		{/if}
+		<button onclick={() => settingsOpen = !settingsOpen}>
+			<Gear width="32px" height="32px" />
+		</button>
 	</div>
 </div>
 
@@ -51,7 +62,7 @@
 		place-content: center;
 		position: relative;
 	}
-
+	
 	.bottom-bar .right, .left {
 		position: absolute;
 		top: 50%;
@@ -60,6 +71,8 @@
 
 	.right {
 		right: 1rem;
+		display: flex;
+		gap: 0.5rem;
 	}
 
 	.left {

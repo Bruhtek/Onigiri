@@ -18,12 +18,17 @@ body {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="password"],
 input[type="email"],
 input[type="url"],
 textarea {
 	border: 2px solid var(--text);
+	background-color: var(--bg);
+	color: var(--text);
 	padding: 0.2rem;
+	font-size: 1.2em;
+	font-family: inherit;
 }
 
 a.button, button.button {

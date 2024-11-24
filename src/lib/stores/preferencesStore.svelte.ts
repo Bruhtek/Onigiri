@@ -9,13 +9,17 @@ type PreferencesData = {
 	darkMode: boolean;
 };
 
-const preferencesStore = await createPersistentStore<PreferencesData>('preferences', {
+export const defaultPreferencesData: PreferencesData = {
 	verticalTabsWhileHorizontal: true,
 	releasesDisplayType: 'grid',
 	columnCountVertical: 4,
 	columnCountHorizontal: 6,
 	gridObjectGap: 16,
 	darkMode: false,
-});
+};
+const preferencesStore = await createPersistentStore<PreferencesData>(
+	'preferences',
+	defaultPreferencesData,
+);
 
 export default preferencesStore;

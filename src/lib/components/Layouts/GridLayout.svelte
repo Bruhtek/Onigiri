@@ -14,7 +14,7 @@
 	let { items }: GridLayoutProps = $props();
 
 	const columnAspectRatio = 2 / 3;
-	const gap = preferencesStore.value.gridObjectGap;
+	const gap = $derived(preferencesStore.value.gridObjectGap);
 
 	let columnCount = $derived(isVertical.value ? preferencesStore.value.columnCountVertical : preferencesStore.value.columnCountHorizontal);
 

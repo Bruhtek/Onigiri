@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import connectivityCheck from '$lib/helpers/useConnectivityCheck.svelte';
+	import FullScreenDialog from '$lib/components/Inputs/FullScreenDialog.svelte';
 
 	const checkOrientation = () => {
 		isVertical.set(!window.matchMedia('screen and (min-aspect-ratio: 1/1)').matches);
@@ -24,6 +25,7 @@
 <div class="content"
 	 class:dark={preferencesStore.value.darkMode}
 >
+	<FullScreenDialog />
 	<Notifications />
 	<slot />
 </div>
