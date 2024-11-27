@@ -10,6 +10,7 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	declare const __CHANGELOG_STRING__: string;
 }
 
 export {};

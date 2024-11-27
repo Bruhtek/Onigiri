@@ -1,9 +1,21 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-// import mkcert from 'vite-plugin-mkcert';
+import mkcert from 'vite-plugin-mkcert';
 import Icons from 'unplugin-icons/vite';
 
+import { exec } from 'child_process';
+import { promisify } from 'node:util';
+
+const pexec = promisify(exec);
+const __CHANGELOG_STRING__ = JSON.stringify(
+	(await pexec(`git log --pretty="%C(auto)%h %s" --first-parent`)).stdout,
+);
+
+// git log --pretty='%C(auto)%h %s' --first-parent
 export default defineConfig({
+	define: {
+		__CHANGELOG_STRING__: __CHANGELOG_STRING__,
+	},
 	server: {
 		proxy: {},
 	},
