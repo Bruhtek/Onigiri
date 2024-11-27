@@ -1,7 +1,6 @@
 <script lang="ts">
 	import BottomBar from '$lib/components/Navigation/BottomBar/BottomBar.svelte';
 	import Number from '$lib/components/Inputs/Number.svelte';
-	import releasesPreferencesStore from '$lib/stores/releasesPreferencesStore.svelte';
 	import preferencesStore, { defaultPreferencesData } from '$lib/stores/preferencesStore.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
 </script>
@@ -34,9 +33,9 @@
 				current={preferencesStore.value.gridObjectGap}
 				onChange={(v) => preferencesStore.patch({gridObjectGap: v})}
 				defaultValue={defaultPreferencesData.gridObjectGap}
-				step={2}
+				step={4}
 				min={0}
-				max={100}
+				max={40}
 				title="Padding"
 			/>
 		</div>

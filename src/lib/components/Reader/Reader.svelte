@@ -21,6 +21,7 @@
 	let ready = $state<boolean>(false);
 
 	let margins = $derived(readerPreferencesStore.value.pageMargins);
+	let fontFamilyCSS = $derived(mapFontFamily(readerPreferencesStore.value.fontFamily).css);
 	let showSettings = $state<boolean>(false);
 
 	let contentDiv: HTMLDivElement|undefined = $state();
@@ -72,14 +73,6 @@
 		}
 	}
 
-	// when some settings are changes, refresh the reader
-	$effect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-		readerPreferencesStore.value.fontFamily;
-
-		onResize();
-	})
-
 	onMount(async () => {
 		await onResize();
 		await waitMS(300);
@@ -88,7 +81,7 @@
 			if(!isPartTocResult(props.partTocResult)) {
 				return;
 			}
-			updateCurrentPage(Math.floor(props.partTocResult.currentPart.progress * pageCount));
+			updateCurrentPage(Math.round(props.partTocResult.currentPart.progress * pageCount));
 			shouldGoToProgress = false;
 		} else {
 			shouldGoToProgress = true;
@@ -187,7 +180,7 @@
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
 			--fontSize: {readerPreferencesStore.value.fontSize}px;
-			--font-family: {mapFontFamily(readerPreferencesStore.value.fontFamily).css};
+			--font-family: {fontFamilyCSS};
 			--text-align: {readerPreferencesStore.value.justifyText ? 'justify' : 'left'};
 			--line-height: {readerPreferencesStore.value.lineSpacing}em;
 			--paragraph-spacing: {readerPreferencesStore.value.paragraphSpacing}px;

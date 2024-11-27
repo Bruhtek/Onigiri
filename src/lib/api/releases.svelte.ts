@@ -77,7 +77,11 @@ export const fetchMoreReleases = async (limit: number = 200) => {
 		notificationStore.success(`Loaded ${limit} more releases`);
 	} catch (e) {
 		console.log(e);
-		notificationStore.error(`Error loading more releases: ${e}`);
+		if (e instanceof TypeError) {
+			notificationStore.error('Error loading more releases: no internet!');
+		} else {
+			notificationStore.error(`Error loading more releases: ${e}`);
+		}
 	} finally {
 		releasesPageProperties.patch({ loading: false });
 	}

@@ -6,12 +6,17 @@
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import connectivityCheck from '$lib/helpers/useConnectivityCheck.svelte';
 	import FullScreenDialog from '$lib/components/Inputs/FullScreenDialog.svelte';
+	import init from '$lib/lifecycle/init.js';
 
+	const onInit = () => {
+		init();
+		checkOrientation();
+	};
 	const checkOrientation = () => {
 		isVertical.set(!window.matchMedia('screen and (min-aspect-ratio: 1/1)').matches);
 	};
 
-	onMount(checkOrientation);
+	onMount(onInit);
 </script>
 
 <title>Onigiri for J-Novel Club</title>
