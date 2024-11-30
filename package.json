@@ -10,7 +10,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"test": "vitest"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.3.1",
@@ -23,6 +24,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.46.0",
 		"globals": "^15.12.0",
+		"jsdom": "^25.0.1",
 		"prettier": "^3.3.3",
 		"prettier-plugin-svelte": "^3.2.8",
 		"svelte": "^5.1.16",
@@ -31,7 +33,9 @@
 		"typescript": "^5.6.3",
 		"typescript-eslint": "^8.14.0",
 		"vite": "5.4.6",
-		"vite-plugin-mkcert": "^1.17.6"
+		"vite-plugin-mkcert": "^1.17.6",
+		"vitest": "^2.1.6",
+		"vitest-fetch-mock": "^0.4.2"
 	},
 	"type": "module",
 	"packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81",

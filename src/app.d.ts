@@ -1,4 +1,5 @@
 import 'unplugin-icons/types/svelte';
+import 'vitest-fetch-mock';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces

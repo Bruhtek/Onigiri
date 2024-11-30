@@ -1,5 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import mkcert from 'vite-plugin-mkcert';
 import Icons from 'unplugin-icons/vite';
 
@@ -30,5 +30,15 @@ export default defineConfig({
 	],
 	build: {
 		target: 'es2022',
+	},
+	resolve: process.env.VITEST
+		? {
+				conditions: ['browser'],
+			}
+		: undefined,
+	test: {
+		globals: true,
+		setupFiles: './src/vitest.setup.ts',
+		environment: 'jsdom',
 	},
 });
