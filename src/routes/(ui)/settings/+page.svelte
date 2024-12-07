@@ -2,6 +2,7 @@
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import Branding from './Branding.svelte';
 	import Settings from './Settings.svelte';
+	import ServiceWorkerInfo from './ServiceWorkerInfo.svelte';
 
 	// eslint-disable-next-line no-undef
 	let changelog = $derived(__CHANGELOG_STRING__.trim().split('\n').map(s => [s.slice(0, 6), s.slice(7)]));
@@ -11,6 +12,7 @@
 <CenteredLayout>
 	<Branding />
 	<Settings />
+	<ServiceWorkerInfo />
 </CenteredLayout>
 
 <div class="container">

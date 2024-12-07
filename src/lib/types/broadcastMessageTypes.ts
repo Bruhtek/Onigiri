@@ -26,3 +26,13 @@ export function isDynamicCacheMessage(obj: unknown): obj is DynamicCacheMessage 
 
 	return base.action === 'reset';
 }
+
+export type StatusMessage = {
+	type: 'StatusMessage';
+};
+
+export function isStatusMessage(obj: unknown): obj is StatusMessage {
+	return (
+		typeof obj === 'object' && obj !== null && (obj as StatusMessage).type === 'StatusMessage'
+	);
+}

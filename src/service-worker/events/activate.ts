@@ -4,10 +4,13 @@
 /// <reference lib="webworker" />
 
 import { CACHE_RESOURCES } from '../env';
+import { serviceWorkerLifecycle } from '../data.svelte';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
 sw.addEventListener('activate', (event: ExtendableEvent) => {
+	serviceWorkerLifecycle.set('active');
+	console.log('Service Worker: Active');
 	// Remove previous cached data from disk
 	const deleteOldCaches = async () => {
 		for (const key of await caches.keys()) {
@@ -16,8 +19,7 @@ sw.addEventListener('activate', (event: ExtendableEvent) => {
 			}
 		}
 	};
-
-	console.log('Activate');
-
+	
+	event.waitUntil(sw.clients.claim());
 	event.waitUntil(deleteOldCaches());
 });

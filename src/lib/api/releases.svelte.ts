@@ -74,7 +74,7 @@ export const fetchMoreReleases = async (limit: number = 200) => {
 			releasesPageProperties.patch({ lastPage: true });
 		}
 
-		notificationStore.success(`Loaded ${limit} more releases`);
+		notificationStore.success(`Loaded ${limit} more releases`, 2000);
 	} catch (e) {
 		console.log(e);
 		if (e instanceof TypeError) {
