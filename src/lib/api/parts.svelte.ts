@@ -9,7 +9,7 @@ const partTocSchema = z.object({
 });
 
 // #region Parts
-let debounceTimer = $state<number>(0);
+let debounceTimer = $state<number | NodeJS.Timeout>(0);
 export const updatePartProgress = (partId: string, progress: number) => {
 	clearTimeout(debounceTimer);
 
