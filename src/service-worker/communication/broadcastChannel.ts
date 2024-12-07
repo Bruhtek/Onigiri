@@ -3,7 +3,7 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
-import { serviceWorkerLifecycle } from '../data.svelte';
+import { serviceWorkerLifecycle } from '../data.js';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 

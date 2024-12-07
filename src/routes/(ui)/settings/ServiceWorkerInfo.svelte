@@ -20,6 +20,11 @@
 				}, 1000);
 			}
 		});
+		serviceWorkerStatus.catch(() => {
+			setTimeout(() => {
+				checkServiceWorkerStatus();
+			}, 1000);
+		});
 	};
 
 	onMount(() => {

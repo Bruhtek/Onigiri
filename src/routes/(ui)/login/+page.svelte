@@ -35,9 +35,9 @@
 
 	<div class="form">
 		<label for="email">E-Mail</label>
-		<input name="email" type="email" bind:value={email}>
+		<input name="email" type="email" id="email" bind:value={email}>
 		<label for="password">Password</label>
-		<input name="password" type="password" bind:value={password}>
+		<input name="password" type="password" id="password" bind:value={password}>
 
 		<button onclick={onSubmit} class="button form-btn" type="button">
 			<SignIn />

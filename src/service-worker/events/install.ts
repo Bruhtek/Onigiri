@@ -4,7 +4,7 @@
 /// <reference lib="webworker" />
 
 import { CACHE_RESOURCES, FILES_TO_CACHE } from '../env';
-import { serviceWorkerLifecycle } from '../data.svelte';
+import { serviceWorkerLifecycle } from '../data.js';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
@@ -21,5 +21,4 @@ sw.addEventListener('install', (event: ExtendableEvent) => {
 	console.log('Install');
 
 	event.waitUntil(addFilesToCache());
-	event.waitUntil(new Promise((resolve) => setTimeout(resolve, 5000)));
 });

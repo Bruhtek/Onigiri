@@ -3,7 +3,7 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
-import { ASSETS, CACHE_IMAGES_CDN, CACHE_RESOURCES } from '../env';
+import { ASSETS, CACHE_IMAGES_CDN, CACHE_RESOURCES, FILES_TO_CACHE } from '../env';
 import tryDynamicCache from '../cacheFile';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
@@ -13,7 +13,7 @@ sw.addEventListener('fetch', (event: FetchEvent) => {
 	if (event.request.method !== 'GET') return;
 
 	const url = new URL(event.request.url);
-	// special url, so that we are able to intercept connectivity requests, doesnt do anything rn, but will soon
+	// special url, so that we are able to intercept connectivity requests, doesnt do anything rn
 	if (url.pathname == '/app/v2/status') {
 		console.log('STATUS!');
 		const res = new Response(JSON.stringify({ online: true }));
@@ -50,19 +50,29 @@ sw.addEventListener('fetch', (event: FetchEvent) => {
 
 		// for everything else, try the network first, but
 		// fall back to the cache if we're offline
-		const response = await fetch(event.request);
+		try {
+			const response = await fetch(event.request);
 
-		// if we're offline, fetch can return a value that is not a Response
-		// instead of throwing - and we can't pass this non-Response to respondWith
-		if (!(response instanceof Response)) {
-			throw new Error('invalid response from fetch');
+			// instead of throwing - and we can't pass this non-Response to respondWith
+			if (!(response instanceof Response)) {
+				throw new Error('invalid response from fetch');
+			}
+
+			if (url.hostname == 'cdn.j-novel.club' && (response.ok || response.status === 0)) {
+				await images_cache.put(event.request, response.clone());
+			}
+
+			return response;
+		} catch (e) {
+			if (FILES_TO_CACHE.includes(url.pathname)) {
+				const response = await resource_cache.match(url.pathname);
+				if (response) {
+					return response;
+				}
+			}
+
+			throw e;
 		}
-
-		if (url.hostname == 'cdn.j-novel.club' && (response.ok || response.status === 0)) {
-			await images_cache.put(event.request, response.clone());
-		}
-
-		return response;
 	}
 
 	event.respondWith(respond());

@@ -4,7 +4,7 @@
 /// <reference lib="webworker" />
 
 import { CACHE_RESOURCES } from '../env';
-import { serviceWorkerLifecycle } from '../data.svelte';
+import { serviceWorkerLifecycle } from '../data.js';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
@@ -19,7 +19,7 @@ sw.addEventListener('activate', (event: ExtendableEvent) => {
 			}
 		}
 	};
-	
+
 	event.waitUntil(sw.clients.claim());
 	event.waitUntil(deleteOldCaches());
 });
