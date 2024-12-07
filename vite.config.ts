@@ -5,11 +5,27 @@ import Icons from 'unplugin-icons/vite';
 
 import { exec } from 'child_process';
 import { promisify } from 'node:util';
+import type { PluginOption } from 'vite';
 
 const pexec = promisify(exec);
 const __CHANGELOG_STRING__ = JSON.stringify(
 	(await pexec(`git log --pretty="%C(auto)%h %s" --first-parent`)).stdout,
 );
+
+const plugins: PluginOption[] = [
+	sveltekit(),
+	Icons({
+		compiler: 'svelte',
+	}),
+];
+
+if (process.env.NODE_ENV === 'development') {
+	plugins.push(
+		mkcert({
+			hosts: ['localhost', 'dev.j-novel.club'],
+		}),
+	);
+}
 
 // git log --pretty='%C(auto)%h %s' --first-parent
 export default defineConfig({
@@ -17,17 +33,10 @@ export default defineConfig({
 		__CHANGELOG_STRING__: __CHANGELOG_STRING__,
 	},
 	server: {
+		port: process.env.NODE_ENV === 'development' ? 443 : undefined,
 		proxy: {},
 	},
-	plugins: [
-		sveltekit(),
-		Icons({
-			compiler: 'svelte',
-		}),
-		// mkcert({
-		// 	hosts: ['localhost', 'dev.j-novel.club']
-		// })
-	],
+	plugins: plugins,
 	build: {
 		target: 'es2022',
 	},
