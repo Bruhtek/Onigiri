@@ -3,7 +3,7 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
-import { CACHE_DYNAMIC } from './env';
+import { CACHE_DYNAMIC } from './env.js';
 
 export const addItemToCache = async (req: RequestInfo | URL) => {
 	console.log('Adding item to cache');
