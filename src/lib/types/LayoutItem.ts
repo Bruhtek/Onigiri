@@ -1,13 +1,17 @@
+import type { Snippet } from 'svelte';
+
 export type LayoutItem = {
 	title: string;
 	type: 'NOVEL' | 'MANGA';
 	imageSrc: string;
 	HDImageSrc?: string;
 	href: string;
-	progress: number;
+	progress?: number;
 	longPressHref?: string;
 	indexes?: () => string;
 	titleWithoutIndexes?: () => string;
+	following?: boolean;
+	catchup?: boolean;
 };
 
 export interface LayoutItemFactory {

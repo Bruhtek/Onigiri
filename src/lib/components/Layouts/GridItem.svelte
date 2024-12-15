@@ -21,7 +21,7 @@
 			<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />
 		{/key}
 	</div>
-	<div class="title" style="--progress: {actualItem.progress}">
+	<div class="title" style="--progress: {actualItem.progress || 0}">
 		<div class="title-bg"></div>
 		<p class="title-p">
 			{#if actualItem.titleWithoutIndexes}

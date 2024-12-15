@@ -1,10 +1,16 @@
 <script lang="ts">
 	import { dialogStore } from '$lib/stores/dialogStore.svelte';
+	import { untrack } from 'svelte';
 
-	let value = $state<number>();
+	let value = $state<never>();
+	let setValOnce = $state<boolean>(false);
 
 	const onCancel = () => {
 		dialogStore.set(undefined);
+		setValOnce = false;
+	};
+	const onClear = () => {
+		value = '';
 	};
 	const onSubmit = () => {
 		if (!value) return;
@@ -13,11 +19,28 @@
 		dialogStore.value.callback(value);
 		dialogStore.set(undefined);
 		value = undefined;
+		setValOnce = false;
 	};
+
+	$effect(() => {
+		if (dialogStore.value && dialogStore.value.type === 'string' && !value && !setValOnce) {
+			value = dialogStore.value.currentValue as never;
+		}
+
+		setValOnce = true;
+
+		if (!dialogStore.value || !dialogStore.value.hotReload) return;
+
+		untrack(() => {
+			if (!dialogStore.value || !dialogStore.value.hotReload) return;
+
+			dialogStore.value.callback(value as never);
+		});
+	});
 </script>
 
 {#if dialogStore.value}
-	<div class="bg"></div>
+	<button class="bg" onclick={onCancel} aria-label="bg"></button>
 	<div class="dialog-body">
 		<h3>{dialogStore.value.title}</h3>
 		{#if dialogStore.value.type === "number"}
@@ -26,15 +49,31 @@
 				   bind:value={value}
 			/>
 		{/if}
-
+		{#if dialogStore.value.type === "string"}
+			<input type="text"
+				   bind:value={value}
+			/>
+		{/if}
 		<div class="buttons">
-			<button class="button" onclick={onCancel}>
-				Cancel
-			</button>
-			<button class="button" onclick={onSubmit}>
-				Submit
-			</button>
+			{#if dialogStore.value.type === "string"}
+				<button class="button" onclick={onClear}>
+					Clear
+				</button>
+			{/if}
+			{#if !dialogStore.value.hotReload}
+				<button class="button" onclick={onCancel}>
+					Cancel
+				</button>
+				<button class="button" onclick={onSubmit}>
+					Submit
+				</button>
+			{:else}
+				<button class="button" onclick={onCancel}>
+					Done
+				</button>
+			{/if}
 		</div>
+
 	</div>
 {/if}
 

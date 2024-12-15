@@ -1,16 +1,15 @@
 <script lang="ts">
-	import { changeReleasesPage, releasesPageProperties } from '$lib/api/releases.svelte';
 	import ArrowRight from '~icons/ph/arrow-right';
 	import ArrowLeft from '~icons/ph/arrow-left';
-	import Star from '~icons/ph/star';
-	import StarFill from '~icons/ph/star-fill';
 	import Gear from '~icons/ph/gear';
-	import { loggedIn } from '$lib/api/account.svelte';
-	import IconCheckbox from '$lib/components/Inputs/IconCheckbox.svelte';
-	import releasesPreferencesStore, { changeFavoritesOnly } from '$lib/stores/releasesPreferencesStore.svelte';
 	import type { Snippet } from 'svelte';
+	import { changePage, pageProperties } from '$lib/stores/pageProperties.svelte';
 
-	let { settingsPanel }: { settingsPanel: Snippet } = $props();
+	let { settingsPanel, rightPanel, leftPanel }: {
+		settingsPanel: Snippet,
+		rightPanel?: Snippet,
+		leftPanel?: Snippet
+	} = $props();
 
 	let settingsOpen = $state<boolean>(false);
 </script>
@@ -20,34 +19,22 @@
 		{@render settingsPanel()}
 	{/if}
 	<div class="left">
-		{#if loggedIn() && releasesPreferencesStore.value.favoritesOnly}
-			Releases (Only followed)
-		{:else}
-			Releases
+		{#if leftPanel}
+			{@render leftPanel()}
 		{/if}
 	</div>
 	<div class="page-data">
-		<button class="button-left" onclick={() => changeReleasesPage(-1)}>
+		<button class="button-left" onclick={() => changePage(-1)}>
 			<ArrowLeft width="32" height="32" />
 		</button>
-		<span>{releasesPageProperties.value.page + 1}</span>
-		<button class="button-right" onclick={() => changeReleasesPage(1)}>
+		<span>{pageProperties.value.pages[pageProperties.value.currentDisplay] + 1}</span>
+		<button class="button-right" onclick={() => changePage(1)}>
 			<ArrowRight width="32" height="32" />
 		</button>
 	</div>
 	<div class="right">
-		{#if loggedIn()}
-			<IconCheckbox
-				current={releasesPreferencesStore.value.favoritesOnly}
-				onChange={changeFavoritesOnly}
-			>
-				{#snippet stateOn()}
-					<StarFill width="32px" height="32px" />
-				{/snippet}
-				{#snippet stateOff()}
-					<Star width="32px" height="32px" />
-				{/snippet}
-			</IconCheckbox>
+		{#if rightPanel}
+			{@render rightPanel()}
 		{/if}
 		<button onclick={() => settingsOpen = !settingsOpen}>
 			<Gear width="32px" height="32px" />
@@ -62,7 +49,7 @@
 		place-content: center;
 		position: relative;
 	}
-	
+
 	.bottom-bar .right, .left {
 		position: absolute;
 		top: 50%;

@@ -2,10 +2,11 @@
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
-	import { changeReleasesPage, fetchMoreReleases, releasesPageProperties } from '$lib/api/releases.svelte';
+	import { fetchMoreReleases } from '$lib/api/releases.svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import GridItem from '$lib/components/Layouts/GridItem.svelte';
 	import { untrack } from 'svelte';
+	import { changePage, pageProperties, setPage } from '$lib/stores/pageProperties.svelte';
 
 	interface GridLayoutProps {
 		items: LayoutItemProp[];
@@ -44,7 +45,7 @@
 	});
 
 	let itemsPerPage = $derived.by(() => columnCount * rowCount);
-	let currentPage = $derived(releasesPageProperties.value.page);
+	let currentPage = $derived(pageProperties.value.pages[pageProperties.value.currentDisplay]);
 	let itemsOnPage = $derived.by(() => items.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
 
 	$effect(() => {
@@ -53,19 +54,18 @@
 		const ic = items.length;
 
 		untrack(() => {
-			releasesPageProperties.patch({
-				partsPerPage: ipp,
-				page: p,
+			pageProperties.patch({
 				itemsPerPage: ipp,
 				itemsCount: ic,
 			});
+			setPage(p);
 		});
 
 
 		// if we are two pages away from the last page
 		if (currentPage * itemsPerPage > items.length - itemsPerPage * 2) {
 			untrack(() => {
-				if (releasesPageProperties.value.lastPage || releasesPageProperties.value.loading) {
+				if (pageProperties.value.currentDisplay !== 'RELEASES' || pageProperties.value.lastPage || pageProperties.value.loading) {
 					return;
 				}
 
@@ -76,9 +76,9 @@
 
 	const gestureCallback = (direction: Direction) => {
 		if (direction == 'right') {
-			changeReleasesPage(-1);
+			changePage(-1);
 		} else if (direction == 'left') {
-			changeReleasesPage(1);
+			changePage(1);
 		}
 	};
 

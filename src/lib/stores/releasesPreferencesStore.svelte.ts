@@ -1,5 +1,6 @@
 import { createPersistentStore } from '$lib/helpers/persistentStore.svelte';
-import releasesStore, { fetchMoreReleases, releasesPageProperties } from '$lib/api/releases.svelte';
+import releasesStore, { fetchMoreReleases } from '$lib/api/releases.svelte';
+import { pageProperties } from '$lib/stores/pageProperties.svelte';
 
 type ReleasesPreferencesData = {
 	favoritesOnly: boolean;
@@ -13,16 +14,16 @@ const releasesPreferencesStore = await createPersistentStore<ReleasesPreferences
 );
 
 export const changeFavoritesOnly = async (state: boolean) => {
-	if (releasesPageProperties.value.loading) {
+	if (pageProperties.value.loading) {
 		return;
 	}
 
 	await releasesPreferencesStore.patch({ favoritesOnly: state });
 
-	releasesPageProperties.patch({ loading: true });
+	pageProperties.patch({ loading: true });
 	releasesStore.reset();
 
-	releasesPageProperties.patch({ loading: false });
+	pageProperties.patch({ loading: false });
 	await fetchMoreReleases();
 };
 

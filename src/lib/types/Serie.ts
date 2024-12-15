@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { LayoutItem, LayoutItemFactory } from '$lib/types/LayoutItem';
 
 export const SerieSchema = z.object({
 	id: z.string(),
@@ -13,13 +14,14 @@ export const SerieSchema = z.object({
 	cover: z.object({
 		coverUrl: z.string().optional(),
 		thumbnailUrl: z.string().optional(),
-		originalUrl: z.string().optional()
+		originalUrl: z.string().optional(),
 	}),
 	following: z.boolean(),
-	catchup: z.boolean()
+	catchup: z.boolean(),
 });
 
-class Serie {
+class Serie implements LayoutItemFactory {
+	id: string;
 	legacyId: string;
 	slug: string;
 	type: 'NOVEL' | 'MANGA';
@@ -34,6 +36,18 @@ class Serie {
 	following: boolean;
 	catchup: boolean;
 
+	toLayoutItem(): LayoutItem {
+		return {
+			title: this.title,
+			type: this.type,
+			imageSrc: this.thumbnailURL,
+			HDImageSrc: this.coverURL,
+			href: `/series/${this.id}`,
+			following: this.following,
+			catchup: this.catchup,
+		};
+	}
+
 	/**
 	 * Constructor for Series
 	 * @param api_result - JSON object from the API
@@ -41,6 +55,7 @@ class Serie {
 	constructor(api_result: unknown) {
 		const json = SerieSchema.parse(api_result);
 
+		this.id = json.id;
 		this.legacyId = json.legacyId;
 		this.slug = json.slug;
 		this.type = json.type;
