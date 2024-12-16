@@ -5,5 +5,3 @@
 
 import './sw/events';
 import './sw/communication/broadcastChannel';
-
-const sw = self as unknown as ServiceWorkerGlobalScope;

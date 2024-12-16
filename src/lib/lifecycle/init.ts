@@ -1,7 +1,7 @@
-import { getAccountInfo, loggedIn } from '$lib/api/account.svelte';
+import JAccount from '$lib/api/JAccount.svelte';
 
 export default async function init() {
-	if (loggedIn()) {
-		await getAccountInfo();
+	if (JAccount.loggedIn) {
+		await JAccount.fetchAccountInfo();
 	}
 }

@@ -1,15 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import accountStore, {
-	loggedIn,
-	login,
-	otp_generate,
-	otp_check,
-	getAccountInfo,
-	OTPResponseStates,
-	accountInfoStore,
-} from './account.svelte';
-import { jfetch } from '$lib/api/jnovel.svelte';
-import releasesStore from '$lib/api/releases.svelte';
+import { jfetch } from '$lib/api/JNovel.svelte';
+import Releases from '$lib/api/Releases.svelte';
+import JAccount, { OTPResponseState } from '$lib/api/JAccount.svelte';
 
 vi.mock('localforage', () => ({
 	default: {
@@ -19,19 +11,19 @@ vi.mock('localforage', () => ({
 	},
 }));
 
-vi.mock('$lib/api/jnovel.svelte', () => ({
+vi.mock('$lib/api/JNovel.svelte', () => ({
 	jfetch: vi.fn(),
 }));
 
-vi.mock('$lib/api/releases.svelte', () => ({
+vi.mock('$lib/api/Releases.svelte', () => ({
 	default: {
-		reset: vi.fn(),
+		clear: vi.fn(),
 	},
 }));
 
-describe('account.svelte.ts', () => {
+describe('JAccount.svelte.ts', () => {
 	beforeEach(() => {
-		accountStore.set({ token: null, expiration: null });
+		JAccount.token = null;
 		vi.clearAllMocks();
 	});
 
@@ -41,12 +33,12 @@ describe('account.svelte.ts', () => {
 
 	describe('loggedIn', () => {
 		it('should return false when token is null', () => {
-			expect(loggedIn()).toBe(false);
+			expect(JAccount.loggedIn).toBe(false);
 		});
 
 		it('should return true when token is not null', () => {
-			accountStore.set({ token: 'TEST_TOKEN', expiration: null });
-			expect(loggedIn()).toBe(true);
+			JAccount.token = 'TEST_TOKEN';
+			expect(JAccount.loggedIn).toBe(true);
 		});
 	});
 
@@ -65,28 +57,27 @@ describe('account.svelte.ts', () => {
 				json: () => Promise.resolve(mockResponse),
 			});
 
-			const result = await login('user', 'pass');
-			expect(result).toEqual([true, null]);
-			expect(accountStore.value.token).toBe('TEST_TOKEN');
-			expect(releasesStore.reset).toHaveBeenCalled();
+			const result = await JAccount.login('user', 'pass');
+			expect(result).toMatchObject({ error: false, data: undefined });
+			expect(JAccount.token).toBe('TEST_TOKEN');
+			expect(Releases.clear).toHaveBeenCalled();
 		});
 
 		it('should return error on invalid credentials', async () => {
 			// @ts-expect-error - Mocking jfetch
 			vi.mocked(jfetch).mockResolvedValueOnce({ status: 401 });
 
-			const result = await login('user', 'wrongpass');
-			expect(result).toEqual([false, 'Invalid username or password']);
+			const result = await JAccount.login('user', 'wrongpass');
+			expect(result).toMatchObject({ error: 'Invalid username or password' });
 		});
 
 		it('should handle unspecified errors', async () => {
 			vi.mocked(jfetch).mockRejectedValueOnce(new Error('Network Error'));
 
-			const result = await login('user', 'pass');
-			expect(result).toEqual([
-				false,
-				'Unspecified error while logging in. Contact the developer',
-			]);
+			const result = await JAccount.login('user', 'pass');
+			expect(result).toMatchObject({
+				error: 'Unspecified error while logging in. Contact the developer',
+			});
 		});
 	});
 
@@ -100,19 +91,18 @@ describe('account.svelte.ts', () => {
 				json: () => Promise.resolve(mockResponse),
 			});
 
-			const result = await otp_generate();
-			expect(result).toEqual([mockResponse, null]);
+			const result = await JAccount.otp_generate();
+			expect(result).toMatchObject({ error: false, data: mockResponse });
 		});
 
 		it('should return error for too many requests', async () => {
 			// @ts-expect-error - Mocking jfetch
 			vi.mocked(jfetch).mockResolvedValueOnce({ status: 429 });
 
-			const result = await otp_generate();
-			expect(result).toEqual([
-				null,
-				"You're too fast! Wait a moment before doing that again",
-			]);
+			const result = await JAccount.otp_generate();
+			expect(result).toMatchObject({
+				error: "You're too fast! Wait a moment before doing that again",
+			});
 		});
 	});
 
@@ -132,34 +122,33 @@ describe('account.svelte.ts', () => {
 				json: () => Promise.resolve(mockResponse),
 			});
 
-			const result = await otp_check(mockOTP);
-			expect(result).toEqual([OTPResponseStates.LoggedIn, null]);
-			expect(accountStore.value.token).toBe('NEW_TOKEN');
+			const result = await JAccount.otp_check(mockOTP);
+			expect(result).toMatchObject({ error: false, data: OTPResponseState.LoggedIn });
+			expect(JAccount.token).toBe('NEW_TOKEN');
 		});
 
 		it('should handle no changes via otp', async () => {
 			// @ts-expect-error - Mocking jfetch
 			vi.mocked(jfetch).mockResolvedValueOnce({ status: 204 });
 
-			const result = await otp_check(mockOTP);
-			expect(result).toEqual([OTPResponseStates.NoChanges, null]);
+			const result = await JAccount.otp_check(mockOTP);
+			expect(result).toMatchObject({ error: false, data: OTPResponseState.NoChanges });
 		});
 
 		it('should handle otp errors', async () => {
 			// @ts-expect-error - Mocking jfetch
 			vi.mocked(jfetch).mockResolvedValueOnce({ status: 429 });
 
-			const result = await otp_check(mockOTP);
-			expect(result).toEqual([
-				OTPResponseStates.Errored,
-				"You're too fast! Wait a moment before doing that again",
-			]);
+			const result = await JAccount.otp_check(mockOTP);
+			expect(result).toMatchObject({
+				error: "You're too fast! Wait a moment before doing that again",
+			});
 		});
 	});
 
 	describe('getAccountInfo', () => {
 		it('should fetch and set account info when logged in', async () => {
-			accountStore.set({ token: 'TEST_TOKEN', expiration: null });
+			JAccount.token = 'TEST_TOKEN';
 			const mockResponse = {
 				id: 'user1',
 				email: 'user1@example.com',
@@ -168,7 +157,6 @@ describe('account.svelte.ts', () => {
 				created: new Date().toISOString(),
 				level: 'premium',
 				subscriptionStatus: 'active',
-				emailHash: 'abc123',
 			};
 
 			// @ts-expect-error - Mocking jfetch
@@ -177,22 +165,17 @@ describe('account.svelte.ts', () => {
 				json: () => Promise.resolve(mockResponse),
 			});
 
-			vi.spyOn(accountInfoStore, 'set');
-			await getAccountInfo();
+			await JAccount.fetchAccountInfo();
 
-			expect(accountInfoStore.set).toHaveBeenCalledWith({
-				...mockResponse,
-				emailHash: expect.any(String),
-			});
+			expect(JAccount.accountInfo).toMatchObject(mockResponse);
 		});
 
 		it('should handle fetch error gracefully', async () => {
-			accountStore.value.token = 'TEST_TOKEN';
+			JAccount.token = 'TEST_TOKEN';
 			// @ts-expect-error - Mocking jfetch
 			vi.mocked(jfetch).mockResolvedValueOnce({ ok: false, status: 500 });
 
-			await getAccountInfo();
-			expect(accountInfoStore.set).not.toHaveBeenCalled();
+			await expect(JAccount.fetchAccountInfo()).resolves.not.toThrowError();
 		});
 	});
 });

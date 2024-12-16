@@ -1,13 +1,15 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { jembed, jfetch } from '$lib/api/jnovel.svelte';
+	import { jembed, jfetch } from '$lib/api/JNovel.svelte';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import Reader from '$lib/components/Reader/Reader.svelte';
-	import { parse_part_toc, type PartTocResult } from '$lib/api/parts.svelte';
 	import readerPreferencesStore from '$lib/stores/readerPreferencesStore.svelte';
 	import ReaderZones from '$lib/components/Reader/ReaderZones.svelte';
 	import { untrack } from 'svelte';
+	import type { Result } from '$lib/types/HelperTypes';
+	import type { PartTocResult } from '$lib/api/Parts.svelte';
+	import Parts from '$lib/api/Parts.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -31,7 +33,7 @@
 	};
 
 	let partText = $state<string>('');
-	let partTocResult = $state<PartTocResult | { error: string }>({ error: 'Loading part data...' });
+	let partTocResult = $state<Result<PartTocResult>>({ error: 'Loading part data...' });
 
 	const requestData = async () => {
 		partText = '';
@@ -55,9 +57,9 @@
 			}
 
 			const json = await response.json();
-			const partData = parse_part_toc(json, data.partId);
+			const partData = Parts.parsePartToc(json, data.partId);
 
-			if (partData.error !== undefined) {
+			if (partData.error !== false) {
 				console.error(partData.error);
 				partTocResult = { error: partData.error };
 				return;
@@ -70,6 +72,8 @@
 	};
 
 	$effect(() => {
+		// we trigger this on data.partId change
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 		data.partId;
 		untrack(() => requestData());
 	});

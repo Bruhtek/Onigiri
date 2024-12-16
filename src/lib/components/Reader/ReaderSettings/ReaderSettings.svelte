@@ -1,12 +1,13 @@
 <script lang="ts">
 	import SettingsTop from '$lib/components/Reader/ReaderSettings/SettingsTop.svelte';
 	import SettingsBottom from '$lib/components/Reader/ReaderSettings/SettingsBottom.svelte';
-	import type { PartTocResult } from '$lib/api/parts.svelte';
+	import type { Result } from '$lib/types/HelperTypes';
+	import type { PartTocResult } from '$lib/api/Parts.svelte';
 
 	interface Props {
 		onHide: () => unknown;
 		toggleZones: (state: boolean) => unknown;
-		partTocResult: PartTocResult | { error: string };
+		partTocResult: Result<PartTocResult>;
 	}
 
 	let props: Props = $props();

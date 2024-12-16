@@ -1,10 +1,11 @@
 <script lang="ts">
 	import ArrowLeft from '~icons/ph/arrow-left';
 	import { goto } from '$app/navigation';
-	import { isPartTocResult, type PartTocResult } from '$lib/api/parts.svelte';
+	import type { Result } from '$lib/types/HelperTypes';
+	import type { PartTocResult } from '$lib/api/Parts.svelte';
 
 	interface Props {
-		partTocResult: PartTocResult | { error: string };
+		partTocResult: Result<PartTocResult>;
 	}
 
 	const props: Props = $props();
@@ -19,7 +20,7 @@
 	};
 </script>
 
-{#if !isPartTocResult(props.partTocResult)}
+{#if props.partTocResult.error !== false}
 	<div class="top">
 		<div class="left">
 			<button type="button"
@@ -46,23 +47,23 @@
 			</button>
 		</div>
 		<div class="right">
-			{props.partTocResult.currentPart.getFullIndexes()}
+			{props.partTocResult.data.currentPart.getFullIndexes()}
 		</div>
 	</div>
 	<div class="partTitle">
-		{props.partTocResult.seriesTitle}
+		{props.partTocResult.data.seriesTitle}
 	</div>
 	<div class="navigation">
 		<div class="left">
-			{#if props.partTocResult.previousPart}
-				<a class="button" href="/reader/{props.partTocResult.previousPart.id}">
+			{#if props.partTocResult.data.previousPart}
+				<a class="button" href="/reader/{props.partTocResult.data.previousPart.id}">
 					Previous Part
 				</a>
 			{/if}
 		</div>
 		<div class="right">
-			{#if props.partTocResult.nextPart}
-				<a class="button" href="/reader/{props.partTocResult.nextPart.id}">
+			{#if props.partTocResult.data.nextPart}
+				<a class="button" href="/reader/{props.partTocResult.data.nextPart.id}">
 					Next Part
 				</a>
 			{/if}

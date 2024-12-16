@@ -3,35 +3,35 @@
 	import User from '~icons/ph/user';
 	import { toProperCase } from '$lib/helpers/utils';
 
-	import { accountInfoStore, getAccountInfo } from '$lib/api/account.svelte';
+	import JAccount from '$lib/api/JAccount.svelte';
 </script>
 
 <CenteredLayout>
-	{#if accountInfoStore.value === undefined}
+	{#if JAccount.accountInfo === undefined}
 		<p>Error loading account data! Click the button below to try again!</p>
-		<button class="button" onclick={getAccountInfo}>
+		<button class="button" onclick={JAccount.fetchAccountInfo}>
 			Retry
 		</button>
 	{:else}
 		<div class="user-info">
 			<div class="left">
-				{#if accountInfoStore.value.emailHash}
-					<img src="https://gravatar.com/avatar/{accountInfoStore.value.emailHash}" alt="User gravatar" />
+				{#if JAccount.accountInfo.emailHash}
+					<img src="https://gravatar.com/avatar/{JAccount.accountInfo.emailHash}" alt="User gravatar" />
 				{:else}
 					<User width="64" height="64" />
 				{/if}
 			</div>
 			<div class="right">
-				<h1>{accountInfoStore.value.username}</h1>
-				<h2>{accountInfoStore.value.email}</h2>
+				<h1>{JAccount.accountInfo.username}</h1>
+				<h2>{JAccount.accountInfo.email}</h2>
 			</div>
 		</div>
 		<div class="membership">
 			<p>
-				Membership level: <b>{toProperCase(accountInfoStore.value.level)}</b>
+				Membership level: <b>{toProperCase(JAccount.accountInfo.level)}</b>
 			</p>
 			<p>
-				Membership status: <b>{toProperCase(accountInfoStore.value.subscriptionStatus)}</b>
+				Membership status: <b>{toProperCase(JAccount.accountInfo.subscriptionStatus)}</b>
 			</p>
 		</div>
 		<a class="button" href="/account/logout">

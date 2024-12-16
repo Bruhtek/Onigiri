@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import accountStore from '$lib/api/account.svelte';
-import { jembed, jfetch } from '$lib/api/jnovel.svelte';
+// import accountStore from '$lib/api/account.svelte';
+import { jembed, jfetch } from '$lib/api/JNovel.svelte';
+import JAccount from '$lib/api/JAccount.svelte';
 
-vi.mock('$lib/api/account.svelte.js', () => ({
+vi.mock('$lib/api/JAccount.svelte', () => ({
 	default: {
-		value: { token: 'TEST_TOKEN' },
-		reset: vi.fn(),
+		logout: vi.fn(),
+		token: 'TEST_TOKEN',
 	},
 }));
 
@@ -46,12 +47,12 @@ describe('jfetch', () => {
 		) as never;
 
 		await jfetch('/me');
-		expect(accountStore.reset).toHaveBeenCalled();
+		expect(JAccount.logout).toHaveBeenCalled();
 		expect(window.location.href).toBe('/login?expired=true');
 	});
 
 	it('should add Authorization header when token is present', async () => {
-		expect(accountStore.value.token).toBe('TEST_TOKEN');
+		expect(JAccount.token).toBe('TEST_TOKEN');
 
 		global.fetch = vi.fn(() =>
 			Promise.resolve({
@@ -73,10 +74,10 @@ describe('jfetch', () => {
 	});
 
 	it('shouldnt add Authorization header when token is not present', async () => {
-		const originalToken = accountStore.value.token;
+		const originalToken = JAccount.token;
 		try {
-			accountStore.value.token = null;
-			expect(accountStore.value.token).toBeNull();
+			JAccount.token = null;
+			expect(JAccount.token).toBeNull();
 
 			global.fetch = vi.fn(() =>
 				Promise.resolve({
@@ -96,7 +97,7 @@ describe('jfetch', () => {
 			);
 			expect(res.status).toBe(200);
 		} finally {
-			accountStore.value.token = originalToken;
+			JAccount.token = originalToken;
 		}
 	});
 });

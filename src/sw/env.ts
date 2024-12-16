@@ -3,7 +3,6 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
-const sw = self as unknown as ServiceWorkerGlobalScope;
 import { build, files, version, prerendered } from '$service-worker';
 
 export const CACHE_RESOURCES = `cache-resources-${version}`;

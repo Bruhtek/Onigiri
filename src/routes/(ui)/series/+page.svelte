@@ -1,8 +1,6 @@
 <script lang="ts">
 	import GridLayout from '$lib/components/Layouts/GridLayout.svelte';
-	import seriesStore, { fetchSeries } from '$lib/api/series.svelte';
 	import GridPage from '$lib/components/Layouts/GridPage.svelte';
-	import { loggedIn } from '$lib/api/account.svelte';
 	import Star from '~icons/ph/star';
 	import StarFill from '~icons/ph/star-fill';
 	import Timer from '~icons/ph/timer';
@@ -12,9 +10,11 @@
 
 	import { seriesPagePreferences } from '$lib/stores/seriesPagePreferences.svelte';
 	import requestDialog from '$lib/stores/dialogStore.svelte';
+	import JAccount from '$lib/api/JAccount.svelte';
+	import Series from '$lib/api/Series.svelte';
 
-	if (seriesStore.value.length == 0) {
-		fetchSeries();
+	if (Series.series.length == 0) {
+		Series.fetchSeries();
 	}
 
 	let createQueryDialog = () => {
@@ -33,7 +33,7 @@
 	};
 
 	let filteredSeries = $derived.by(() => {
-		let series = seriesStore.value;
+		let series = Series.series;
 		if (!seriesPagePreferences.value.favoritesOnly && !seriesPagePreferences.value.catchupOnly && !seriesPagePreferences.value.query) {
 			return series;
 		}
@@ -53,7 +53,7 @@
 <GridPage type="SERIES">
 	{#snippet leftPanel()}
 		Series
-		{#if loggedIn() && (
+		{#if JAccount.loggedIn && (
 			seriesPagePreferences.value.favoritesOnly
 			|| seriesPagePreferences.value.catchupOnly
 			|| seriesPagePreferences.value.query)

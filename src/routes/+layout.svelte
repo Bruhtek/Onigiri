@@ -6,7 +6,7 @@
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import connectivityCheck from '$lib/helpers/useConnectivityCheck.svelte';
 	import FullScreenDialog from '$lib/components/Inputs/FullScreenDialog.svelte';
-	import init from '$lib/lifecycle/init.js';
+	import init from '$lib/lifecycle/init';
 
 	const onInit = () => {
 		init();
