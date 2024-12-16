@@ -1,4 +1,4 @@
-import accountStore from '$lib/api/account.svelte.js';
+import JAccount from '$lib/api/JAccount.svelte';
 
 const JNOVEL_URL = 'https://labs.j-novel.club';
 
@@ -9,7 +9,7 @@ const getHeaders = (options?: RequestInit) => {
 	const headers: HeadersInit = {
 		'Content-Type': 'application/json',
 	};
-	const token = accountStore.value.token;
+	const token = JAccount.token;
 	if (token) headers['Authorization'] = `Bearer ${token}`;
 	if (options?.headers) Object.assign(headers, options.headers);
 	return headers;
@@ -36,7 +36,7 @@ export const jfetch = async (url: string, options?: RequestInit) => {
 		// clear the expired token, redirect to log in with an explanatory message
 		// we use window.location.href to interrupt any other control flow, to avoid any problems
 		// related to incorrect 410 handling further in
-		await accountStore.reset();
+		await JAccount.logout();
 		window.location.href = `/login?expired=true`;
 		return res;
 	}

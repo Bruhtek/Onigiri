@@ -1,5 +1,5 @@
 import notificationStore from '$lib/stores/notificationStore.svelte';
-import { jfetch } from '$lib/api/jnovel.svelte';
+import { jfetch } from '$lib/api/jnovel.old.svelte.js';
 
 const connectivityCheck = (node: Window) => {
 	$effect(() => {

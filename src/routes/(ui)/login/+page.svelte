@@ -3,11 +3,11 @@
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import Numpad from '~icons/ph/numpad';
 	import SignIn from '~icons/ph/sign-in';
-	import { login } from '$lib/api/account.svelte';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import JAccount from '$lib/api/JAccount.svelte';
 
 	let email = $state('');
 	let password = $state('');
@@ -20,12 +20,12 @@
 	});
 
 	const onSubmit = async () => {
-		const [success, error] = await login(email, password);
-		if (success) {
+		const res = await JAccount.login(email, password);
+		if (!res.error) {
 			notificationStore.success('Successfully logged in!');
 			await goto('/');
 		} else {
-			notificationStore.error(error);
+			notificationStore.error(res.error);
 		}
 	};
 </script>

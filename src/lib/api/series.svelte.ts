@@ -2,7 +2,7 @@ import { createArrayStore, createStore } from '$lib/helpers/store.svelte';
 import Serie, { SerieSchema } from '$lib/types/Serie';
 import { z } from 'zod';
 import { PaginationScheme } from '$lib/api/schemas';
-import { jfetch } from '$lib/api/jnovel.svelte';
+import { jfetch } from '$lib/api/jnovel.old.svelte.js';
 import notificationStore from '$lib/stores/notificationStore.svelte';
 
 const seriesStore = createArrayStore<Serie>([]);

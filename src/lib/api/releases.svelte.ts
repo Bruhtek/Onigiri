@@ -1,12 +1,12 @@
 import Part, { PartScheme } from '$lib/types/Part';
 import { createArrayStore } from '$lib/helpers/store.svelte';
-import { jfetch } from '$lib/api/jnovel.svelte';
+import { jfetch } from '$lib/api/jnovel.old.svelte.js';
 import { z } from 'zod';
 import notificationStore from '$lib/stores/notificationStore.svelte';
 import { PaginationScheme } from '$lib/api/schemas';
 import releasesPreferencesStore from '$lib/stores/releasesPreferencesStore.svelte';
-import { loggedIn } from '$lib/api/account.svelte';
 import { pageProperties } from '$lib/stores/pageProperties.svelte';
+import JAccount from '$lib/api/JAccount.svelte';
 
 const releasesStore = createArrayStore<Part>([]);
 
@@ -23,7 +23,7 @@ export const fetchMoreReleases = async (limit: number = 200) => {
 	pageProperties.patch({ loading: true });
 	const currentNum = releasesStore.value.length;
 	let query = `?limit=${limit}&skip=${currentNum}&type=1`; // type 1 - only Novels
-	if (loggedIn() && releasesPreferencesStore.value.favoritesOnly) {
+	if (JAccount.loggedIn && releasesPreferencesStore.value.favoritesOnly) {
 		query += '&only_follows=true';
 	}
 

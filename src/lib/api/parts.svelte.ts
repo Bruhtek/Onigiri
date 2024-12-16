@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import Part, { PartScheme } from '$lib/types/Part';
 import { updateReleaseProgress } from '$lib/api/releases.svelte';
-import { jfetch } from '$lib/api/jnovel.svelte';
+import { jfetch } from '$lib/api/jnovel.old.svelte.js';
 
 const partTocSchema = z.object({
 	parts: z.object({ parts: z.array(PartScheme) }),

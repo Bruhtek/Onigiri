@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { jembed, jfetch } from '$lib/api/jnovel.svelte';
+	import { jembed, jfetch } from '$lib/api/jnovel.old.svelte.js';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import Reader from '$lib/components/Reader/Reader.svelte';

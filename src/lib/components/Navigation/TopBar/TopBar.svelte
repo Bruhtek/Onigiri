@@ -7,8 +7,8 @@
 	import Gear from '~icons/ph/gear';
 	import SignIn from '~icons/ph/sign-in';
 	import User from '~icons/ph/user';
+	import JAccount from '$lib/api/JAccount.svelte';
 
-	import { loggedIn } from '$lib/api/account.svelte.js';
 </script>
 
 <div class="top-bar" class:responsive={preferencesStore.value.verticalTabsWhileHorizontal}>
@@ -18,7 +18,7 @@
 		<TopBarItem title="Settings" href="/settings" icon={Gear} />
 	</div>
 	<div class="bottom">
-		{#if loggedIn()}
+		{#if JAccount.loggedIn}
 			<TopBarItem title="Account" icon={User} href="/account" />
 		{:else}
 			<TopBarItem title="Login" icon={SignIn} href="/login" />

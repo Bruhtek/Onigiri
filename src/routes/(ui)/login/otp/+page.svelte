@@ -1,26 +1,27 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { otp_check, otp_delete, otp_generate, type OTPResponse, OTPResponseStates } from '$lib/api/account.svelte';
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import { goto } from '$app/navigation';
+	import JAccount from '$lib/api/JAccount.svelte';
+	import { type OTPResponse, OTPResponseState } from '$lib/api/JAccountSchemas';
 
 	let otpData = $state<OTPResponse>();
 
 	onMount(() => {
 		(async () => {
-			const [data, err] = await otp_generate();
-			if (err != null) {
-				notificationStore.error(err);
+			const res = await JAccount.otp_generate();
+			if (res.error !== false) {
+				notificationStore.error(res.error);
 				history.back();
 			} else {
-				otpData = data;
+				otpData = res.data;
 			}
 		})();
 
 		return async () => {
 			if (otpData) {
-				await otp_delete(otpData);
+				await JAccount.otp_delete(otpData);
 			}
 		};
 	});
@@ -35,14 +36,14 @@
 				return;
 			}
 
-			const [status, error] = await otp_check(otpData);
-			if (status === OTPResponseStates.LoggedIn) {
+			const res = await JAccount.otp_check(otpData);
+			if (res.error !== false) {
+				notificationStore.error(res.error);
+				history.back();
+			} else if (res.data === OTPResponseState.LoggedIn) {
 				notificationStore.success('You are now logged in');
 				otpData = undefined;
 				await goto('/');
-			} else if (status === OTPResponseStates.Errored) {
-				notificationStore.error(error);
-				history.back();
 			}
 		}, 4000);
 
