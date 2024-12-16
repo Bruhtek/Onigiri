@@ -1,5 +1,5 @@
 <script lang="ts">
-	import releasesStore, { fetchMoreReleases } from '$lib/api/releases.svelte';
+	import Releases from '$lib/api/Releases.svelte.js';
 	import GridLayout from '$lib/components/Layouts/GridLayout.svelte';
 	import GridPage from '$lib/components/Layouts/GridPage.svelte';
 	import releasesPreferencesStore, { changeFavoritesOnly } from '$lib/stores/releasesPreferencesStore.svelte';
@@ -8,8 +8,8 @@
 	import IconCheckbox from '$lib/components/Inputs/IconCheckbox.svelte';
 	import JAccount from '$lib/api/JAccount.svelte';
 
-	if (releasesStore.value.length == 0) {
-		fetchMoreReleases();
+	if (Releases.releases.length == 0) {
+		Releases.fetchMoreReleases();
 	}
 </script>
 
@@ -36,5 +36,5 @@
 			</IconCheckbox>
 		{/if}
 	{/snippet}
-	<GridLayout items={releasesStore.value} />
+	<GridLayout items={Releases.releases} />
 </GridPage>

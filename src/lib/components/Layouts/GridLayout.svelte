@@ -2,7 +2,7 @@
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
-	import { fetchMoreReleases } from '$lib/api/releases.svelte';
+	import Releases from '$lib/api/Releases.svelte.js';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import GridItem from '$lib/components/Layouts/GridItem.svelte';
 	import { untrack } from 'svelte';
@@ -65,11 +65,19 @@
 		// if we are two pages away from the last page
 		if (currentPage * itemsPerPage > items.length - itemsPerPage * 2) {
 			untrack(() => {
-				if (pageProperties.value.currentDisplay !== 'RELEASES' || pageProperties.value.lastPage || pageProperties.value.loading) {
+				if (pageProperties.value.currentDisplay !== 'RELEASES' || pageProperties.value.lastPage) {
 					return;
 				}
 
-				fetchMoreReleases();
+				Releases.fetchMoreReleases();
+			});
+		}
+	});
+
+	$effect(() => {
+		if (items.length > 0) {
+			untrack(() => {
+				changePage(0);
 			});
 		}
 	});

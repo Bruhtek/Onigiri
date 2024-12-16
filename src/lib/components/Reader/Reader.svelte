@@ -5,14 +5,16 @@
 	import BottomBar from '$lib/components/Reader/BottomBar.svelte';
 	import touchPosition from '$lib/helpers/useTouchPosition.svelte';
 	import ReaderSettings from '$lib/components/Reader/ReaderSettings/ReaderSettings.svelte';
-	import { isPartTocResult, type PartTocResult, updatePartProgress } from '$lib/api/parts.svelte';
 	import { mapFontFamily } from '$lib/stores/readerPreferencesStore.svelte.js';
 	import { waitMS } from '$lib/helpers/utils';
 	import ArrowRight from '~icons/ph/arrow-right';
+	import Parts from '$lib/api/Parts.svelte.js';
+	import type { PartTocResult } from '$lib/api/Parts.svelte';
+	import type { Result } from '$lib/types/HelperTypes';
 
 	interface Props {
 		content: string;
-		partTocResult: PartTocResult | { error: string };
+		partTocResult: Result<PartTocResult>;
 		toggleZones: (state: boolean) => unknown;
 		loading: boolean;
 		id: string;
@@ -69,7 +71,7 @@
 		pageCount = Math.floor(contentDiv!.scrollWidth / (w + margins));
 
 		if(ready) {
-			updatePartProgress(props.id, currentPage / pageCount);
+			Parts.updatePartProgress(props.id, currentPage / pageCount);
 		}
 	}
 
@@ -78,10 +80,10 @@
 		await waitMS(300);
 		await onResize();
 		if(shouldGoToProgress) {
-			if(!isPartTocResult(props.partTocResult)) {
+			if(props.partTocResult.error !== false) {
 				return;
 			}
-			updateCurrentPage(Math.round(props.partTocResult.currentPart.progress * pageCount));
+			updateCurrentPage(Math.round(props.partTocResult.data.currentPart.progress * pageCount));
 			shouldGoToProgress = false;
 		} else {
 			shouldGoToProgress = true;
@@ -90,13 +92,19 @@
 	})
 
 	$effect(() => {
-		if(!isPartTocResult(props.partTocResult)) {
+		// re-calculate page width when margins change
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+		readerPreferencesStore.value.pageMargins;
+		setTimeout(() => onResize(), 0);
+	})
+	$effect(() => {
+		if(props.partTocResult.error !== false) {
 			return;
 		}
 
 		if(untrack(() => shouldGoToProgress)) {
-			console.log("Going to progress from effect", Math.floor(props.partTocResult.currentPart.progress * pageCount));
-			updateCurrentPage(Math.floor(props.partTocResult.currentPart.progress * pageCount));
+			console.log("Going to progress from effect", Math.floor(props.partTocResult.data.currentPart.progress * pageCount));
+			updateCurrentPage(Math.floor(props.partTocResult.data.currentPart.progress * pageCount));
 			shouldGoToProgress = false;
 		} else {
 			shouldGoToProgress = true;
@@ -155,7 +163,9 @@
 				case 'X':
 					break;
 			}
-		}, 30);
+			// hacky workaround, Svelte with Node.js doesn't like treating
+			// setTimeout as numbers, and in this file we cant expand the type
+		}, 30) as unknown as number;
 	}
 </script>
 
@@ -176,7 +186,7 @@
 
 <div class="reader-container"
 	 class:hide={!ready && !props.loading}
-	 style="--margins: {margins}px;
+	 style="--margins: {readerPreferencesStore.value.pageMargins}px;
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
 			--fontSize: {readerPreferencesStore.value.fontSize}px;
@@ -194,8 +204,8 @@
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html props.content}
 
-		{#if props.partTocResult && isPartTocResult(props.partTocResult) && props.partTocResult.nextPart}
-			<a class="button next-part-button" href="/reader/{props.partTocResult.nextPart.id}">
+		{#if props.partTocResult && props.partTocResult.error === false && props.partTocResult.data.nextPart}
+			<a class="button next-part-button" href="/reader/{props.partTocResult.data.nextPart.id}">
 				Next Part <ArrowRight width="32" height="32" />
 			</a>
 		{/if}

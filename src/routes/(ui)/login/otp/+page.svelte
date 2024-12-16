@@ -3,8 +3,7 @@
 	import notificationStore from '$lib/stores/notificationStore.svelte';
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import { goto } from '$app/navigation';
-	import JAccount from '$lib/api/JAccount.svelte';
-	import { type OTPResponse, OTPResponseState } from '$lib/api/JAccountSchemas';
+	import JAccount, { type OTPResponse, OTPResponseState } from '$lib/api/JAccount.svelte';
 
 	let otpData = $state<OTPResponse>();
 

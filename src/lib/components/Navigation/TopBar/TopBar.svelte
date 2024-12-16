@@ -32,7 +32,8 @@
 		border-bottom: 3px solid var(--text);
 		display: flex;
 		justify-content: space-between;
-		padding: 0.5rem 1rem;
+		padding-left: 1rem;
+		padding-right: 1rem;
 
 		&.responsive {
 			@media screen and (min-aspect-ratio: 1/1) {

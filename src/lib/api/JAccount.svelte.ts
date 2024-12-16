@@ -1,14 +1,7 @@
 import { createPersistentStore } from '$lib/helpers/persistentStore.svelte';
 import { addSeconds } from 'date-fns';
-import {
-	AccountInfoScheme,
-	LoginResponseScheme,
-	type OTPResponse,
-	OTPResponseScheme,
-	OTPResponseState,
-} from '$lib/api/JAccountSchemas';
-import releasesStore from '$lib/api/releases.svelte';
-import { jfetch } from '$lib/api/jnovel.old.svelte';
+import Releases from '$lib/api/Releases.svelte.js';
+import { jfetch } from '$lib/api/JNovel.svelte.js';
 import type { Result } from '$lib/types/HelperTypes';
 import { z } from 'zod';
 import { sendBroadcastMessage } from '$lib/lifecycle/serviceWorker';
@@ -46,6 +39,10 @@ class JAccountClass {
 		return this._account.value.token;
 	}
 
+	public set token(value: string | null) {
+		this._account.patch({ token: value });
+	}
+
 	constructor() {
 		this._account = accountStore;
 		this._accountInfo = accountInfoStore;
@@ -69,7 +66,7 @@ class JAccountClass {
 	}
 
 	private _beforeLogin = async () => {
-		releasesStore.reset();
+		Releases.clear();
 	};
 	private _afterLogin = async () => {
 		await this.fetchAccountInfo();
@@ -234,3 +231,32 @@ class JAccountClass {
 
 const JAccount = new JAccountClass();
 export default JAccount;
+
+export const LoginResponseScheme = z.object({
+	id: z.string(),
+	ttl: z.string(),
+	created: z.string().datetime(),
+});
+
+export const OTPResponseScheme = z.object({
+	otp: z.string(),
+	proof: z.string(),
+	ttl: z.number(),
+});
+export type OTPResponse = z.infer<typeof OTPResponseScheme>;
+
+export enum OTPResponseState {
+	NoChanges,
+	LoggedIn,
+}
+
+export const AccountInfoScheme = z.object({
+	id: z.string(),
+	email: z.string(),
+	username: z.string(),
+	country: z.string(),
+	created: z.string().datetime(),
+	level: z.string(),
+	subscriptionStatus: z.string(),
+	emailHash: z.string().optional(),
+});
