@@ -5,8 +5,6 @@
 
 import { createStore } from './utils/createStore';
 
-const sw = self as unknown as ServiceWorkerGlobalScope;
-
 export const ServiceWorkerLifecycles = ['installing', 'active'] as const;
 type ServiceWorkerLifecycle = (typeof ServiceWorkerLifecycles)[number];
 

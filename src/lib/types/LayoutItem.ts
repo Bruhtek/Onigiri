@@ -1,5 +1,3 @@
-import type { Snippet } from 'svelte';
-
 export type LayoutItem = {
 	title: string;
 	type: 'NOVEL' | 'MANGA';

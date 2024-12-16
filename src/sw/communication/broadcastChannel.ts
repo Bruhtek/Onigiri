@@ -7,7 +7,7 @@ import { serviceWorkerLifecycle } from '../data.js';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
-import { isDynamicCacheMessage, isStatusMessage } from '../../lib/types/broadcastMessageTypes';
+import { isDynamicCacheMessage, isStatusMessage } from '$lib/types/broadcastMessageTypes';
 import { addItemToCache, resetCache } from '../cacheFile';
 
 export const broadcastChannel = new BroadcastChannel('serviceWorker');

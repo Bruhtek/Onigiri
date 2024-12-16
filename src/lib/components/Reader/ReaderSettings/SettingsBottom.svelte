@@ -8,7 +8,6 @@
 	} from '$lib/stores/readerPreferencesStore.svelte';
 	import Number from '$lib/components/Inputs/Number.svelte';
 	import Checkbox from '$lib/components/Inputs/Checkbox.svelte';
-	import HrWithText from '$lib/components/Utils/HrWithText.svelte';
 
 	interface Props {
 		toggleZones: (state: boolean) => void;
