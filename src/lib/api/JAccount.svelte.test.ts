@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { jfetch } from '$lib/api/JNovel.svelte.js';
-import Releases from '$lib/api/Releases.svelte.js';
+import { jfetch } from '$lib/api/JNovel.svelte';
+import Releases from '$lib/api/Releases.svelte';
 import JAccount, { OTPResponseState } from '$lib/api/JAccount.svelte';
 
 vi.mock('localforage', () => ({

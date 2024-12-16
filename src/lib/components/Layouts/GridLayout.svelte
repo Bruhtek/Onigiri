@@ -2,7 +2,7 @@
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
 	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
-	import Releases from '$lib/api/Releases.svelte.js';
+	import Releases from '$lib/api/Releases.svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import GridItem from '$lib/components/Layouts/GridItem.svelte';
 	import { untrack } from 'svelte';

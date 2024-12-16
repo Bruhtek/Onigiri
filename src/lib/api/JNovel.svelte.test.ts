@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 // import accountStore from '$lib/api/account.svelte';
-import { jembed, jfetch } from '$lib/api/JNovel.svelte.js';
+import { jembed, jfetch } from '$lib/api/JNovel.svelte';
 import JAccount from '$lib/api/JAccount.svelte';
 
 vi.mock('$lib/api/JAccount.svelte', () => ({

@@ -1,5 +1,5 @@
 import { createPersistentStore } from '$lib/helpers/persistentStore.svelte';
-import Releases from '$lib/api/Releases.svelte.js';
+import Releases from '$lib/api/Releases.svelte';
 
 type ReleasesPreferencesData = {
 	favoritesOnly: boolean;

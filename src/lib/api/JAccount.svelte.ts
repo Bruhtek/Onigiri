@@ -1,7 +1,7 @@
 import { createPersistentStore } from '$lib/helpers/persistentStore.svelte';
 import { addSeconds } from 'date-fns';
-import Releases from '$lib/api/Releases.svelte.js';
-import { jfetch } from '$lib/api/JNovel.svelte.js';
+import Releases from '$lib/api/Releases.svelte';
+import { jfetch } from '$lib/api/JNovel.svelte';
 import type { Result } from '$lib/types/HelperTypes';
 import { z } from 'zod';
 import { sendBroadcastMessage } from '$lib/lifecycle/serviceWorker';

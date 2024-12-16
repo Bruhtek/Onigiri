@@ -5,10 +5,10 @@
 	import BottomBar from '$lib/components/Reader/BottomBar.svelte';
 	import touchPosition from '$lib/helpers/useTouchPosition.svelte';
 	import ReaderSettings from '$lib/components/Reader/ReaderSettings/ReaderSettings.svelte';
-	import { mapFontFamily } from '$lib/stores/readerPreferencesStore.svelte.js';
+	import { mapFontFamily } from '$lib/stores/readerPreferencesStore.svelte';
 	import { waitMS } from '$lib/helpers/utils';
 	import ArrowRight from '~icons/ph/arrow-right';
-	import Parts from '$lib/api/Parts.svelte.js';
+	import Parts from '$lib/api/Parts.svelte';
 	import type { PartTocResult } from '$lib/api/Parts.svelte';
 	import type { Result } from '$lib/types/HelperTypes';
 

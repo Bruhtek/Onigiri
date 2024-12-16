@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Releases from '$lib/api/Releases.svelte.js';
+	import Releases from '$lib/api/Releases.svelte';
 	import GridLayout from '$lib/components/Layouts/GridLayout.svelte';
 	import GridPage from '$lib/components/Layouts/GridPage.svelte';
 	import releasesPreferencesStore, { changeFavoritesOnly } from '$lib/stores/releasesPreferencesStore.svelte';

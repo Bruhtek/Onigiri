@@ -1,5 +1,5 @@
 import { jfetch } from '$lib/api/JNovel.svelte';
-import Releases from '$lib/api/Releases.svelte.js';
+import Releases from '$lib/api/Releases.svelte';
 import type { Result } from '$lib/types/HelperTypes';
 import Part, { PartScheme } from '$lib/types/Part';
 import { z } from 'zod';
