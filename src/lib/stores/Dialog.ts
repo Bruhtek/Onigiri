@@ -17,10 +17,23 @@ type DialogStore = {
 	  }
 );
 
-export const dialogStore = createStore<DialogStore | undefined>(undefined);
+class DialogClass {
+	constructor() {}
 
-const requestDialog = (v: DialogStore) => {
-	dialogStore.set(v);
-};
+	public get current() {
+		return this.dialogStore.value;
+	}
 
-export default requestDialog;
+	public clear() {
+		this.dialogStore.set(undefined);
+	}
+
+	protected dialogStore = createStore<DialogStore | undefined>(undefined);
+
+	public requestDialog = (v: DialogStore) => {
+		this.dialogStore.set(v);
+	};
+}
+
+const Dialog = new DialogClass();
+export default Dialog;

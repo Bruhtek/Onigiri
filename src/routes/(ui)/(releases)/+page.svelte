@@ -2,11 +2,11 @@
 	import Releases from '$lib/api/Releases.svelte';
 	import GridLayout from '$lib/components/Layouts/GridLayout.svelte';
 	import GridPage from '$lib/components/Layouts/GridPage.svelte';
-	import releasesPreferencesStore, { changeFavoritesOnly } from '$lib/stores/releasesPreferencesStore.svelte';
 	import StarFill from '~icons/ph/star-fill';
 	import Star from '~icons/ph/star';
 	import IconCheckbox from '$lib/components/Inputs/IconCheckbox.svelte';
 	import JAccount from '$lib/api/JAccount.svelte';
+	import PrefReleases from '$lib/stores/preferences/Releases.svelte';
 
 	if (Releases.releases.length == 0) {
 		Releases.fetchMoreReleases();
@@ -15,7 +15,7 @@
 
 <GridPage type="RELEASES">
 	{#snippet leftPanel()}
-		{#if JAccount.loggedIn && releasesPreferencesStore.value.favoritesOnly}
+		{#if JAccount.loggedIn && PrefReleases.v.favoritesOnly}
 			Releases (Only followed)
 		{:else}
 			Releases
@@ -24,8 +24,8 @@
 	{#snippet rightPanel()}
 		{#if JAccount.loggedIn}
 			<IconCheckbox
-				current={releasesPreferencesStore.value.favoritesOnly}
-				onChange={changeFavoritesOnly}
+				current={PrefReleases.v.favoritesOnly}
+				onChange={PrefReleases.changeFavoritesOnly}
 			>
 				{#snippet stateOn()}
 					<StarFill width="32px" height="32px" />

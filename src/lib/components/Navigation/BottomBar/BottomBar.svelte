@@ -3,7 +3,7 @@
 	import ArrowLeft from '~icons/ph/arrow-left';
 	import Gear from '~icons/ph/gear';
 	import type { Snippet } from 'svelte';
-	import { changePage, pageProperties } from '$lib/stores/pageProperties.svelte';
+	import DisplayPage from '$lib/stores/DisplayPage.svelte.js';
 
 	let { settingsPanel, rightPanel, leftPanel }: {
 		settingsPanel: Snippet,
@@ -24,11 +24,11 @@
 		{/if}
 	</div>
 	<div class="page-data">
-		<button class="button-left" onclick={() => changePage(-1)}>
+		<button class="button-left" onclick={() => DisplayPage.changePage(-1)}>
 			<ArrowLeft width="32" height="32" />
 		</button>
-		<span>{pageProperties.value.pages[pageProperties.value.currentDisplay] + 1}</span>
-		<button class="button-right" onclick={() => changePage(1)}>
+		<span>{DisplayPage.currentPage + 1}</span>
+		<button class="button-right" onclick={() => DisplayPage.changePage(1)}>
 			<ArrowRight width="32" height="32" />
 		</button>
 	</div>

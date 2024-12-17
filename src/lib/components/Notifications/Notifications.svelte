@@ -1,5 +1,5 @@
 <script lang="ts">
-	import notificationStore from '$lib/stores/notificationStore.svelte';
+	import Notifications from '$lib/stores/Notifications.svelte.js';
 	import PhInfo from '~icons/ph/info';
 	import PhCheckFat from '~icons/ph/check-fat';
 	import XCircle from '~icons/ph/x-circle';
@@ -13,20 +13,20 @@
 	};
 
 	const dismissNotification = () => {
-		notificationStore.dismiss();
+		Notifications.dismiss();
 	};
 </script>
 
-{#if notificationStore.notification}
+{#if Notifications.current}
 	<div class="notification" onclick={dismissNotification} onkeydown={dismissNotification} role="button" tabindex="0">
 		<div class="icon">
-			{#if notificationStore.notification.icon}
-				<svelte:component this={iconMap[notificationStore.notification.icon]} width="32" height="32" />
+			{#if Notifications.current.icon}
+				<svelte:component this={iconMap[Notifications.current.icon]} width="32" height="32" />
 			{:else}
 				<PhInfo width="32" height="32" />
 			{/if}
 		</div>
-		{notificationStore.notification.message}
+		{Notifications.current.message}
 	</div>
 {/if}
 

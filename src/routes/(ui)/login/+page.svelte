@@ -3,7 +3,7 @@
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import Numpad from '~icons/ph/numpad';
 	import SignIn from '~icons/ph/sign-in';
-	import notificationStore from '$lib/stores/notificationStore.svelte';
+	import Notifications from '$lib/stores/Notifications.svelte.js';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -15,17 +15,17 @@
 	onMount(() => {
 		const expired = $page.url.searchParams.get('expired');
 		if (expired === 'true') {
-			notificationStore.warn('Your login expired. Please login again.');
+			Notifications.warn('Your login expired. Please login again.');
 		}
 	});
 
 	const onSubmit = async () => {
 		const res = await JAccount.login(email, password);
 		if (!res.error) {
-			notificationStore.success('Successfully logged in!');
+			Notifications.success('Successfully logged in!');
 			await goto('/');
 		} else {
-			notificationStore.error(res.error);
+			Notifications.error(res.error);
 		}
 	};
 </script>

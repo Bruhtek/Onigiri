@@ -1,11 +1,10 @@
 <script lang="ts">
-	import readerPreferencesStore, { mapTapZones } from '$lib/stores/readerPreferencesStore.svelte';
+	import PrefReader from '$lib/stores/preferences/Reader.svelte';
 	import { onMount, untrack } from 'svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import BottomBar from '$lib/components/Reader/BottomBar.svelte';
 	import touchPosition from '$lib/helpers/useTouchPosition.svelte';
 	import ReaderSettings from '$lib/components/Reader/ReaderSettings/ReaderSettings.svelte';
-	import { mapFontFamily } from '$lib/stores/readerPreferencesStore.svelte';
 	import { waitMS } from '$lib/helpers/utils';
 	import ArrowRight from '~icons/ph/arrow-right';
 	import Parts from '$lib/api/Parts.svelte';
@@ -22,8 +21,7 @@
 
 	let ready = $state<boolean>(false);
 
-	let margins = $derived(readerPreferencesStore.value.pageMargins);
-	let fontFamilyCSS = $derived(mapFontFamily(readerPreferencesStore.value.fontFamily).css);
+	let fontFamilyCSS = $derived(PrefReader.mapFontFamily().css);
 	let showSettings = $state<boolean>(false);
 
 	let contentDiv: HTMLDivElement|undefined = $state();
@@ -31,7 +29,7 @@
 
 
 	const calculatePageWidth = () => {
-		return innerWidth - 2 * margins;
+		return innerWidth - 2 * PrefReader.v.pageMargins;
 	}
 
 	let pageWidth = $derived.by(calculatePageWidth);
@@ -54,7 +52,7 @@
 
 		pageHeight = contentDiv!.clientHeight;
 		const oldProgress = progress;
-		pageCount = Math.floor(contentDiv!.scrollWidth / (pw + margins));
+		pageCount = Math.floor(contentDiv!.scrollWidth / (pw + PrefReader.v.pageMargins));
 		currentPage = Math.floor(oldProgress * pageCount);
 		updateCurrentPage(currentPage, pw);
 	}
@@ -67,8 +65,8 @@
 
 		currentPage = p;
 
-		contentDiv!.scrollLeft = p * (w + margins);
-		pageCount = Math.floor(contentDiv!.scrollWidth / (w + margins));
+		contentDiv!.scrollLeft = p * (w + PrefReader.v.pageMargins);
+		pageCount = Math.floor(contentDiv!.scrollWidth / (w + PrefReader.v.pageMargins));
 
 		if(ready) {
 			Parts.updatePartProgress(props.id, currentPage / pageCount);
@@ -91,12 +89,6 @@
 		ready = true;
 	})
 
-	$effect(() => {
-		// re-calculate page width when margins change
-		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-		readerPreferencesStore.value.pageMargins;
-		setTimeout(() => onResize(), 0);
-	})
 	$effect(() => {
 		if(props.partTocResult.error !== false) {
 			return;
@@ -139,7 +131,7 @@
 		}
 	};
 
-	let tapActions = $derived(mapTapZones(readerPreferencesStore.value.tapZone))
+	let tapActions = $derived(PrefReader.mapTapZones());
 
 	let timer = $state<number>(0);
 
@@ -186,14 +178,14 @@
 
 <div class="reader-container"
 	 class:hide={!ready && !props.loading}
-	 style="--margins: {readerPreferencesStore.value.pageMargins}px;
+	 style="--margins: {PrefReader.v.pageMargins}px;
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
-			--fontSize: {readerPreferencesStore.value.fontSize}px;
+			--fontSize: {PrefReader.v.fontSize}px;
 			--font-family: {fontFamilyCSS};
-			--text-align: {readerPreferencesStore.value.justifyText ? 'justify' : 'left'};
-			--line-height: {readerPreferencesStore.value.lineSpacing}em;
-			--paragraph-spacing: {readerPreferencesStore.value.paragraphSpacing}px;
+			--text-align: {PrefReader.v.justifyText ? 'justify' : 'left'};
+			--line-height: {PrefReader.v.lineSpacing}em;
+			--paragraph-spacing: {PrefReader.v.paragraphSpacing}px;
 "
 	 use:touchPosition={touchPositionCallback}
 >

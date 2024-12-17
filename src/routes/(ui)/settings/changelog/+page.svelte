@@ -14,7 +14,8 @@
 	<div class="list">
 		{#each changelog as c}
 			<p class="change-item">
-				<a class="hash" href="https://github.com/Bruhtek/Onigiri/commit/{c[0]}" target="_blank">{c[0]}</a>
+				<a class="hash monospace" href="https://github.com/Bruhtek/Onigiri/commit/{c[0]}"
+				   target="_blank">{c[0]}</a>
 				<span class="title">{c[1]}</span>
 			</p>
 		{/each}
@@ -38,10 +39,6 @@
 	}
 
 	.hash {
-		font-family: monospace;
-		display: inline-block;
-		padding: 2px;
-		background-color: lightgray;
 		text-decoration: underline;
 	}
 

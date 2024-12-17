@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
-	import preferencesStore from '$lib/stores/preferencesStore.svelte';
+	import PrefDisplay from '$lib/stores/preferences/Display.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
 	import Releases from '$lib/api/Releases.svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
 	import GridItem from '$lib/components/Layouts/GridItem.svelte';
 	import { untrack } from 'svelte';
-	import { changePage, pageProperties, setPage } from '$lib/stores/pageProperties.svelte';
+	import DisplayPage from '$lib/stores/DisplayPage.svelte.js';
 
 	interface GridLayoutProps {
 		items: LayoutItemProp[];
@@ -15,9 +15,9 @@
 	let { items }: GridLayoutProps = $props();
 
 	const columnAspectRatio = 2 / 3;
-	const gap = $derived(preferencesStore.value.gridObjectGap);
+	const gap = $derived(PrefDisplay.v.gridObjectGap);
 
-	let columnCount = $derived(isVertical.value ? preferencesStore.value.columnCountVertical : preferencesStore.value.columnCountHorizontal);
+	let columnCount = $derived(isVertical.value ? PrefDisplay.v.gridColumnCountVertical : PrefDisplay.v.gridColumnCountHorizontal);
 
 	let availableWidth = $state(0);
 	let availableHeight = $state(0);
@@ -45,7 +45,7 @@
 	});
 
 	let itemsPerPage = $derived.by(() => columnCount * rowCount);
-	let currentPage = $derived(pageProperties.value.pages[pageProperties.value.currentDisplay]);
+	let currentPage = $derived(DisplayPage.currentPage);
 	let itemsOnPage = $derived.by(() => items.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
 
 	$effect(() => {
@@ -54,18 +54,18 @@
 		const ic = items.length;
 
 		untrack(() => {
-			pageProperties.patch({
+			DisplayPage.patch({
 				itemsPerPage: ipp,
 				itemsCount: ic,
 			});
-			setPage(p);
+			DisplayPage.setPage(p);
 		});
 
 
 		// if we are two pages away from the last page
 		if (currentPage * itemsPerPage > items.length - itemsPerPage * 2) {
 			untrack(() => {
-				if (pageProperties.value.currentDisplay !== 'RELEASES' || pageProperties.value.lastPage) {
+				if (DisplayPage.v.currentDisplay !== 'RELEASES' || DisplayPage.v.lastPage) {
 					return;
 				}
 
@@ -77,16 +77,16 @@
 	$effect(() => {
 		if (items.length > 0) {
 			untrack(() => {
-				changePage(0);
+				DisplayPage.changePage(0);
 			});
 		}
 	});
 
 	const gestureCallback = (direction: Direction) => {
 		if (direction == 'right') {
-			changePage(-1);
+			DisplayPage.changePage(-1);
 		} else if (direction == 'left') {
-			changePage(1);
+			DisplayPage.changePage(1);
 		}
 	};
 

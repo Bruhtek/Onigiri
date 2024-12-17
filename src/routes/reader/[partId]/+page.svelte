@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { jembed, jfetch } from '$lib/api/JNovel.svelte';
-	import notificationStore from '$lib/stores/notificationStore.svelte';
+	import Notifications from '$lib/stores/Notifications.svelte.js';
 	import { redirect } from '@sveltejs/kit';
 	import Reader from '$lib/components/Reader/Reader.svelte';
-	import readerPreferencesStore from '$lib/stores/readerPreferencesStore.svelte';
+	import PrefReader from '$lib/stores/preferences/Reader.svelte';
 	import ReaderZones from '$lib/components/Reader/ReaderZones.svelte';
 	import { untrack } from 'svelte';
 	import type { Result } from '$lib/types/HelperTypes';
@@ -14,14 +14,14 @@
 	let { data }: { data: PageData } = $props();
 
 	if (data.error) {
-		notificationStore.error(data.error);
+		Notifications.error(data.error);
 		redirect(307, '/');
 	}
 
 	let showZones = $state<boolean>(false);
 	const conditionallyShowZones = () => {
-		if (readerPreferencesStore.value.alwaysShowTapZones ||
-			readerPreferencesStore.value.tapZonesFirstShow
+		if (PrefReader.v.alwaysShowTapZones ||
+			PrefReader.v.tapZonesFirstShow
 		) {
 			showZones = true;
 		}
@@ -44,7 +44,7 @@
 
 		if (text.startsWith('Error')) {
 			const errorText = text.slice(7);
-			notificationStore.error(errorText);
+			Notifications.error(errorText);
 			history.back();
 			partText = errorText;
 		}
@@ -82,9 +82,9 @@
 
 {#key data.partId}
 	{#if showZones}
-		<ReaderZones tapZone={readerPreferencesStore.value.tapZone} onTap={() => {
-			if(readerPreferencesStore.value.tapZonesFirstShow) {
-				readerPreferencesStore.patch({tapZonesFirstShow: false});
+		<ReaderZones onTap={() => {
+			if(PrefReader.v.tapZonesFirstShow) {
+				PrefReader.patch({tapZonesFirstShow: false});
 			}
 			showZones = false
 		}} />

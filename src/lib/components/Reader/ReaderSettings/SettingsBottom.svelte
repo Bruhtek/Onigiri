@@ -1,11 +1,10 @@
 <script lang="ts">
 	import Select from '$lib/components/Inputs/Select.svelte';
-	import readerPreferencesStore, {
-		defaultReaderPreferencesData,
+	import PrefReader, {
+		readerPreferencesDefaults,
 		FontFamily,
-		mapFontFamily,
 		TapZone,
-	} from '$lib/stores/readerPreferencesStore.svelte';
+	} from '$lib/stores/preferences/Reader.svelte';
 	import Number from '$lib/components/Inputs/Number.svelte';
 	import Checkbox from '$lib/components/Inputs/Checkbox.svelte';
 
@@ -16,7 +15,7 @@
 	let { toggleZones }: Props = $props();
 
 	const availableFonts = [FontFamily.Bookerly, FontFamily.AmazonEmber, FontFamily.LibreBaskerville, FontFamily.Helvetica, FontFamily.Jost];
-	const readableFontNames = availableFonts.map((v) => mapFontFamily(v).name);
+	const readableFontNames = availableFonts.map((v) => PrefReader.mapFontFamily(v).name);
 </script>
 
 <div class="container">
@@ -24,31 +23,31 @@
 		title="Tap Zones"
 		options={[TapZone.Edges, TapZone.LShaped, TapZone.Kindle, TapZone.OnlyTop]}
 		readableOptions={[TapZone.Edges, TapZone.LShaped, TapZone.Kindle, TapZone.OnlyTop]}
-		current={readerPreferencesStore.value.tapZone}
+		current={PrefReader.v.tapZone}
 		onSelect={(val: TapZone) => {
-			readerPreferencesStore.patch({tapZone: val});
+			PrefReader.patch({tapZone: val});
 			toggleZones(true);
 		}}
 	/>
 	<Checkbox
 		title="Show tap zones when entering the reader"
-		defaultValue={defaultReaderPreferencesData.alwaysShowTapZones}
-		current={readerPreferencesStore.value.alwaysShowTapZones}
-		onChange={(val) => readerPreferencesStore.patch({alwaysShowTapZones: val})}
+		defaultValue={readerPreferencesDefaults.alwaysShowTapZones}
+		current={PrefReader.v.alwaysShowTapZones}
+		onChange={(val) => PrefReader.patch({alwaysShowTapZones: val})}
 	/>
 	<hr>
 	<Select
 		title="Font Family"
 		options={availableFonts}
 		readableOptions={readableFontNames}
-		current={readerPreferencesStore.value.fontFamily}
+		current={PrefReader.v.fontFamily}
 		onSelect={(val: FontFamily) => {
-			readerPreferencesStore.patch({fontFamily: val});
+			PrefReader.patch({fontFamily: val});
 		}}
 	>
 		{#snippet displaySnippet(value: FontFamily)}
-			<span style={"font-family: " + mapFontFamily(value).css}>
-				{mapFontFamily(value).name}
+			<span style={"font-family: " + PrefReader.mapFontFamily(value).css}>
+				{PrefReader.mapFontFamily(value).name}
 			</span>
 		{/snippet}
 	</Select>
@@ -56,15 +55,15 @@
 		title="Font Size"
 		min={1}
 		max={100}
-		defaultValue={defaultReaderPreferencesData.fontSize}
-		current={readerPreferencesStore.value.fontSize}
-		onChange={(val) => readerPreferencesStore.patch({fontSize: val})}
+		defaultValue={readerPreferencesDefaults.fontSize}
+		current={PrefReader.v.fontSize}
+		onChange={(val) => PrefReader.patch({fontSize: val})}
 	/>
 	<Checkbox
 		title="Justify Text"
-		defaultValue={defaultReaderPreferencesData.justifyText}
-		current={readerPreferencesStore.value.justifyText}
-		onChange={(val) => readerPreferencesStore.patch({justifyText: val})}
+		defaultValue={readerPreferencesDefaults.justifyText}
+		current={PrefReader.v.justifyText}
+		onChange={(val) => PrefReader.patch({justifyText: val})}
 	/>
 	<hr>
 	<Number
@@ -72,27 +71,27 @@
 		min={0}
 		max={100}
 		step={2}
-		defaultValue={defaultReaderPreferencesData.pageMargins}
-		current={readerPreferencesStore.value.pageMargins}
-		onChange={(val) => readerPreferencesStore.patch({pageMargins: val})}
+		defaultValue={readerPreferencesDefaults.pageMargins}
+		current={PrefReader.v.pageMargins}
+		onChange={(val) => PrefReader.patch({pageMargins: val})}
 	/>
 	<Number
 		title="Line Spacing"
 		min={0.9}
 		max={2}
 		step={0.05}
-		defaultValue={defaultReaderPreferencesData.lineSpacing}
-		current={readerPreferencesStore.value.lineSpacing}
-		onChange={(val) => readerPreferencesStore.patch({lineSpacing: val})}
+		defaultValue={readerPreferencesDefaults.lineSpacing}
+		current={PrefReader.v.lineSpacing}
+		onChange={(val) => PrefReader.patch({lineSpacing: val})}
 	/>
 	<Number
 		title="Paragraph Spacing"
 		min={0}
 		max={80}
 		step={2}
-		defaultValue={defaultReaderPreferencesData.paragraphSpacing}
-		current={readerPreferencesStore.value.paragraphSpacing}
-		onChange={(val) => readerPreferencesStore.patch({paragraphSpacing: val})}
+		defaultValue={readerPreferencesDefaults.paragraphSpacing}
+		current={PrefReader.v.paragraphSpacing}
+		onChange={(val) => PrefReader.patch({paragraphSpacing: val})}
 	/>
 </div>
 

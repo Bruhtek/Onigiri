@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Books from '~icons/ph/books';
 	import { page } from '$app/stores';
-	import preferencesStore from '$lib/stores/preferencesStore.svelte';
+	import PrefGeneral from '$lib/stores/preferences/General.svelte';
 
 	interface Props {
 		title: string;
@@ -25,7 +25,7 @@
 
 <a class="navbar-item"
    class:current={matches}
-   class:responsive={preferencesStore.value.verticalTabsWhileHorizontal}
+   class:responsive={PrefGeneral.v.verticalTabsWhileHorizontal}
    href={props.href}
 >
 	<div class="icon-container">
@@ -57,7 +57,7 @@
 		width: 90%;
 		border-bottom-left-radius: 10px;
 		border-bottom-right-radius: 10px;
-		height: 5px;
+		height: 7px;
 		top: 0;
 		left: 50%;
 		transform: translateX(-50%);
@@ -66,7 +66,7 @@
 
 	.current.responsive:before {
 		@media screen and (min-aspect-ratio: 1/1) {
-			width: 5px;
+			width: 7px;
 			height: 80%;
 			top: 50%;
 			left: 0;

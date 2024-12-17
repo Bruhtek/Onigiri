@@ -2,8 +2,7 @@
 	import Plus from '~icons/ph/plus';
 	import Minus from '~icons/ph/minus';
 	import ArrowArcLeft from '~icons/ph/arrow-arc-left';
-	import { defaultReaderPreferencesData } from '$lib/stores/readerPreferencesStore.svelte';
-	import requestDialog from '$lib/stores/dialogStore.svelte';
+	import Dialog from '$lib/stores/Dialog.js';
 
 	interface Props {
 		onChange: (selected: number) => void;
@@ -34,7 +33,7 @@
 			onChange(newVal);
 		};
 
-		requestDialog({
+		Dialog.requestDialog({
 			type: 'number',
 			currentValue: current,
 			title: title,
@@ -42,8 +41,6 @@
 			callback,
 		});
 	};
-
-	$inspect(defaultReaderPreferencesData);
 </script>
 
 <div class="container">

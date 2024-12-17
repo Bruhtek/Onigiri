@@ -59,3 +59,11 @@ h1 {
 h2 {
 	font-size: 1.2em;
 }
+
+.monospace {
+	color: black;
+	display: inline-block;
+	font-family: monospace;
+	padding: 0.2rem;
+	background-color: lightgray;
+}

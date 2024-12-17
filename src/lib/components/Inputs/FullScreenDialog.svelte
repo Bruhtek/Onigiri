@@ -1,66 +1,76 @@
 <script lang="ts">
-	import { dialogStore } from '$lib/stores/dialogStore.svelte';
+	import Dialog from '$lib/stores/Dialog.js';
 	import { untrack } from 'svelte';
 
 	let value = $state<never>();
 	let setValOnce = $state<boolean>(false);
 
 	const onCancel = () => {
-		dialogStore.set(undefined);
+		Dialog.clear();
 		setValOnce = false;
 	};
 	const onClear = () => {
 		value = '';
+		onSubmit();
 	};
 	const onSubmit = () => {
-		if (!value) return;
-		if (!dialogStore.value) return;
+		if (!Dialog.current) return;
+		if (value === undefined || (!value && Dialog.current.type !== 'string')) return;
 
-		dialogStore.value.callback(value);
-		dialogStore.set(undefined);
+		Dialog.current.callback(value);
+		Dialog.clear();
 		value = undefined;
 		setValOnce = false;
 	};
 
 	$effect(() => {
-		if (dialogStore.value && dialogStore.value.type === 'string' && !value && !setValOnce) {
-			value = dialogStore.value.currentValue as never;
+		if (!Dialog.current) return;
+
+		if (Dialog.current.type === 'string' && !value && !setValOnce) {
+			console.log('Setting once');
+			value = Dialog.current.currentValue as never;
 		}
 
 		setValOnce = true;
 
-		if (!dialogStore.value || !dialogStore.value.hotReload) return;
+		if (!Dialog.current || !Dialog.current.hotReload) return;
 
 		untrack(() => {
-			if (!dialogStore.value || !dialogStore.value.hotReload) return;
+			if (!Dialog.current || !Dialog.current.hotReload) return;
 
-			dialogStore.value.callback(value as never);
+			Dialog.current.callback(value as never);
 		});
 	});
+
+	function grabFocus(node: HTMLElement) {
+		node.focus();
+	}
 </script>
 
-{#if dialogStore.value}
+{#if Dialog.current}
 	<button class="bg" onclick={onCancel} aria-label="bg"></button>
 	<div class="dialog-body">
-		<h3>{dialogStore.value.title}</h3>
-		{#if dialogStore.value.type === "number"}
+		<h3>{Dialog.current.title}</h3>
+		{#if Dialog.current.type === "number"}
 			<input type="number"
-				   placeholder={dialogStore.value.currentValue.toString()}
+				   placeholder={Dialog.current.currentValue.toString()}
+				   use:grabFocus
 				   bind:value={value}
 			/>
 		{/if}
-		{#if dialogStore.value.type === "string"}
+		{#if Dialog.current.type === "string"}
 			<input type="text"
+				   use:grabFocus
 				   bind:value={value}
 			/>
 		{/if}
 		<div class="buttons">
-			{#if dialogStore.value.type === "string"}
+			{#if Dialog.current.type === "string"}
 				<button class="button" onclick={onClear}>
 					Clear
 				</button>
 			{/if}
-			{#if !dialogStore.value.hotReload}
+			{#if !Dialog.current.hotReload}
 				<button class="button" onclick={onCancel}>
 					Cancel
 				</button>

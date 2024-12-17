@@ -2,11 +2,11 @@ import { z } from 'zod';
 import Part, { PartScheme } from '$lib/types/Part';
 import { PaginationScheme } from '$lib/api/schemas';
 import { createArrayStore } from '$lib/helpers/store.svelte';
-import { pageProperties } from '$lib/stores/pageProperties.svelte';
+import DisplayPage from '$lib/stores/DisplayPage.svelte.js';
 import JAccount from '$lib/api/JAccount.svelte';
-import releasesPreferencesStore from '$lib/stores/releasesPreferencesStore.svelte';
 import { jfetch } from '$lib/api/JNovel.svelte';
-import notificationStore from '$lib/stores/notificationStore.svelte';
+import Notifications from '$lib/stores/Notifications.svelte.js';
+import PrefReleases from '$lib/stores/preferences/Releases.svelte';
 
 class ReleasesClass {
 	private _store: ReturnType<typeof createArrayStore<Part>>;
@@ -30,18 +30,18 @@ class ReleasesClass {
 
 	public clear = () => {
 		this._store.reset();
-		pageProperties.patch({ lastPage: false });
+		DisplayPage.patch({ lastPage: false });
 	};
 
 	public fetchMoreReleases = async (limit: number = 200) => {
-		if (pageProperties.value.lastPage || this._loading) {
+		if (DisplayPage.v.lastPage || this._loading) {
 			return;
 		}
 
 		this._loading = true;
 		const currentNum = this.releases.length;
 		let query = `?limit=${limit}&skip=${currentNum}&type=1`; // type 1 - only Novels
-		if (JAccount.loggedIn && releasesPreferencesStore.value.favoritesOnly) {
+		if (JAccount.loggedIn && PrefReleases.v.favoritesOnly) {
 			query += '&only_follows=true';
 		}
 
@@ -56,17 +56,17 @@ class ReleasesClass {
 			this._store.update((parts) => [...parts, ...newParts]);
 
 			if (data.pagination.lastPage) {
-				notificationStore.info('You have reached the last page');
-				pageProperties.patch({ lastPage: true });
+				Notifications.info('You have reached the last page');
+				DisplayPage.patch({ lastPage: true });
 			}
 
-			notificationStore.success(`Loaded ${limit} more releases`, 2000);
+			Notifications.success(`Loaded ${limit} more releases`, 2000);
 		} catch (e) {
 			console.log(e);
 			if (e instanceof TypeError) {
-				notificationStore.error('Error loading more releases: no internet!');
+				Notifications.error('Error loading more releases: no internet!');
 			} else {
-				notificationStore.error(`Error loading more releases: ${e}`);
+				Notifications.error(`Error loading more releases: ${e}`);
 			}
 		} finally {
 			this._loading = false;

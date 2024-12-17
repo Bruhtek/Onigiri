@@ -1,10 +1,10 @@
 <script lang="ts">
 	import BottomBar from '$lib/components/Navigation/BottomBar/BottomBar.svelte';
 	import Number from '$lib/components/Inputs/Number.svelte';
-	import preferencesStore, { defaultPreferencesData } from '$lib/stores/preferencesStore.svelte';
+	import PrefDisplay, { displayPreferencesDefaults } from '$lib/stores/preferences/Display.svelte';
 	import isVertical from '$lib/stores/orientationStore.svelte';
 	import { onMount, type Snippet } from 'svelte';
-	import { pageProperties, possibleDisplays } from '$lib/stores/pageProperties.svelte';
+	import DisplayPage, { possibleDisplays } from '$lib/stores/DisplayPage.svelte.js';
 
 	interface Props {
 		type: typeof possibleDisplays[number];
@@ -15,7 +15,7 @@
 	let props: Props = $props();
 
 	onMount(() => {
-		pageProperties.patch({
+		DisplayPage.patch({
 			currentDisplay: props.type,
 		});
 	});
@@ -31,25 +31,25 @@
 		<div class="settings-panel">
 			<h2>Settings</h2>
 			<Number
-				current={preferencesStore.value.columnCountHorizontal}
-				onChange={(v) => preferencesStore.patch({columnCountHorizontal: v})}
-				defaultValue={defaultPreferencesData.columnCountHorizontal}
+				current={PrefDisplay.v.gridColumnCountHorizontal}
+				onChange={(v) => PrefDisplay.patch({gridColumnCountHorizontal: v})}
+				defaultValue={displayPreferencesDefaults.gridColumnCountHorizontal}
 				min={2}
 				max={10}
 				title={isVertical.value ? "Column count in landscape" : "Column count in landscape (now)"}
 			/>
 			<Number
-				current={preferencesStore.value.columnCountVertical}
-				onChange={(v) => preferencesStore.patch({columnCountVertical: v})}
-				defaultValue={defaultPreferencesData.columnCountVertical}
+				current={PrefDisplay.v.gridColumnCountVertical}
+				onChange={(v) => PrefDisplay.patch({gridColumnCountVertical: v})}
+				defaultValue={displayPreferencesDefaults.gridColumnCountVertical}
 				min={2}
 				max={10}
 				title={isVertical.value ? "Column count in portrait (now)" : "Column count in portrait"}
 			/>
 			<Number
-				current={preferencesStore.value.gridObjectGap}
-				onChange={(v) => preferencesStore.patch({gridObjectGap: v})}
-				defaultValue={defaultPreferencesData.gridObjectGap}
+				current={PrefDisplay.v.gridObjectGap}
+				onChange={(v) => PrefDisplay.patch({gridObjectGap: v})}
+				defaultValue={displayPreferencesDefaults.gridObjectGap}
 				step={4}
 				min={0}
 				max={40}

@@ -1,9 +1,9 @@
 const connectivityCheck = (node: Window) => {
 	$effect(() => {
-		const onBlur = (e: FocusEvent) => {
+		const onBlur = () => {
 			// console.log(e);
 		};
-		const onFocus = (e: FocusEvent) => {
+		const onFocus = () => {
 			// console.log(e);
 			connectivityCheck();
 		};
@@ -12,10 +12,10 @@ const connectivityCheck = (node: Window) => {
 			// jfetch('/status')
 			// 	.then(async (res) => {
 			// 		console.log(await res.json());
-			// 		notificationStore.success('Internet!');
+			// 		Notifications.success('Internet!');
 			// 	})
 			// 	.catch(() => {
-			// 		notificationStore.error('No internet connection!');
+			// 		Notifications.error('No internet connection!');
 			// 	});
 		};
 

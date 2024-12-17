@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import notificationStore from '$lib/stores/notificationStore.svelte';
+	import Notifications from '$lib/stores/Notifications.svelte.js';
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import { goto } from '$app/navigation';
 	import JAccount, { type OTPResponse, OTPResponseState } from '$lib/api/JAccount.svelte';
@@ -11,7 +11,7 @@
 		(async () => {
 			const res = await JAccount.otp_generate();
 			if (res.error !== false) {
-				notificationStore.error(res.error);
+				Notifications.error(res.error);
 				history.back();
 			} else {
 				otpData = res.data;
@@ -37,10 +37,10 @@
 
 			const res = await JAccount.otp_check(otpData);
 			if (res.error !== false) {
-				notificationStore.error(res.error);
+				Notifications.error(res.error);
 				history.back();
 			} else if (res.data === OTPResponseState.LoggedIn) {
-				notificationStore.success('You are now logged in');
+				Notifications.success('You are now logged in');
 				otpData = undefined;
 				await goto('/');
 			}
@@ -58,7 +58,7 @@
 			Visit
 			<a class="underlined" href="https://j-novel.club/user/otp" target="_blank">https://j-novel.club/user/otp</a>
 			and type in the code
-			<span class="code">{otpData.otp}</span>
+			<span class="code monospace">{otpData.otp}</span>
 			to authorize the application
 		</div>
 
@@ -72,11 +72,14 @@
 
 <style>
 	.code {
-		display: inline-block;
-		padding: 0.5rem;
 		font-weight: bold;
+		margin: 0 0.2rem;
 		font-family: monospace;
 		font-size: 1.5rem;
-		letter-spacing: 0.5rem;
+		letter-spacing: 0.2rem;
+	}
+
+	.button {
+		margin-top: 0.5rem;
 	}
 </style>

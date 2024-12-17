@@ -3,7 +3,7 @@ import Serie, { SerieSchema } from '$lib/types/Serie';
 import { z } from 'zod';
 import { PaginationScheme } from '$lib/api/schemas';
 import { jfetch } from '$lib/api/JNovel.svelte';
-import notificationStore from '$lib/stores/notificationStore.svelte';
+import Notifications from '$lib/stores/Notifications.svelte.js';
 
 class SeriesClass {
 	private _loading = false;
@@ -39,13 +39,13 @@ class SeriesClass {
 
 			this._series.set(series);
 
-			notificationStore.success('Loaded series');
+			Notifications.success('Loaded series');
 		} catch (e) {
 			console.log(e);
 			if (e instanceof TypeError) {
-				notificationStore.error('Failed to load series - no internet!');
+				Notifications.error('Failed to load series - no internet!');
 			} else {
-				notificationStore.error(`Failed to load series: ${e}`);
+				Notifications.error(`Failed to load series: ${e}`);
 			}
 		} finally {
 			this._loading = false;

@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { mapTapZones, type TapZone } from '$lib/stores/readerPreferencesStore.svelte';
+	import PrefReader from '$lib/stores/preferences/Reader.svelte';
 	import ReaderZone from '$lib/components/Reader/ReaderZone.svelte';
 
 	interface Props {
-		tapZone: TapZone,
 		onTap: () => void;
 	}
 
 	let props: Props = $props();
 
-	let actions = $derived(mapTapZones(props.tapZone));
+	let actions = $derived(PrefReader.mapTapZones());
 </script>
 
 <div class="container"

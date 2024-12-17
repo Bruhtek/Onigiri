@@ -1,5 +1,5 @@
 <script lang="ts">
-	import preferencesStore from '$lib/stores/preferencesStore.svelte';
+	import PrefGeneral from '$lib/stores/preferences/General.svelte';
 	import TopBarItem from '$lib/components/Navigation/TopBar/TopBarItem.svelte';
 
 	import Calendar from '~icons/ph/calendar';
@@ -11,7 +11,7 @@
 
 </script>
 
-<div class="top-bar" class:responsive={preferencesStore.value.verticalTabsWhileHorizontal}>
+<div class="top-bar" class:responsive={PrefGeneral.v.verticalTabsWhileHorizontal}>
 	<div class="top">
 		<TopBarItem title="Releases" href="/" icon={Calendar} />
 		<TopBarItem title="Series" href="/series" icon={Books} />

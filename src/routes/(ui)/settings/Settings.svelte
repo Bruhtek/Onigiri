@@ -1,18 +1,18 @@
 <script lang="ts">
-	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import Checkbox from '$lib/components/Inputs/Checkbox.svelte';
+	import PrefGeneral from '$lib/stores/preferences/General.svelte';
 </script>
 
 <div class="settings-container">
 	<Checkbox
 		title="Place navigation on the side while horizontal"
-		current={preferencesStore.value.verticalTabsWhileHorizontal}
-		onChange={(v) => preferencesStore.patch({verticalTabsWhileHorizontal: v})}
+		current={PrefGeneral.v.verticalTabsWhileHorizontal}
+		onChange={(v) => PrefGeneral.patch({verticalTabsWhileHorizontal: v})}
 	/>
 	<Checkbox
 		title="Dark Mode"
-		current={preferencesStore.value.darkMode}
-		onChange={(v) => preferencesStore.patch({darkMode: v})}
+		current={PrefGeneral.v.darkMode}
+		onChange={(v) => PrefGeneral.patch({darkMode: v})}
 	/>
 </div>
 

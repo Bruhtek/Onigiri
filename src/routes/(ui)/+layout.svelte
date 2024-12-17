@@ -1,14 +1,13 @@
 <script lang="ts">
 	import TopBar from '$lib/components/Navigation/TopBar/TopBar.svelte';
-
-	import preferencesStore from '$lib/stores/preferencesStore.svelte';
+	import PrefGeneral from '$lib/stores/preferences/General.svelte';
 </script>
 
-<div class="container" class:responsive={preferencesStore.value.verticalTabsWhileHorizontal}>
+<div class="container" class:responsive={PrefGeneral.v.verticalTabsWhileHorizontal}>
 	<TopBar />
 
 	<div class="content">
-			<slot />
+		<slot />
 	</div>
 </div>
 

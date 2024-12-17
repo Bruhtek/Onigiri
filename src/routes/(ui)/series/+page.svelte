@@ -8,10 +8,10 @@
 	import MagnifyingGlass from '~icons/ph/magnifying-glass';
 	import IconCheckbox from '$lib/components/Inputs/IconCheckbox.svelte';
 
-	import { seriesPagePreferences } from '$lib/stores/seriesPagePreferences.svelte';
-	import requestDialog from '$lib/stores/dialogStore.svelte';
+	import Dialog from '$lib/stores/Dialog.js';
 	import JAccount from '$lib/api/JAccount.svelte';
 	import Series from '$lib/api/Series.svelte';
+	import PrefSeries from '$lib/stores/preferences/Series.svelte';
 
 	if (Series.series.length == 0) {
 		Series.fetchSeries();
@@ -19,33 +19,33 @@
 
 	let createQueryDialog = () => {
 		const callback = (q: string) => {
-			seriesPagePreferences.patch({ query: q });
+			PrefSeries.patch({ query: q });
 		};
 
-		requestDialog({
+		Dialog.requestDialog({
 			title: 'Search',
 			type: 'string',
 			description: 'Enter a search query',
 			hotReload: true,
-			currentValue: seriesPagePreferences.value.query,
+			currentValue: PrefSeries.v.query,
 			callback,
 		});
 	};
 
 	let filteredSeries = $derived.by(() => {
 		let series = Series.series;
-		if (!seriesPagePreferences.value.favoritesOnly && !seriesPagePreferences.value.catchupOnly && !seriesPagePreferences.value.query) {
+		if (!PrefSeries.v.favoritesOnly && !PrefSeries.v.catchupOnly && !PrefSeries.v.query) {
 			return series;
 		}
 
 		return series.filter((s) => {
-			if (seriesPagePreferences.value.favoritesOnly && !s.following) {
+			if (PrefSeries.v.favoritesOnly && !s.following) {
 				return false;
 			}
-			if (seriesPagePreferences.value.catchupOnly && !s.catchup) {
+			if (PrefSeries.v.catchupOnly && !s.catchup) {
 				return false;
 			}
-			return !(seriesPagePreferences.value.query && !s.title.toLowerCase().includes(seriesPagePreferences.value.query.toLowerCase()));
+			return !(PrefSeries.v.query && !s.title.toLowerCase().includes(PrefSeries.v.query.toLowerCase()));
 		});
 	});
 </script>
@@ -54,9 +54,9 @@
 	{#snippet leftPanel()}
 		Series
 		{#if JAccount.loggedIn && (
-			seriesPagePreferences.value.favoritesOnly
-			|| seriesPagePreferences.value.catchupOnly
-			|| seriesPagePreferences.value.query)
+			PrefSeries.v.favoritesOnly
+			|| PrefSeries.v.catchupOnly
+			|| PrefSeries.v.query)
 		}
 			(Filtered)
 		{/if}
@@ -64,15 +64,15 @@
 	{#snippet rightPanel()}
 		<button class="search" onclick={createQueryDialog}>
 			<span class="query">
-				{#if seriesPagePreferences.value.query}
-					{seriesPagePreferences.value.query}
+				{#if PrefSeries.v.query}
+					{PrefSeries.v.query}
 				{/if}
 			</span>
 			<MagnifyingGlass width="32px" height="32px" />
 		</button>
 		<IconCheckbox
-			current={seriesPagePreferences.value.catchupOnly}
-			onChange={() => seriesPagePreferences.patch({catchupOnly: !seriesPagePreferences.value.catchupOnly})}
+			current={PrefSeries.v.catchupOnly}
+			onChange={() => PrefSeries.patch({catchupOnly: !PrefSeries.v.catchupOnly})}
 		>
 			{#snippet stateOn()}
 				<TimerFill width="32px" height="32px" />
@@ -82,8 +82,8 @@
 			{/snippet}
 		</IconCheckbox>
 		<IconCheckbox
-			current={seriesPagePreferences.value.favoritesOnly}
-			onChange={() => seriesPagePreferences.patch({favoritesOnly: !seriesPagePreferences.value.favoritesOnly})}
+			current={PrefSeries.v.favoritesOnly}
+			onChange={() => PrefSeries.patch({favoritesOnly: !PrefSeries.v.favoritesOnly})}
 		>
 			{#snippet stateOn()}
 				<StarFill width="32px" height="32px" />

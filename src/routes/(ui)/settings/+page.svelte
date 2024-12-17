@@ -28,13 +28,6 @@
 
 
 <style>
-	.monospace {
-		display: inline-block;
-		font-family: monospace;
-		padding: 0.2rem;
-		background-color: lightgray;
-	}
-
 	.container {
 		min-height: 32px;
 		display: flex;

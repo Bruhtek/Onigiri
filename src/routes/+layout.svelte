@@ -3,10 +3,10 @@
 	import isVertical from '$lib/stores/orientationStore.svelte';
 	import Notifications from '$lib/components/Notifications/Notifications.svelte';
 	import { onMount } from 'svelte';
-	import preferencesStore from '$lib/stores/preferencesStore.svelte';
 	import connectivityCheck from '$lib/helpers/useConnectivityCheck.svelte';
 	import FullScreenDialog from '$lib/components/Inputs/FullScreenDialog.svelte';
 	import init from '$lib/lifecycle/init';
+	import PrefGeneral from '$lib/stores/preferences/General.svelte';
 
 	const onInit = () => {
 		init();
@@ -28,7 +28,7 @@
 />
 
 <div class="content"
-	 class:dark={preferencesStore.value.darkMode}
+	 class:dark={PrefGeneral.v.darkMode}
 >
 	<FullScreenDialog />
 	<Notifications />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TapAction } from '$lib/stores/readerPreferencesStore.svelte';
+	import type { TapAction } from '$lib/stores/preferences/Reader.svelte';
 
 	interface Props {
 		action: TapAction;
