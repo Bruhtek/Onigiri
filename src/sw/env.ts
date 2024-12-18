@@ -14,5 +14,9 @@ export const ASSETS = [...build, ...files];
 export const FILES_TO_CACHE = [...ASSETS, ...prerendered];
 
 export const TEMP_CACHE_TTL = 60 * 60 * 4; // 4 hours
-export const TEMP_CACHE_REGEXES = [/^\/app\/v2\/series\/[^/]+\/aggregate$/, /^\/app\/v2\/series$/];
+export const TEMP_CACHE_REGEXES = [
+	/^\/app\/v2\/series\/[^/]+\/aggregate$/,
+	/^\/app\/v2\/series$/,
+	/^\/embed\/v2\/[^/]+\/data\.xhtml$/,
+];
 export const TEMP_CACHE_HEADER_NAME = 'SW-Cache-Expires';
