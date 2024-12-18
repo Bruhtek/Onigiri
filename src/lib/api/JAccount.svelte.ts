@@ -5,7 +5,8 @@ import { jfetch } from '$lib/api/JNovel.svelte';
 import type { Result } from '$lib/types/HelperTypes';
 import { z } from 'zod';
 import { sendBroadcastMessage } from '$lib/lifecycle/serviceWorker';
-import type { DynamicCacheMessage } from '$lib/types/broadcastMessageTypes';
+import type { ClearCachesMessage, DynamicCacheMessage } from '$lib/types/broadcastMessageTypes';
+import Series from '$lib/api/Series.svelte';
 
 type AccountData = {
 	token: string | null;
@@ -54,21 +55,24 @@ class JAccountClass {
 		const created = new Date(res.created);
 		const expires = addSeconds(created, parseInt(res.ttl));
 
-		// clear releases, to get parts progress when we next request them
-		await this._beforeLogin();
-
 		await accountStore.set({
 			token: res.id,
 			expiration: expires,
 		});
-
 		await this._afterLogin();
 	}
 
 	private _beforeLogin = async () => {
+		const msg: ClearCachesMessage = {
+			type: 'ClearCachesMessage',
+			all: false,
+		};
+		sendBroadcastMessage(msg);
 		Releases.clear();
+		Series.clear();
 	};
 	private _afterLogin = async () => {
+		await this._beforeLogin();
 		await this.fetchAccountInfo();
 	};
 
@@ -109,6 +113,7 @@ class JAccountClass {
 
 	public logout = async () => {
 		await this._account.reset();
+		await this._beforeLogin();
 	};
 
 	public otp_generate = async (): Promise<Result<OTPResponse>> => {

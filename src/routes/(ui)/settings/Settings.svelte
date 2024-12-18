@@ -27,7 +27,6 @@
 				all: false,
 			}
 			sendBroadcastMessage(msg);
-
 		}}
 	/>
 	<ButtonOption

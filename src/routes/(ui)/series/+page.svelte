@@ -39,7 +39,7 @@
 		}
 
 		return series.filter((s) => {
-			if (PrefSeries.v.favoritesOnly && !s.following) {
+			if (JAccount.loggedIn && PrefSeries.v.favoritesOnly && !s.following) {
 				return false;
 			}
 			if (PrefSeries.v.catchupOnly && !s.catchup) {
@@ -53,8 +53,7 @@
 <GridPage type="SERIES">
 	{#snippet leftPanel()}
 		Series
-		{#if JAccount.loggedIn && (
-			PrefSeries.v.favoritesOnly
+		{#if ((JAccount.loggedIn && PrefSeries.v.favoritesOnly)
 			|| PrefSeries.v.catchupOnly
 			|| PrefSeries.v.query)
 		}
@@ -81,17 +80,19 @@
 				<Timer width="32px" height="32px" />
 			{/snippet}
 		</IconCheckbox>
-		<IconCheckbox
-			current={PrefSeries.v.favoritesOnly}
-			onChange={() => PrefSeries.patch({favoritesOnly: !PrefSeries.v.favoritesOnly})}
-		>
-			{#snippet stateOn()}
-				<StarFill width="32px" height="32px" />
-			{/snippet}
-			{#snippet stateOff()}
-				<Star width="32px" height="32px" />
-			{/snippet}
-		</IconCheckbox>
+		{#if JAccount.loggedIn}
+			<IconCheckbox
+				current={PrefSeries.v.favoritesOnly}
+				onChange={() => PrefSeries.patch({favoritesOnly: !PrefSeries.v.favoritesOnly})}
+			>
+				{#snippet stateOn()}
+					<StarFill width="32px" height="32px" />
+				{/snippet}
+				{#snippet stateOff()}
+					<Star width="32px" height="32px" />
+				{/snippet}
+			</IconCheckbox>
+		{/if}
 	{/snippet}
 	<GridLayout items={filteredSeries} />
 </GridPage>

@@ -20,6 +20,10 @@ class SeriesClass {
 		return this._currentSeries;
 	}
 
+	public clear() {
+		this._series.reset();
+	}
+
 	private _clearCurrent() {
 		this._currentSeries = null;
 	}
