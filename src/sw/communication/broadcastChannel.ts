@@ -7,8 +7,13 @@ import { serviceWorkerLifecycle } from '../data.js';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
-import { isDynamicCacheMessage, isStatusMessage } from '$lib/types/broadcastMessageTypes';
+import {
+	isClearCachesMessage,
+	isDynamicCacheMessage,
+	isStatusMessage,
+} from '$lib/types/broadcastMessageTypes';
 import { addItemToCache, resetCache } from '../cacheFile';
+import { clearAllCaches, clearTemporaryCaches } from '../utils/caches';
 
 export const broadcastChannel = new BroadcastChannel('serviceWorker');
 
@@ -45,5 +50,14 @@ broadcastChannel.onmessage = async (e: MessageEvent) => {
 			return;
 		}
 		respondToMessage(e.data, { status: serviceWorkerLifecycle.value });
+	}
+
+	if (isClearCachesMessage(e.data)) {
+		if (e.data.all) {
+			const res = await clearAllCaches();
+			respondToMessage(e.data, { status: res });
+		} else {
+			await clearTemporaryCaches();
+		}
 	}
 };

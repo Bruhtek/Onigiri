@@ -36,3 +36,12 @@ export function isStatusMessage(obj: unknown): obj is StatusMessage {
 		typeof obj === 'object' && obj !== null && (obj as StatusMessage).type === 'StatusMessage'
 	);
 }
+
+export type ClearCachesMessage = {
+	type: 'ClearCachesMessage';
+	all: boolean;
+};
+
+export function isClearCachesMessage(obj: unknown): obj is ClearCachesMessage {
+	return typeof obj === 'object' && obj !== null;
+}
