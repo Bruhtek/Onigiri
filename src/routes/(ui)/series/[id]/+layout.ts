@@ -13,3 +13,4 @@ export const load: LayoutLoad = async ({ params }) => {
 };
 
 export const ssr = false;
+export const prerender = false;
