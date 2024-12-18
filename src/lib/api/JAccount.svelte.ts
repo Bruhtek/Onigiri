@@ -15,7 +15,7 @@ const accountStore = await createPersistentStore<AccountData>('account', {
 	token: null,
 	expiration: null,
 });
-const accountInfoStore = await createPersistentStore<z.infer<typeof AccountInfoScheme> | undefined>(
+const accountInfoStore = await createPersistentStore<z.infer<typeof AccountInfoSchema> | undefined>(
 	'accountInfo',
 	undefined,
 );
@@ -207,7 +207,7 @@ class JAccountClass {
 
 		try {
 			const json = await res.json();
-			const schema = AccountInfoScheme.parse(json);
+			const schema = AccountInfoSchema.parse(json);
 
 			if (!schema) {
 				return;
@@ -250,7 +250,7 @@ export enum OTPResponseState {
 	LoggedIn,
 }
 
-export const AccountInfoScheme = z.object({
+export const AccountInfoSchema = z.object({
 	id: z.string(),
 	email: z.string(),
 	username: z.string(),

@@ -8,8 +8,9 @@
 
 	interface Props {
 		type: typeof possibleDisplays[number];
-		leftPanel: Snippet;
-		rightPanel: Snippet;
+		leftPanel?: Snippet;
+		rightPanel?: Snippet;
+		showTotalPages?: boolean;
 	}
 
 	let props: Props = $props();
@@ -18,15 +19,23 @@
 		DisplayPage.patch({
 			currentDisplay: props.type,
 		});
+		return () => {
+			// for volumes, we don't really want to remember the pages
+			if (props.type === 'VOLUMES') {
+				DisplayPage.setPageForDisplay(0, 'VOLUMES');
+			}
+			DisplayPage.patch({
+				currentDisplay: 'OTHER',
+			});
+		};
 	});
-
 </script>
 
 <div class="slot">
 	<slot />
 </div>
 
-<BottomBar leftPanel={props.leftPanel} rightPanel={props.rightPanel}>
+<BottomBar showTotalPages={props.showTotalPages} leftPanel={props.leftPanel} rightPanel={props.rightPanel}>
 	{#snippet settingsPanel()}
 		<div class="settings-panel">
 			<h2>Settings</h2>

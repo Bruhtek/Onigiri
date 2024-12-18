@@ -82,6 +82,7 @@
 		}
 	});
 
+
 	const gestureCallback = (direction: Direction) => {
 		if (direction == 'right') {
 			DisplayPage.changePage(-1);

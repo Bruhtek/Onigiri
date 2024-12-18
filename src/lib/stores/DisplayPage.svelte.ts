@@ -2,10 +2,11 @@ import { createStore } from '$lib/helpers/store.svelte';
 import StoreClass from '$lib/stores/_StoreClass';
 
 export const possibleDisplays = ['RELEASES', 'SERIES', 'VOLUMES', 'OTHER'] as const;
+type PossibleDisplay = (typeof possibleDisplays)[number];
 
 type DisplayPage = {
-	pages: { [key in (typeof possibleDisplays)[number]]: number };
-	currentDisplay: (typeof possibleDisplays)[number];
+	pages: { [key in PossibleDisplay]: number };
+	currentDisplay: PossibleDisplay;
 	itemsPerPage: number;
 	itemsCount: number;
 	lastPage: boolean;
@@ -45,6 +46,18 @@ class DisplayPageStore extends StoreClass<DisplayPage> {
 
 	public get currentPage() {
 		return this.v.pages[this.v.currentDisplay];
+	}
+
+	public set currentDisplay(currentDisplay: PossibleDisplay) {
+		this.patch({ currentDisplay });
+	}
+
+	public setPageForDisplay(page: number, display: PossibleDisplay) {
+		displayPage.update((v) => {
+			const pages = v.pages;
+			pages[display] = page;
+			return { ...v, pages };
+		});
 	}
 }
 

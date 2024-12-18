@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
+	import { page } from '$app/stores';
 
 	interface GridLayoutProps {
 		item: LayoutItemProp;
@@ -13,9 +14,17 @@
 		}
 		return item;
 	});
+
+	let href = $derived.by(() => {
+		if(typeof actualItem.href === 'function') {
+			return actualItem.href($page.url.pathname);
+		} else {
+			return actualItem.href;
+		}
+	})
 </script>
 
-<a class="item" href="{actualItem.href}">
+<a class="item" href="{href}">
 	<div class="image">
 		{#key actualItem.imageSrc}
 			<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />

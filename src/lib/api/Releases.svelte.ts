@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import Part, { PartScheme } from '$lib/types/Part';
+import Part, { PartSchema } from '$lib/types/Part';
 import { PaginationScheme } from '$lib/api/schemas';
 import { createArrayStore } from '$lib/helpers/store.svelte';
 import DisplayPage from '$lib/stores/DisplayPage.svelte.js';
@@ -89,6 +89,6 @@ const Releases = new ReleasesClass();
 export default Releases;
 
 const ReleasesScheme = z.object({
-	parts: z.array(PartScheme),
+	parts: z.array(PartSchema),
 	pagination: PaginationScheme,
 });

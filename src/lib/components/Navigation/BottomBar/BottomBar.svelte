@@ -5,10 +5,11 @@
 	import type { Snippet } from 'svelte';
 	import DisplayPage from '$lib/stores/DisplayPage.svelte.js';
 
-	let { settingsPanel, rightPanel, leftPanel }: {
+	let { settingsPanel, rightPanel, leftPanel, showTotalPages }: {
 		settingsPanel: Snippet,
 		rightPanel?: Snippet,
 		leftPanel?: Snippet
+		showTotalPages?: boolean
 	} = $props();
 
 	let settingsOpen = $state<boolean>(false);
@@ -27,7 +28,13 @@
 		<button class="button-left" onclick={() => DisplayPage.changePage(-1)}>
 			<ArrowLeft width="32" height="32" />
 		</button>
-		<span>{DisplayPage.currentPage + 1}</span>
+		<span>
+			{DisplayPage.currentPage + 1}
+			{#if showTotalPages}
+				/
+				{Math.ceil(DisplayPage.v.itemsCount / DisplayPage.v.itemsPerPage)}
+			{/if}
+		</span>
 		<button class="button-right" onclick={() => DisplayPage.changePage(1)}>
 			<ArrowRight width="32" height="32" />
 		</button>

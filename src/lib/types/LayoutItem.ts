@@ -3,7 +3,7 @@ export type LayoutItem = {
 	type: 'NOVEL' | 'MANGA';
 	imageSrc: string;
 	HDImageSrc?: string;
-	href: string;
+	href: string | ((current: string) => string);
 	progress?: number;
 	longPressHref?: string;
 	indexes?: () => string;

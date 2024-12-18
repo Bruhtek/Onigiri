@@ -1,7 +1,7 @@
 import { jfetch } from '$lib/api/JNovel.svelte';
 import Releases from '$lib/api/Releases.svelte';
 import type { Result } from '$lib/types/HelperTypes';
-import Part, { PartScheme } from '$lib/types/Part';
+import Part, { PartSchema } from '$lib/types/Part';
 import { z } from 'zod';
 
 class PartsClass {
@@ -72,7 +72,7 @@ const Parts = new PartsClass();
 export default Parts;
 
 export const PartTocSchema = z.object({
-	parts: z.object({ parts: z.array(PartScheme) }),
+	parts: z.object({ parts: z.array(PartSchema) }),
 	seriesTitle: z.string(),
 });
 export type PartTocResult = {
