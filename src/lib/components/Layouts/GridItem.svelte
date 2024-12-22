@@ -74,6 +74,7 @@
 		position: relative;
 		border: 3px solid var(--text);
 		border-color: var(--text);
+		user-select: none;
 	}
 	.item:hover:active {
 		background-color: var(--text);
@@ -125,7 +126,7 @@
 			position: absolute;
 			height: 100%;
 			width: calc(var(--progress) * 100%);
-			background-color: inherit;
+			background-color: var(--text);
 			left: 0;
 			top: 0;
 		}
