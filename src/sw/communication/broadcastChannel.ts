@@ -13,7 +13,7 @@ import {
 	isStatusMessage,
 } from '$lib/types/broadcastMessageTypes';
 import { addItemToCache, resetCache } from '../cacheFile';
-import { clearAllCaches, clearTemporaryCaches } from '../utils/caches';
+import { clearAllCaches, clearTemporaryCaches, clearTemporarySeriesData } from '../utils/caches';
 
 export const broadcastChannel = new BroadcastChannel('serviceWorker');
 
@@ -53,10 +53,12 @@ broadcastChannel.onmessage = async (e: MessageEvent) => {
 	}
 
 	if (isClearCachesMessage(e.data)) {
-		if (e.data.all) {
+		if (e.data.which === 'all') {
 			const res = await clearAllCaches();
 			respondToMessage(e.data, { status: res });
-		} else {
+		} else if (e.data.which === 'temporarySeries' && e.data.seriesId) {
+			await clearTemporarySeriesData(e.data.seriesId);
+		} else if (e.data.which === 'temporary') {
 			await clearTemporaryCaches();
 		}
 	}

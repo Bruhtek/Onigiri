@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+	import longPress from '$lib/helpers/useLongPress.svelte';
+	import PrefDisplay from '$lib/stores/preferences/Display.svelte';
 
 	interface GridLayoutProps {
 		item: LayoutItemProp;
@@ -24,11 +27,22 @@
 	})
 </script>
 
-<a class="item" href="{href}">
+<a class="item"
+   href="{href}"
+   onclick={() => {}}
+   ontouchstart={() => {}}
+   use:longPress={() => actualItem.longPressHref && goto(actualItem.longPressHref)}
+>
 	<div class="image">
-		{#key actualItem.imageSrc}
-			<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />
-		{/key}
+		{#if !PrefDisplay.v.hdThumbnails}
+			{#key actualItem.imageSrc}
+				<img class="image-obj" src={actualItem.imageSrc} alt={actualItem.title} />
+			{/key}
+		{:else}
+			{#key actualItem.HDImageSrc || actualItem.imageSrc}
+				<img class="image-obj" src={actualItem.HDImageSrc || actualItem.imageSrc} alt={actualItem.title} />
+			{/key}
+		{/if}
 	</div>
 	<div class="title" style="--progress: {actualItem.progress || 0}">
 		<div class="title-bg"></div>
@@ -59,6 +73,11 @@
 		aspect-ratio: var(--column-aspect-ratio);
 		position: relative;
 		border: 3px solid var(--text);
+		border-color: var(--text);
+	}
+	.item:hover:active {
+		background-color: var(--text);
+		color: var(--bg);
 	}
 
 	.image {
@@ -81,9 +100,11 @@
 		bottom: 0;
 		left: 0;
 		width: 100%;
-		color: var(--text);
-		background-color: var(--bg);
-		border-top: 3px solid var(--text);
+		color: inherit;
+		background-color: inherit;
+		border-top-width: 3px;
+		border-top-style: solid;
+		border-color: inherit;
 		box-sizing: content-box;
 		height: calc(2lh + 0.4rem);
 
@@ -104,7 +125,7 @@
 			position: absolute;
 			height: 100%;
 			width: calc(var(--progress) * 100%);
-			background-color: var(--text);
+			background-color: inherit;
 			left: 0;
 			top: 0;
 		}
@@ -116,7 +137,9 @@
 		top: 0.2rem;
 		left: 0.2rem;
 		padding: 0.2em;
-		border: 3px solid var(--text);
-		background-color: var(--bg);
+		border-color: inherit;
+		border-width: 3px;
+		border-style: solid;
+		background-color: inherit;
 	}
 </style>

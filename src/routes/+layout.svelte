@@ -7,6 +7,8 @@
 	import FullScreenDialog from '$lib/components/Inputs/FullScreenDialog.svelte';
 	import init from '$lib/lifecycle/init';
 	import PrefGeneral from '$lib/stores/preferences/General.svelte';
+	import { afterNavigate } from '$app/navigation';
+	import previousUrl from '$lib/stores/previousUrl.svelte';
 
 	const onInit = () => {
 		init();
@@ -15,6 +17,10 @@
 	const checkOrientation = () => {
 		isVertical.set(!window.matchMedia('screen and (min-aspect-ratio: 1/1)').matches);
 	};
+
+	afterNavigate((navigation) => {
+		previousUrl.set((navigation.from && navigation.from.url && navigation.from?.url.toString()) || '');
+	});
 
 	onMount(onInit);
 </script>

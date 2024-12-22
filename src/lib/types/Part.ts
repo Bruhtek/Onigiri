@@ -60,6 +60,7 @@ class Part extends _IndexesClass implements LayoutItemFactory {
 			imageSrc: this.thumbnailURL,
 			HDImageSrc: this.coverURL,
 			href: `/reader/${this.id}`,
+			longPressHref: `/series/by-partId/${this.id}`,
 			indexes: this.getIndexes.bind(this),
 			titleWithoutIndexes: this.getTitleWithoutIndexes.bind(this),
 			progress: this.progress,

@@ -65,7 +65,7 @@ class JAccountClass {
 	private _beforeLogin = async () => {
 		const msg: ClearCachesMessage = {
 			type: 'ClearCachesMessage',
-			all: false,
+			which: 'temporary',
 		};
 		sendBroadcastMessage(msg);
 		Releases.clear();

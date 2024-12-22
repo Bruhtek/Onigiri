@@ -9,12 +9,14 @@ export type DisplayPreferences = {
 	gridColumnCountVertical: number;
 	gridColumnCountHorizontal: number;
 	gridObjectGap: number;
+	hdThumbnails: boolean;
 };
 export const displayPreferencesDefaults: DisplayPreferences = {
 	releasesDisplayType: 'grid',
 	gridColumnCountVertical: 4,
 	gridColumnCountHorizontal: 6,
 	gridObjectGap: 16,
+	hdThumbnails: false,
 };
 
 const prefDisplay = await createPersistentStore<DisplayPreferences>(

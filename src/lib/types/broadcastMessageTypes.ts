@@ -39,7 +39,8 @@ export function isStatusMessage(obj: unknown): obj is StatusMessage {
 
 export type ClearCachesMessage = {
 	type: 'ClearCachesMessage';
-	all: boolean;
+	which: 'all' | 'temporarySeries' | 'temporary';
+	seriesId?: string;
 };
 
 export function isClearCachesMessage(obj: unknown): obj is ClearCachesMessage {

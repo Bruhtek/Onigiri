@@ -1,9 +1,16 @@
 import localforage from 'localforage';
 
 export async function createPersistentStore<T>(key: string, initialValue: T) {
-	await localforage.setDriver(localforage.INDEXEDDB);
-	const previousValue = await localforage.getItem<T>(key);
-	let value = previousValue || initialValue;
+	let value: T = initialValue;
+	let previousValue: T | null = initialValue;
+	try {
+		await localforage.setDriver(localforage.INDEXEDDB);
+		previousValue = await localforage.getItem<T>(key);
+		value = previousValue || initialValue;
+	} catch (e) {
+		// silently fail reading data, but do not crash the whole app
+		console.error('Localforage using defaults - unable to read saved data');
+	}
 
 	// if this is an object, we want to ensure that all keys are present
 	// even after updating initialValue in the future and adding new keys

@@ -2,6 +2,7 @@ import Serie, { SerieSchema } from '$lib/types/Serie';
 import Volume, { VolumeSchema } from '$lib/types/Volume';
 import Part, { PartSchema } from '$lib/types/Part';
 import { z } from 'zod';
+import PartsToSeriesMapper from '$lib/stores/PartsToSeriesMapper';
 
 export type FullVolume = { volume: Volume; parts: Part[] };
 
@@ -23,6 +24,8 @@ class SerieAggregate extends Serie {
 			volumes.push({ volume: v, parts: parts });
 		}
 		this.volumes = volumes;
+
+		PartsToSeriesMapper.updateSeriesData(this);
 	}
 }
 

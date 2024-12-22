@@ -5,6 +5,8 @@
 	import { broadcastWithResponse, sendBroadcastMessage } from '$lib/lifecycle/serviceWorker';
 	import type { ClearCachesMessage } from '$lib/types/broadcastMessageTypes';
 	import Notifications from '$lib/stores/Notifications.svelte';
+	import HrWithText from '$lib/components/Utils/HrWithText.svelte';
+	import PrefDisplay from '$lib/stores/preferences/Display.svelte';
 </script>
 
 <div class="settings-container">
@@ -18,13 +20,19 @@
 		current={PrefGeneral.v.darkMode}
 		onChange={(v) => PrefGeneral.patch({darkMode: v})}
 	/>
+	<Checkbox
+		title="Use high quality thumbnails"
+		current={PrefDisplay.v.hdThumbnails}
+		onChange={(v) => PrefDisplay.patch({hdThumbnails: v})}
+	/>
+	<HrWithText>Advanced</HrWithText>
 	<ButtonOption
 		title="Clear Temporary Caches"
 		shortTitle="CLEAR"
 		onTap={() => {
 			const msg: ClearCachesMessage = {
 				type: 'ClearCachesMessage',
-				all: false,
+				which: 'temporary',
 			}
 			sendBroadcastMessage(msg);
 		}}
@@ -35,7 +43,7 @@
 		onTap={() => {
 			const msg: ClearCachesMessage = {
 				type: 'ClearCachesMessage',
-				all: true,
+				which: 'all',
 			}
 			broadcastWithResponse(msg, 1000).then((res) => {
 				if(typeof res === 'object' && res && 'status' in res && res['status']) {
@@ -47,6 +55,13 @@
 
 		}}
 	/>
+	{#if import.meta.env.DEV}
+		<Checkbox
+			title="DEVELOPMENT: Use CORS proxy"
+			current={PrefGeneral.v.corsProxy}
+			onChange={(v) => PrefGeneral.patch({corsProxy: v})}
+		/>
+	{/if}
 </div>
 
 <style>

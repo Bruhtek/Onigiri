@@ -8,7 +8,7 @@
 	import { goto } from '$app/navigation';
 	import GridPage from '$lib/components/Layouts/GridPage.svelte';
 	import DisplayPage from '$lib/stores/DisplayPage.svelte';
-	import { page } from '$app/stores';
+	import previousUrl from '$lib/stores/previousUrl.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -24,10 +24,18 @@
 			currentDisplay: 'VOLUMES',
 		});
 	});
+
+	const onBack = () => {
+		if (previousUrl.value.includes(window.location.host)) {
+			history.back();
+		} else {
+			goto('/series');
+		}
+	};
 </script>
 
 <div class="top-bar">
-	<button class="button" onclick={() => goto("/series")}>
+	<button class="button" onclick={onBack}>
 		<ArrowLeft width="32px" height="32px" />
 		Back
 	</button>

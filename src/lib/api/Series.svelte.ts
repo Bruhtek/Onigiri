@@ -67,6 +67,24 @@ class SeriesClass {
 		}
 	};
 
+	public fetchSeriesIdByPartId = async (partId: string): Promise<string | null> => {
+		try {
+			const res = await jfetch(`/parts/${partId}/serie`);
+			const json = await res.json();
+
+			const serie = new Serie(json);
+			return serie.id;
+		} catch (e) {
+			console.log(e);
+			if (e instanceof TypeError) {
+				Notifications.error('Failed to load serie details - no internet!');
+			} else {
+				Notifications.error(`Failed to load serie details: ${e}`);
+			}
+			return null;
+		}
+	};
+
 	public fetchSeriesDetails = async (seriesId: string) => {
 		if (this._currentSeries && this._currentSeries.id === seriesId) {
 			return;

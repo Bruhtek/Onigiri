@@ -16,6 +16,15 @@ export const clearAllCaches = async () => {
 
 	return await sw.registration.unregister();
 };
+export const clearTemporarySeriesData = async (seriesId: string) => {
+	console.log('Clearing temporary series data...');
+	const temp_cache = await caches.open(CACHE_TEMPORARY);
+	const keys = await temp_cache.keys();
+	const seriesKeys = keys.filter(
+		(key) => key.url.includes('/app/v2/series/') && key.url.includes(seriesId),
+	);
+	await Promise.all(seriesKeys.map((key) => temp_cache.delete(key)));
+};
 export const clearTemporaryCaches = async () => {
 	console.log('Clearing temporary caches...');
 	await caches.delete(CACHE_TEMPORARY);

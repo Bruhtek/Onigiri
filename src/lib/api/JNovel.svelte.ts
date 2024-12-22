@@ -1,6 +1,8 @@
 import JAccount from '$lib/api/JAccount.svelte';
+import PrefGeneral from '$lib/stores/preferences/General.svelte';
 
 const JNOVEL_URL = 'https://labs.j-novel.club';
+const CORS_PROXY_URL = 'https://cors.bruhtek.com';
 
 const API_URL = `${JNOVEL_URL}/app/v2`;
 const EMBED_URL = `${JNOVEL_URL}/embed/v2`;
@@ -20,12 +22,16 @@ export const jfetch = async (url: string, options?: RequestInit) => {
 	if (url.includes('?')) url += '&format=json';
 	else url += '?format=json';
 
+	let URL_PREFIX = API_URL;
+	if (import.meta.env.DEV && PrefGeneral.v.corsProxy) {
+		URL_PREFIX = CORS_PROXY_URL + '/' + URL_PREFIX;
+	}
+
 	//403 - Requires a subscription
 	//401 - Unauthorized
 	//410 on Me - Token expired
-
 	console.log(url);
-	const res = await fetch(API_URL + url, {
+	const res = await fetch(URL_PREFIX + url, {
 		...options,
 		headers: getHeaders(options),
 	});
