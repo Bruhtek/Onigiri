@@ -50,7 +50,7 @@
 	});
 </script>
 
-<GridPage type="SERIES">
+<GridPage type="SERIES" showTotalPages={true}>
 	{#snippet leftPanel()}
 		Series
 		{#if ((JAccount.loggedIn && PrefSeries.v.favoritesOnly)

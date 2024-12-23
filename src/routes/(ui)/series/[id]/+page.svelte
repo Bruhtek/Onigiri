@@ -1,32 +1,14 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import Series from '$lib/api/Series.svelte';
-	import { onMount, untrack } from 'svelte';
 	import ArrowLeft from '~icons/ph/arrow-left';
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import GridLayout from '$lib/components/Layouts/GridLayout.svelte';
 	import { goto } from '$app/navigation';
 	import GridPage from '$lib/components/Layouts/GridPage.svelte';
-	import DisplayPage from '$lib/stores/DisplayPage.svelte';
 	import previousUrl from '$lib/stores/previousUrl.svelte';
 	import TabsLayout from '$lib/components/Layouts/TabsLayout.svelte';
 	import Reader from '$lib/components/Reader/Reader.svelte';
 	import { toProperCase } from '$lib/helpers/utils';
-
-	let { data }: { data: PageData } = $props();
-
-	$effect(() => {
-		const id = data.seriesId;
-		untrack(() => {
-			Series.fetchSeriesDetails(id);
-		});
-	});
-
-	onMount(() => {
-		DisplayPage.patch({
-			currentDisplay: 'VOLUMES',
-		});
-	});
 
 	const onBack = () => {
 		if (previousUrl.value.includes(window.location.host)) {

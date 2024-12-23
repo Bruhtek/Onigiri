@@ -22,8 +22,6 @@
 	let availableWidth = $state(0);
 	let availableHeight = $state(0);
 
-	$inspect(columnCount, isVertical.value);
-
 	let { rowCount, itemHeight } = $derived.by(() => {
 		const columnWidth = ((availableWidth - gap) / (columnCount)) - gap;
 		const rowHeight = columnWidth / columnAspectRatio;

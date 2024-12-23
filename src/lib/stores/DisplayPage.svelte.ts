@@ -36,12 +36,9 @@ class DisplayPageStore extends StoreClass<DisplayPage> {
 	};
 
 	setPage = (page: number) => {
-		displayPage.update((v) => {
-			const pages = v.pages;
-			pages[v.currentDisplay] = page;
-
-			return { ...v, pages };
-		});
+		const current = this.currentPage;
+		const diff = page - current;
+		this.changePage(diff);
 	};
 
 	public get currentPage() {
