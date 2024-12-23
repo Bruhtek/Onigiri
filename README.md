@@ -9,9 +9,15 @@
 
 ## Screenshots
 
-|          ![Screenshot - reader](static/screenshots/wide-reader.png)          |    ![Screenshot - releases](static/screenshots/wide-releases.png)    |
-|:----------------------------------------------------------------------------:|:--------------------------------------------------------------------:|
-| ![Screenshot - reader settings](static/screenshots/wide-reader-settings.png) | ![Screenshot - series item](static/screenshots/wide-series-item.png) |
+<details open>
+    <summary></summary>
+
+|            **Reader**      ![Screenshot - reader](static/screenshots/wide-reader.png)            |    **Releases**   ![Screenshot - releases](static/screenshots/wide-releases.png)     |
+|:------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------:|
+| **Reader settings** ![Screenshot - reader settings](static/screenshots/wide-reader-settings.png) | **Series View** ![Screenshot - series item](static/screenshots/wide-series-item.png) |
+|       **List view (Beta)** ![Screenshot - Beta](static/screenshots/wide-volumes-list.png)        |   **Settings**      ![Screenshot - Settings](static/screenshots/wide-settings.png)   |
+
+</details>
 
 ## Features
 
@@ -30,8 +36,8 @@
 ### TL;DR:
 
 - Android (7.0 and newer) ✅ - Report any issues [here](https://github.com/Bruhtek/Onigiri/issues)
-- Kindle browser ❌ - White screen, I am unable to debug on this platform, any contributions welcome, even any idea how
-  to open a web console (if it exists) would be helpful.
+- Kindle browser ❓ - When testing I get a white screen, I am unable to debug on this platform, any contributions
+  welcome, even any idea how to open a web console (if it exists) would be helpful.
 - Anything else ❓ - Try it and report back!
 
 ---
@@ -43,7 +49,7 @@ As of time of writing (*2024-12-22*), the following e-readers have Android:
 
 - Any **Onyx Boox**
 - Any **inkBoox**
-- Some **PocketBooks** (except for the Pocketbook Lite)
+- Some **PocketBooks** (check on their website!)
 
 Trying to open the app on the Kindle browser results in white screen. I am unfortunately unable to debug, as I do not
 know of any way to open DevTools, or even console on the Kindle browser. **Any contributions are welcome!**
