@@ -34,7 +34,7 @@ class Volume extends _IndexesClass implements LayoutItemFactory {
 	slug: string;
 	title: string;
 	number: number;
-	creators: Creator[] = [];
+	_creators: Creator[] = [];
 
 	owned: boolean;
 	created: Date;
@@ -47,6 +47,19 @@ class Volume extends _IndexesClass implements LayoutItemFactory {
 	thumbnailURL: string;
 
 	totalParts: number;
+
+	get creators(): { [key: string]: string[] } {
+		const roles: { [key: string]: string[] } = {};
+		for (const creator of this._creators) {
+			if (roles[creator.role] === undefined) {
+				roles[creator.role] = [];
+			}
+			if (!roles[creator.role].includes(creator.name)) {
+				roles[creator.role].push(creator.name);
+			}
+		}
+		return roles;
+	}
 
 	public toLayoutItem(): LayoutItem {
 		return {
@@ -73,7 +86,7 @@ class Volume extends _IndexesClass implements LayoutItemFactory {
 		this.number = json.number;
 
 		if (json.creators) {
-			this.creators = json.creators.map((creator) => ({
+			this._creators = json.creators.map((creator) => ({
 				name: creator.name,
 				role: creator.role,
 				originalName: creator.originalName,

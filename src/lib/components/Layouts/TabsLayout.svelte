@@ -53,6 +53,11 @@
 		padding: 0.5rem;
 	}
 
+	.tab {
+		flex: 1;
+		text-align: center;
+	}
+
 	.tab.selected {
 		text-decoration: underline;
 	}

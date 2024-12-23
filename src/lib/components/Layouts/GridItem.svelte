@@ -28,7 +28,8 @@
 </script>
 
 <a class="item"
-   href="{href}"
+   class:disabled={actualItem.disabled}
+   href={actualItem.disabled ? "#" : href}
    onclick={() => {}}
    ontouchstart={() => {}}
    use:longPress={() => actualItem.longPressHref && goto(actualItem.longPressHref)}
@@ -79,6 +80,10 @@
 	.item:hover:active {
 		background-color: var(--text);
 		color: var(--bg);
+	}
+	.item.disabled {
+		opacity: 0.5;
+		pointer-events: none;
 	}
 
 	.image {

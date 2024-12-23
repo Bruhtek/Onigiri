@@ -10,6 +10,7 @@ export type LayoutItem = {
 	titleWithoutIndexes?: () => string;
 	following?: boolean;
 	catchup?: boolean;
+	disabled?: boolean;
 };
 
 export interface LayoutItemFactory {

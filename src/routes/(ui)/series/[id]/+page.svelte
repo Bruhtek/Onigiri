@@ -99,7 +99,7 @@
 		flex-grow: 1;
 		min-height: 0;
 		display: block;
-		border: 3px solid black;
+		border: 3px solid var(--text);
 	}
 
 	.creators {

@@ -53,6 +53,10 @@ class Part extends _IndexesClass implements LayoutItemFactory {
 
 	type: 'NOVEL' | 'MANGA';
 
+	get released(): boolean {
+		return this.launch <= new Date();
+	}
+
 	toLayoutItem(): LayoutItem {
 		return {
 			title: this.title,
@@ -62,6 +66,7 @@ class Part extends _IndexesClass implements LayoutItemFactory {
 			href: `/reader/${this.id}`,
 			longPressHref: `/series/by-partId/${this.id}`,
 			indexes: this.getIndexes.bind(this),
+			disabled: !this.released,
 			titleWithoutIndexes: this.getTitleWithoutIndexes.bind(this),
 			progress: this.progress,
 		};
