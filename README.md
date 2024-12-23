@@ -7,9 +7,25 @@
 
 <a href="https://opensource.org/license/agpl-v3"><img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?color=3F51B5&style=for-the-badge&label=License&logoColor=000000&labelColor=ececec" alt="License: AGPLv3"></a>
 
+## Screenshots
+
+|          ![Screenshot - reader](static/screenshots/wide-reader.png)          |    ![Screenshot - releases](static/screenshots/wide-releases.png)    |
+|:----------------------------------------------------------------------------:|:--------------------------------------------------------------------:|
+| ![Screenshot - reader settings](static/screenshots/wide-reader-settings.png) | ![Screenshot - series item](static/screenshots/wide-series-item.png) |
+
+## Features
+
+- Fully static [Progressive Web Application](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) - no
+  data is sent anywhere but the original J-Novel Club servers
+- No-frills, minimalistic design that avoids ghosting
+- Properly paged reading experience - no scrolling, proper paragraph and line splitting.
+- Dark mode support
+- Supports many E-Readers (see [Device Support](#E-Reader-Device-support) for more info), Smartphones, Tablets, and
+  Desktops
+
 ---
 
-## Device support
+## E-Reader Device support
 
 ### TL;DR:
 
@@ -20,7 +36,7 @@
 
 ---
 The app is primarily tested on the Onyx Boox Note Air 2 on Kiwi Browser, as that is the hardware that I own. However, it
-should work on any modern E-Ink device that can run a relatively recent browser (except Kindles) and particularly any
+should work on any modern E-Ink device that can run a relatively recent browser (except Kindles) and especially any
 Android 7.0+ should be guaranteed to work.
 
 As of time of writing (*2024-12-22*), the following e-readers have Android:
@@ -28,6 +44,9 @@ As of time of writing (*2024-12-22*), the following e-readers have Android:
 - Any **Onyx Boox**
 - Any **inkBoox**
 - Some **PocketBooks** (except for the Pocketbook Lite)
+
+Trying to open the app on the Kindle browser results in white screen. I am unfortunately unable to debug, as I do not
+know of any way to open DevTools, or even console on the Kindle browser. **Any contributions are welcome!**
 
 ---
 
