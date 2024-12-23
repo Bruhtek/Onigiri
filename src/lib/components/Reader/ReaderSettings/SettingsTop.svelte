@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import type { Result } from '$lib/types/HelperTypes';
 	import type { PartTocResult } from '$lib/api/Parts.svelte';
+	import previousUrl from '$lib/stores/previousUrl.svelte';
 
 	interface Props {
 		partTocResult: Result<PartTocResult>;
@@ -11,8 +12,8 @@
 	const props: Props = $props();
 
 	const goBack = () => {
-		// if the user navigated from outside, for example from a bookmark, redirect him to the main page
-		if (document.referrer.includes(window.location.host)) {
+		// if the user navigated from outside, for example from a bookmark, redirect them to the main page
+		if (previousUrl.value.includes(window.location.host)) {
 			history.back();
 		} else {
 			goto('/');

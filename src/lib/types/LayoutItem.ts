@@ -11,6 +11,7 @@ export type LayoutItem = {
 	following?: boolean;
 	catchup?: boolean;
 	disabled?: boolean;
+	description?: string;
 };
 
 export interface LayoutItemFactory {

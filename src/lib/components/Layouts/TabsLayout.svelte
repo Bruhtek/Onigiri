@@ -1,39 +1,90 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
+	import { pushState, replaceState } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	interface Props {
 		tabs: Snippet[];
 		tabLabels: Snippet[] | string[];
+		labelsOnTop?: boolean;
+		mainLabel?: string;
+		current?: number;
+		onSelect?: (index: number) => void;
+		stateful?: boolean;
 	}
 
+	let { tabs, tabLabels, labelsOnTop = false, mainLabel, current, onSelect, stateful }: Props = $props();
+
 	let selected = $state(0);
-	let { tabs, tabLabels }: Props = $props();
+
+	$effect(() => {
+		if (current) {
+			selected = current;
+		}
+	});
 
 	onMount(() => {
 		if (tabs.length === 0 || tabs.length !== tabLabels.length) {
 			throw new Error('Tabs and tabItems must have the same length');
 		}
 	});
+
+	const onClick = (v: number) => {
+		selected = v;
+		if (onSelect) {
+			onSelect(v);
+		}
+		if (stateful) {
+			replaceState('', {
+				selected: v,
+			});
+		}
+	};
+
+	onMount(() => {
+		if (stateful) {
+			const state = $page.state;
+			if (state && state.selected) {
+				selected = state.selected;
+			}
+		}
+	});
 </script>
 
 <div class="container">
-	<div class="content">
-		{@render tabs[selected]()}
-	</div>
-	<div class="tabs">
+	{#if !labelsOnTop}
+		<div class="content">
+			{@render tabs[selected]()}
+		</div>
+	{/if}
+	<div class="tabs"
+		 class:top={labelsOnTop}
+	>
+		{#if mainLabel}
+			<h5 class="main-label">
+				{mainLabel}
+			</h5>
+		{/if}
 		{#each tabLabels as label, i}
 			<button class="tab"
-					onclick={() => selected = i}
+					onclick={() => onClick(i)}
 					class:selected={selected === i}
 			>
-				{#if typeof label === 'string'}
-					{label}
-				{:else}
-					{@render label()}
-				{/if}
+				<span>
+					{#if typeof label === 'string'}
+						{label}
+					{:else}
+						{@render label()}
+					{/if}
+				</span>
 			</button>
 		{/each}
 	</div>
+	{#if labelsOnTop}
+		<div class="content">
+			{@render tabs[selected]()}
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -53,13 +104,24 @@
 		padding: 0.5rem;
 	}
 
+	.tabs.top {
+		border-top: none;
+		border-bottom: 3px solid var(--text);
+	}
+
+	.main-label {
+		flex: 1;
+	}
+
 	.tab {
 		flex: 1;
 		text-align: center;
 	}
 
 	.tab.selected {
-		text-decoration: underline;
+		color: var(--bg);
+		background-color: var(--text);
+		border-radius: 0.5rem;
 	}
 
 	.content {

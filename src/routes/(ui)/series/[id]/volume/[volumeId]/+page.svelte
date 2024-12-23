@@ -56,6 +56,7 @@
 			partTocResult={{ error: "" }}
 			loading={false}
 			id={volume.volume.id}
+			overrideMargins={8}
 		/>
 	{/if}
 {/snippet}
@@ -134,5 +135,4 @@
 		flex-direction: column;
 		height: 100%;
 	}
-
 </style>

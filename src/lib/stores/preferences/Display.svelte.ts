@@ -1,21 +1,25 @@
 import { createPersistentStore } from '$lib/helpers/persistentStore.svelte';
 import PreferenceClass from '$lib/stores/preferences/_PreferenceClass';
 
-export const displayType = ['grid', 'list', 'thumbnailList'] as const;
-type DisplayType = (typeof displayType)[number];
+export enum DisplayType {
+	Grid,
+	List,
+}
 
 export type DisplayPreferences = {
-	releasesDisplayType: DisplayType;
+	volumesDisplayType: DisplayType;
 	gridColumnCountVertical: number;
 	gridColumnCountHorizontal: number;
 	gridObjectGap: number;
+	listMinObjectHeight: number;
 	hdThumbnails: boolean;
 };
 export const displayPreferencesDefaults: DisplayPreferences = {
-	releasesDisplayType: 'grid',
+	volumesDisplayType: DisplayType.List,
 	gridColumnCountVertical: 4,
 	gridColumnCountHorizontal: 6,
 	gridObjectGap: 16,
+	listMinObjectHeight: 200,
 	hdThumbnails: false,
 };
 

@@ -12,6 +12,7 @@
 	import JAccount from '$lib/api/JAccount.svelte';
 	import Series from '$lib/api/Series.svelte';
 	import PrefSeries from '$lib/stores/preferences/Series.svelte';
+	import { DisplayType } from '$lib/stores/preferences/Display.svelte';
 
 	if (Series.series.length == 0) {
 		Series.fetchSeries();
@@ -50,7 +51,11 @@
 	});
 </script>
 
-<GridPage type="SERIES" showTotalPages={true}>
+<GridPage
+	type="SERIES"
+	showTotalPages={true}
+	currentDisplay={DisplayType.Grid}
+>
 	{#snippet leftPanel()}
 		Series
 		{#if ((JAccount.loggedIn && PrefSeries.v.favoritesOnly)

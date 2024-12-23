@@ -7,13 +7,17 @@
 	import IconCheckbox from '$lib/components/Inputs/IconCheckbox.svelte';
 	import JAccount from '$lib/api/JAccount.svelte';
 	import PrefReleases from '$lib/stores/preferences/Releases.svelte';
+	import { DisplayType } from '$lib/stores/preferences/Display.svelte';
 
 	if (Releases.releases.length == 0) {
 		Releases.fetchMoreReleases();
 	}
 </script>
 
-<GridPage type="RELEASES">
+<GridPage
+	type="RELEASES"
+	currentDisplay={DisplayType.Grid}
+>
 	{#snippet leftPanel()}
 		{#if JAccount.loggedIn && PrefReleases.v.favoritesOnly}
 			Releases (Only followed)

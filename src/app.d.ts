@@ -8,7 +8,10 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
+		interface PageState {
+			selected?: number;
+		}
+
 		// interface Platform {}
 	}
 	declare const __CHANGELOG_STRING__: string;

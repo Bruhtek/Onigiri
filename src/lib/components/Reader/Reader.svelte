@@ -16,8 +16,10 @@
 		partTocResult: Result<PartTocResult>;
 		toggleZones: (state: boolean) => unknown;
 		loading: boolean;
-		minimal?: boolean;
 		id: string;
+		minimal?: boolean;
+		miniMargins?: boolean;
+		overrideFontSize?: number;
 	}
 
 	let props: Props = $props();
@@ -28,11 +30,12 @@
 	let showSettings = $state<boolean>(false);
 
 	let contentDiv: HTMLDivElement|undefined = $state();
-	let innerWidth: number = $state(window.innerWidth);
-
+	let innerWidth: number = $state(0);
+	// requires at least 1, else page counter breaks
+	let margins = $derived(props.miniMargins ? 1 : PrefReader.v.pageMargins);
 
 	const calculatePageWidth = () => {
-		return innerWidth - 2 * PrefReader.v.pageMargins;
+		return innerWidth - 2 * margins;
 	}
 
 	let pageWidth = $derived.by(calculatePageWidth);
@@ -55,7 +58,7 @@
 
 		pageHeight = contentDiv!.clientHeight;
 		const oldProgress = progress;
-		pageCount = Math.floor(contentDiv!.scrollWidth / (pw + PrefReader.v.pageMargins));
+		pageCount = Math.floor(contentDiv!.scrollWidth / (pw + margins));
 		currentPage = Math.floor(oldProgress * pageCount);
 		updateCurrentPage(currentPage, pw);
 	}
@@ -71,8 +74,8 @@
 
 		currentPage = p;
 
-		contentDiv!.scrollLeft = p * (w + PrefReader.v.pageMargins);
-		pageCount = Math.floor(contentDiv!.scrollWidth / (w + PrefReader.v.pageMargins));
+		contentDiv!.scrollLeft = p * (w + margins);
+		pageCount = Math.floor(contentDiv!.scrollWidth / (w + margins));
 
 		if(ready && !props.minimal) {
 			Parts.updatePartProgress(props.id, currentPage / pageCount);
@@ -109,7 +112,7 @@
 		}
 	})
 	$effect(() => {
-		if(PrefReader.v.pageMargins) {
+		if(margins) {
 			onResize();
 		}
 	})
@@ -170,13 +173,6 @@
 	}
 </script>
 
-<svelte:window
-	bind:innerWidth={innerWidth}
-    onresize={onResize}
-    onkeydown={handleKeyDown}
-	use:gestureNavigation={gestureCallback}
-/>
-
 {#if showSettings && !props.minimal}
 	<ReaderSettings
 		onHide={() => showSettings = false}
@@ -185,12 +181,21 @@
 	/>
 {/if}
 
+<svelte:window
+	onresize={onResize}
+/>
+
 <div class="reader-container"
+	 bind:clientWidth={innerWidth}
+	 onkeydown={handleKeyDown}
+	 use:gestureNavigation={gestureCallback}
+	 role="button"
+	 tabindex="0"
 	 class:hide={!ready && !props.loading && !props.minimal}
-	 style="--margins: {PrefReader.v.pageMargins}px;
+	 style="--margins: {margins}px;
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
-			--fontSize: {PrefReader.v.fontSize}px;
+			--fontSize: {props.overrideFontSize || PrefReader.v.fontSize}px;
 			--font-family: {fontFamilyCSS};
 			--text-align: {PrefReader.v.justifyText ? 'justify' : 'left'};
 			--line-height: {PrefReader.v.lineSpacing}em;

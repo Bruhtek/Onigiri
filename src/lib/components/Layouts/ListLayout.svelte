@@ -1,50 +1,37 @@
 <script lang="ts">
 	import type { LayoutItemProp } from '$lib/types/LayoutItem';
 	import PrefDisplay from '$lib/stores/preferences/Display.svelte';
-	import isVertical from '$lib/stores/orientationStore.svelte';
 	import Releases from '$lib/api/Releases.svelte';
 	import gestureNavigation, { type Direction } from '$lib/helpers/useGestureNavigation.svelte';
-	import GridItem from '$lib/components/Layouts/GridItem.svelte';
 	import { untrack } from 'svelte';
 	import DisplayPage from '$lib/stores/DisplayPage.svelte.js';
+	import ListItem from '$lib/components/Layouts/ListItem.svelte';
 
-	interface GridLayoutProps {
+	interface ListLayoutProps {
 		items: LayoutItemProp[];
+		secondaryItems?: LayoutItemProp[][];
 	}
 
-	let { items }: GridLayoutProps = $props();
+	let { items, secondaryItems = [] }: ListLayoutProps = $props();
 
-	const columnAspectRatio = 2 / 3;
 	const gap = $derived(PrefDisplay.v.gridObjectGap);
 
-	let columnCount = $derived(isVertical.value ? PrefDisplay.v.gridColumnCountVertical : PrefDisplay.v.gridColumnCountHorizontal);
-
-	let availableWidth = $state(0);
 	let availableHeight = $state(0);
-
-	let { rowCount, itemHeight } = $derived.by(() => {
-		const columnWidth = ((availableWidth - gap) / (columnCount)) - gap;
-		const rowHeight = columnWidth / columnAspectRatio;
-		return {
-			rowCount: Math.floor((availableHeight - gap) / (rowHeight + gap)),
-			itemHeight: rowHeight,
-		};
-	});
+	let itemsPerPage = $derived(Math.floor((availableHeight / PrefDisplay.v.listMinObjectHeight)));
+	let itemHeight = $derived((availableHeight / itemsPerPage) - gap);
 
 	let layoutVariables: string = $derived.by(() => {
 		let variables = {
 			'--gap': `${gap}px`,
-			'--column-count': columnCount,
-			'--row-count': rowCount,
-			'--column-aspect-ratio': columnAspectRatio,
+			'--row-count': itemsPerPage,
 			'--item-height': `${itemHeight}px`,
 		};
 		return Object.entries(variables).map(([key, value]) => `${key}: ${value}`).join(';');
 	});
 
-	let itemsPerPage = $derived.by(() => columnCount * rowCount);
 	let currentPage = $derived(DisplayPage.currentPage);
 	let itemsOnPage = $derived.by(() => items.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
+	let secondaryItemsOnPage = $derived.by(() => secondaryItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
 
 	$effect(() => {
 		const ipp = itemsPerPage;
@@ -95,12 +82,14 @@
 	class="layout"
 	style={layoutVariables}
 	bind:clientHeight={availableHeight}
-	bind:clientWidth={availableWidth}
 	use:gestureNavigation={gestureCallback}
 >
 	<div class="list">
-		{#each itemsOnPage as item}
-			<GridItem item={item} />
+		{#each itemsOnPage as item, i}
+			<ListItem
+				item={item}
+				secondaryItems={secondaryItemsOnPage[i]}
+			/>
 		{/each}
 	</div>
 </div>
@@ -118,7 +107,7 @@
 		top: 50%;
 		transform: translateY(-50%);
 		display: grid;
-		grid-template-columns: repeat(var(--column-count), 1fr);
+		grid-template-columns: 1fr;
 		grid-template-rows: repeat(var(--row-count), var(--item-height));
 		grid-gap: var(--gap);
 	}

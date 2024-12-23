@@ -68,6 +68,7 @@ class Volume extends _IndexesClass implements LayoutItemFactory {
 			imageSrc: this.thumbnailURL,
 			HDImageSrc: this.coverURL,
 			href: (current: string) => current + `/volume/${this.id}`,
+			description: this.description,
 		};
 	}
 

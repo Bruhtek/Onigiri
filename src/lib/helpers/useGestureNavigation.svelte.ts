@@ -20,6 +20,7 @@ const gestureNavigation = (node: HTMLElement, callback: (direction: Direction) =
 			e.preventDefault();
 		};
 		const handleTouchStart = (e: TouchEvent) => {
+			e.stopPropagation();
 			scrollStart.x = e.touches[0].clientX;
 			scrollStart.y = e.touches[0].clientY;
 		};

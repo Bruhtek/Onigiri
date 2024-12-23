@@ -45,6 +45,7 @@ class Serie implements LayoutItemFactory {
 			href: `/series/${this.id}`,
 			following: this.following,
 			catchup: this.catchup,
+			description: this.description,
 		};
 	}
 
