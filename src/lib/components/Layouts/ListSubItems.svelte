@@ -13,7 +13,7 @@
 			return item.toLayoutItem();
 		}
 		return item;
-	}));
+	}).reverse());
 </script>
 
 <div class="container">
@@ -25,7 +25,7 @@
 			style="--progress: {item.progress || 0}"
 		>
 			<div class="item-bg"></div>
-			<div class="item-text">{i + 1}</div>
+			<div class="item-text">{items.length - i}</div>
 		</a>
 	{/each}
 </div>
@@ -33,17 +33,20 @@
 <style>
 	.container {
 		display: flex;
-		margin-left: auto;
+		margin-top: auto;
+		justify-content: right;
+		flex-wrap: wrap-reverse;
+		flex-direction: row-reverse;
 		font-size: 1.1em;
 	}
 
 	.item {
 		border-top: 2px solid var(--text);
 		border-left: 2px solid var(--text);
-		aspect-ratio: 1/1;
 		display: inline-grid;
-		place-items: center;
+		width: 2em;
 		height: 2em;
+		place-items: center;
 		position: relative;
 	}
 	.item.disabled {

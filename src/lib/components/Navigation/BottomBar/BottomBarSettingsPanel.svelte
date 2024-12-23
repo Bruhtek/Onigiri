@@ -47,7 +47,7 @@
 	{/snippet}
 	{#if onSelect}
 		<TabsLayout
-			tabLabels={["Grid", "List"]}
+			tabLabels={["Grid", "List (BETA)"]}
 			tabs={[gridSettings, listSettings]}
 			labelsOnTop={true}
 			mainLabel="Display Layout"

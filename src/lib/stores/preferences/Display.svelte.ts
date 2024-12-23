@@ -15,7 +15,7 @@ export type DisplayPreferences = {
 	hdThumbnails: boolean;
 };
 export const displayPreferencesDefaults: DisplayPreferences = {
-	volumesDisplayType: DisplayType.List,
+	volumesDisplayType: DisplayType.Grid,
 	gridColumnCountVertical: 4,
 	gridColumnCountHorizontal: 6,
 	gridObjectGap: 16,

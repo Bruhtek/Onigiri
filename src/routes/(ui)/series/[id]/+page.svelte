@@ -3,7 +3,7 @@
 	import ArrowLeft from '~icons/ph/arrow-left';
 	import CenteredLayout from '$lib/components/Layouts/CenteredLayout.svelte';
 	import { goto } from '$app/navigation';
-	import GridPage from '$lib/components/Layouts/GridPage.svelte';
+	import LayoutPage from '$lib/components/Layouts/GridPage.svelte';
 	import previousUrl from '$lib/stores/previousUrl.svelte';
 	import TabsLayout from '$lib/components/Layouts/TabsLayout.svelte';
 	import Reader from '$lib/components/Reader/Reader.svelte';
@@ -57,7 +57,7 @@
 {/snippet}
 {#snippet volumesSnippet()}
 	{#if Series.current}
-		<GridPage
+		<LayoutPage
 			type="VOLUMES"
 			showTotalPages={true}
 			currentDisplay={PrefDisplay.v.volumesDisplayType}
@@ -68,7 +68,7 @@
 				items={Series.current.volumes.map(item => item.volume)}
 				secondaryItems={Series.current.volumes.map(item => item.parts)}
 			/>
-		</GridPage>
+		</LayoutPage>
 	{:else}
 		<CenteredLayout>
 			<div>Loading...</div>

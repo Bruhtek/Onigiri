@@ -56,7 +56,6 @@
 			partTocResult={{ error: "" }}
 			loading={false}
 			id={volume.volume.id}
-			overrideMargins={8}
 		/>
 	{/if}
 {/snippet}

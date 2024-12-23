@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
-	import { pushState, replaceState } from '$app/navigation';
+	import { replaceState } from '$app/navigation';
 	import { page } from '$app/stores';
 
 	interface Props {
@@ -114,6 +114,8 @@
 	}
 
 	.tab {
+		display: flex;
+		place-content: center;
 		flex: 1;
 		text-align: center;
 	}
