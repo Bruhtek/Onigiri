@@ -44,6 +44,7 @@
 			<div class="description">
 				<Reader
 					minimal={true}
+					miniMargins={true}
 					content={"<p>" + actualItem.description + "</p>"}
 					toggleZones={() => {}}
 					partTocResult={{ error: "" }}
@@ -100,6 +101,7 @@
 	.description {
 		min-height: 0;
 		flex: 1;
+		padding: 0 0.3rem;
 		overflow: hidden;
 	}
 </style>
