@@ -108,6 +108,11 @@
 			shouldGoToProgress = true;
 		}
 	})
+	$effect(() => {
+		if(PrefReader.v.pageMargins) {
+			onResize();
+		}
+	})
 
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if(event.key === 'ArrowLeft') {
