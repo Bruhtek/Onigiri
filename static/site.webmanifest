@@ -21,25 +21,46 @@
 	"display": "fullscreen",
 	"screenshots": [
 		{
-			"src": "/screenshots/home-vertical.png",
+			"src": "/screenshots/narrow-reader.png",
 			"form_factor": "narrow",
 			"type": "image/png",
 			"label": "Releases page",
-			"sizes": "1324x1718"
+			"sizes": "864x1630"
 		},
 		{
-			"src": "/screenshots/reader-vertical.png",
+			"src": "/screenshots/narrow-reader.png",
 			"form_factor": "narrow",
 			"type": "image/png",
 			"label": "Reader page",
-			"sizes": "1324x1718"
+			"sizes": "864x1630"
 		},
 		{
-			"src": "/screenshots/home-horizontal.png",
+			"src": "/screenshots/narrow-series-item.png",
+			"form_factor": "narrow",
+			"type": "image/png",
+			"label": "Series item page",
+			"sizes": "864x1630"
+		},
+		{
+			"src": "/screenshots/wide-releases.png",
 			"form_factor": "wide",
 			"type": "image/png",
 			"label": "Releases page",
-			"sizes": "1718x1324"
+			"sizes": "2256x1630"
+		},
+		{
+			"src": "/screenshots/wide-reader.png",
+			"form_factor": "wide",
+			"type": "image/png",
+			"label": "Reader page",
+			"sizes": "2256x1630"
+		},
+		{
+			"src": "/screenshots/wide-series-item.png",
+			"form_factor": "wide",
+			"type": "image/png",
+			"label": "Series item page",
+			"sizes": "2256x1630"
 		}
 	]
 }

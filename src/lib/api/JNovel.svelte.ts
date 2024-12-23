@@ -51,7 +51,12 @@ export const jfetch = async (url: string, options?: RequestInit) => {
 // #region J-Embed
 export const jembed = async (partId: string): Promise<string> => {
 	try {
-		const res = await fetch(EMBED_URL + `/${partId}/data.xhtml`, {
+		let URL_PREFIX = EMBED_URL;
+		if (import.meta.env.DEV && PrefGeneral.v.corsProxy) {
+			URL_PREFIX = CORS_PROXY_URL + '/' + URL_PREFIX;
+		}
+
+		const res = await fetch(URL_PREFIX + `/${partId}/data.xhtml`, {
 			headers: getHeaders(),
 		});
 

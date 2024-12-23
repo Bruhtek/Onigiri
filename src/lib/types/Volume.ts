@@ -73,8 +73,7 @@ class Volume extends _IndexesClass implements LayoutItemFactory {
 		this.number = json.number;
 
 		if (json.creators) {
-			//eslint-disable-next-line
-			this.creators = json.creators.map((creator: any) => ({
+			this.creators = json.creators.map((creator) => ({
 				name: creator.name,
 				role: creator.role,
 				originalName: creator.originalName,

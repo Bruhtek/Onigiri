@@ -9,6 +9,28 @@
 
 ---
 
+## Device support
+
+### TL;DR:
+
+- Android (7.0 and newer) ✅ - Report any issues [here](https://github.com/Bruhtek/Onigiri/issues)
+- Kindle browser ❌ - White screen, I am unable to debug on this platform, any contributions welcome, even any idea how
+  to open a web console (if it exists) would be helpful.
+- Anything else ❓ - Try it and report back!
+
+---
+The app is primarily tested on the Onyx Boox Note Air 2 on Kiwi Browser, as that is the hardware that I own. However, it
+should work on any modern E-Ink device that can run a relatively recent browser (except Kindles) and particularly any
+Android 7.0+ should be guaranteed to work.
+
+As of time of writing (*2024-12-22*), the following e-readers have Android:
+
+- Any **Onyx Boox**
+- Any **inkBoox**
+- Some **PocketBooks** (except for the Pocketbook Lite)
+
+---
+
     Copyright (C) 2024 Bartosz Kasperski
 
     This program is free software: you can redistribute it and/or modify

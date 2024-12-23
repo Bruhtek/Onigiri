@@ -9,6 +9,22 @@ export type FullVolume = { volume: Volume; parts: Part[] };
 class SerieAggregate extends Serie {
 	volumes: FullVolume[] = [];
 
+	get creators(): { [key: string]: string[] } {
+		const roles: { [key: string]: string[] } = {};
+		for (const volume of this.volumes) {
+			const creators = volume.volume.creators;
+			for (const creator of creators) {
+				if (roles[creator.role] === undefined) {
+					roles[creator.role] = [];
+				}
+				if (!roles[creator.role].includes(creator.name)) {
+					roles[creator.role].push(creator.name);
+				}
+			}
+		}
+		return roles;
+	}
+
 	constructor(api_result: unknown) {
 		const json = SeriesAggregateSchema.parse(api_result);
 

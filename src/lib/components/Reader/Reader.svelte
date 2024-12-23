@@ -16,8 +16,11 @@
 		partTocResult: Result<PartTocResult>;
 		toggleZones: (state: boolean) => unknown;
 		loading: boolean;
+		minimal?: boolean;
 		id: string;
 	}
+
+	let props: Props = $props();
 
 	let ready = $state<boolean>(false);
 
@@ -60,7 +63,10 @@
 	let shouldGoToProgress = $state<boolean>(false);
 
 	const updateCurrentPage = (page?: number, width?: number) => {
-		const p = page ?? currentPage;
+		let p = page ?? currentPage ?? 0;
+		if(isNaN(p)) {
+			p = 0;
+		}
 		const w = width ?? pageWidth;
 
 		currentPage = p;
@@ -68,7 +74,7 @@
 		contentDiv!.scrollLeft = p * (w + PrefReader.v.pageMargins);
 		pageCount = Math.floor(contentDiv!.scrollWidth / (w + PrefReader.v.pageMargins));
 
-		if(ready) {
+		if(ready && !props.minimal) {
 			Parts.updatePartProgress(props.id, currentPage / pageCount);
 		}
 	}
@@ -102,8 +108,6 @@
 			shouldGoToProgress = true;
 		}
 	})
-
-	let props: Props = $props();
 
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if(event.key === 'ArrowLeft') {
@@ -168,7 +172,7 @@
 	use:gestureNavigation={gestureCallback}
 />
 
-{#if showSettings}
+{#if showSettings && !props.minimal}
 	<ReaderSettings
 		onHide={() => showSettings = false}
 		toggleZones={props.toggleZones}
@@ -177,7 +181,7 @@
 {/if}
 
 <div class="reader-container"
-	 class:hide={!ready && !props.loading}
+	 class:hide={!ready && !props.loading && !props.minimal}
 	 style="--margins: {PrefReader.v.pageMargins}px;
 	 		--pageWidth: {pageWidth}px;
 			--pageHeight: {pageHeight}px;
@@ -202,7 +206,7 @@
 			</a>
 		{/if}
 	</div>
-	<BottomBar page={currentPage} totalPages={pageCount} />
+	<BottomBar minimal={props.minimal} page={currentPage} totalPages={pageCount} />
 </div>
 
 <style>
@@ -219,6 +223,8 @@
 		display: flex;
 		flex-direction: column;
 		padding: var(--margins);
+		padding-bottom: var(--bottom-bar-height);
+		min-height: 0;
 	}
 	.reader-container.hide {
 		opacity: 0;
@@ -230,7 +236,7 @@
 	}
 
 	#content {
-		height: calc(100% - var(--bottom-bar-height));
+		height: 100%;
 		overflow-x: hidden;
 		overflow-y: hidden;
 		column-fill: auto;
@@ -242,6 +248,7 @@
 		user-select: none;
 		font-family: var(--font-family), fantasy;
 		text-align: var(--text-align);
+		margin-bottom: -0.5em;
 	}
 
 	#content :global(*) {

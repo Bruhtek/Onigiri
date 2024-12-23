@@ -2,6 +2,7 @@
 	interface Props {
 		page: number;
 		totalPages: number;
+		minimal?: boolean;
 	}
 
 	let props: Props = $props();
